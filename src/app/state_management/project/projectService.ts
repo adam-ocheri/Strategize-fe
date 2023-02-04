@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:4000/api/projects/';
+const API_URL = 'https://strategize-be.vercel.app/api/projects/';
 
 export const create = async ({projectName, owner, token} : any) => {
     (console.log('trying to create project...'));

@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL_Create = 'http://localhost:4000/api/user/register/';
-const API_URL_Login = 'http://localhost:4000/api/user/login/';
+const API_URL_Create = 'https://strategize-be.vercel.app/api/user/register/';
+const API_URL_Login = 'https://strategize-be.vercel.app/api/user/login/';
 export const registerUser = async (userData) => {
     console.log("servicing");
     console.log(userData);

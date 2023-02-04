@@ -9,6 +9,7 @@
     "paths": {
       "@reduxjs/toolkit": ["./node_modules/@reduxjs/toolkit"]
     },
+    "watch" : true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
