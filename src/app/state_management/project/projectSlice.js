@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, update, get, deleteProjectById } from './projectService.js';
+import { create, update, getAll, getOne, deleteProjectById } from './projectService.js';
 const initialState = {
     data: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
+    message: '',
+    activeProject: {}
 };
-//Async Reducers
+//*Async Reducers -----------------------------------------------------------------------------------------------------------------------------------------------------
+//! ROUTE: api/projects -----------------------------------------------------------------------------------------------------------------------
 export const createProject = createAsyncThunk('project/create', async ({ projectName, owner, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
@@ -20,6 +22,19 @@ export const createProject = createAsyncThunk('project/create', async ({ project
         return thunkAPI.rejectWithValue(message);
     }
 });
+export const getAllProjects = createAsyncThunk('project/getOne', async ({ owner, token }, thunkAPI) => {
+    try {
+        console.log("Slicing...");
+        console.log({ owner });
+        return await getAll({ owner, token });
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+//! ROUTE: api/projects/project -----------------------------------------------------------------------------------------------------------------
 export const updateProject = createAsyncThunk('project/update', async ({ projectName, id, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
@@ -32,11 +47,11 @@ export const updateProject = createAsyncThunk('project/update', async ({ project
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const getAllProjects = createAsyncThunk('project/get', async ({ owner, token }, thunkAPI) => {
+export const getProject = createAsyncThunk('project/getAll', async ({ id, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
-        console.log({ owner });
-        return await get({ owner, token });
+        console.log({ id });
+        return await getOne({ id, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -44,11 +59,11 @@ export const getAllProjects = createAsyncThunk('project/get', async ({ owner, to
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const deleteProject = createAsyncThunk('project/delete', async ({ projectId, token }, thunkAPI) => {
+export const deleteProject = createAsyncThunk('project/delete', async ({ id, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
-        console.log({ projectId });
-        return await deleteProjectById({ projectId, token });
+        console.log({ id });
+        return await deleteProjectById({ id, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -56,7 +71,7 @@ export const deleteProject = createAsyncThunk('project/delete', async ({ project
         return thunkAPI.rejectWithValue(message);
     }
 });
-//Slice Setup
+//*Slice Setup -----------------------------------------------------------------------------------------------------------------------------------------------------
 export const projectSlice = createSlice({
     name: 'project',
     initialState,
@@ -83,6 +98,36 @@ export const projectSlice = createSlice({
             state.isSuccess = false;
             state.message = action.payload;
         })
+            // getAll CASES
+            .addCase(getAllProjects.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(getAllProjects.fulfilled, (state, action) => {
+            state.isSuccess = true;
+            state.isLoading = false;
+            state.data = action.payload;
+        })
+            .addCase(getAllProjects.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
+            // GET-One CASES
+            .addCase(getProject.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(getProject.fulfilled, (state, action) => {
+            state.isSuccess = true;
+            state.isLoading = false;
+            state.activeProject = action.payload;
+        })
+            .addCase(getProject.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
             // Update CASES
             .addCase(updateProject.pending, (state) => {
             state.isLoading = true;
@@ -103,22 +148,7 @@ export const projectSlice = createSlice({
             state.isSuccess = false;
             state.message = action.payload;
         })
-            // Get CASES
-            .addCase(getAllProjects.pending, (state) => {
-            state.isLoading = true;
-        })
-            .addCase(getAllProjects.fulfilled, (state, action) => {
-            state.isSuccess = true;
-            state.isLoading = false;
-            state.data = action.payload;
-        })
-            .addCase(getAllProjects.rejected, (state, action) => {
-            state.isLoading = false;
-            state.isError = true;
-            state.isSuccess = false;
-            state.message = action.payload;
-        })
-            // Get CASES
+            // Delete CASES
             .addCase(deleteProject.pending, (state) => {
             state.isLoading = true;
         })

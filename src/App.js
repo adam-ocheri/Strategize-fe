@@ -1,14 +1,10 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Project from "./components/stations/project/Project";
 function App() {
-    return (<BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home />}/>
-        <Route path='/register' element={<Signup />}/>
-        <Route path='/login' element={<Login />}/>
-      </Routes>
-    </BrowserRouter>);
+    return (_jsx(BrowserRouter, { children: _jsxs(Routes, { children: [_jsx(Route, { path: '/', element: _jsx(Home, {}) }), _jsx(Route, { path: '/register', element: _jsx(Signup, {}) }), _jsx(Route, { path: '/login', element: _jsx(Login, {}) }), _jsx(Route, { path: "/project", element: _jsx(Project, {}) })] }) }));
 }
 export default App;

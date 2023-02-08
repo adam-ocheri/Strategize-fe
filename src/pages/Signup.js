@@ -1,3 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { useNavigate } from "react-router-dom";
@@ -41,19 +42,8 @@ function Signup() {
         }
     };
     if (isLoading) {
-        return <div>
-        LOADING........
-      </div>;
+        return _jsx("div", { children: "LOADING........" });
     }
-    return (<div>
-        SIGNUP:
-        <form onSubmit={(e) => onFormSubmitted(e)}>
-            <input className="form-input" type="text" placeholder="Full Name" id="name" name="name" value={name} onChange={(e) => { onFormUpdated(e); }}/>
-            <input className="form-input" type="email" placeholder="Email" id="email" name="email" value={email} onChange={(e) => { onFormUpdated(e); }}/>
-            <input className="form-input" type="password" placeholder="Password" id="password" name="password" value={password} onChange={(e) => { onFormUpdated(e); }}/>
-            <input className="form-input" type="password" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => { onFormUpdated(e); }}/>
-            <button type='submit'>Signup</button>
-        </form>  
-    </div>);
+    return (_jsxs("div", { children: ["SIGNUP:", _jsxs("form", { onSubmit: (e) => onFormSubmitted(e), children: [_jsx("input", { className: "form-input", type: "text", placeholder: "Full Name", id: "name", name: "name", value: name, onChange: (e) => { onFormUpdated(e); } }), _jsx("input", { className: "form-input", type: "email", placeholder: "Email", id: "email", name: "email", value: email, onChange: (e) => { onFormUpdated(e); } }), _jsx("input", { className: "form-input", type: "password", placeholder: "Password", id: "password", name: "password", value: password, onChange: (e) => { onFormUpdated(e); } }), _jsx("input", { className: "form-input", type: "password", placeholder: "Confirm Password", id: "confirmPassword", name: "confirmPassword", value: confirmPassword, onChange: (e) => { onFormUpdated(e); } }), _jsx("button", { type: 'submit', children: "Signup" })] })] }));
 }
 export default Signup;

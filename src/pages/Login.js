@@ -1,3 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { useNavigate } from "react-router-dom";
@@ -38,13 +39,6 @@ function Login() {
             dispatch(login({ email: email, password: password }));
         }
     };
-    return (<div>
-        LOGIN:
-        <form onSubmit={(e) => onFormSubmitted(e)}>
-            <input className="form-input" type="email" placeholder="Email" id="email" name="email" value={email} onChange={(e) => { onFormUpdated(e); }}/>
-            <input className="form-input" type="password" placeholder="Password" id="password" name="password" value={password} onChange={(e) => { onFormUpdated(e); }}/>
-            <button type='submit'>Login</button>
-        </form>  
-    </div>);
+    return (_jsxs("div", { children: ["LOGIN:", _jsxs("form", { onSubmit: (e) => onFormSubmitted(e), children: [_jsx("input", { className: "form-input", type: "email", placeholder: "Email", id: "email", name: "email", value: email, onChange: (e) => { onFormUpdated(e); } }), _jsx("input", { className: "form-input", type: "password", placeholder: "Password", id: "password", name: "password", value: password, onChange: (e) => { onFormUpdated(e); } }), _jsx("button", { type: 'submit', children: "Login" })] })] }));
 }
 export default Login;

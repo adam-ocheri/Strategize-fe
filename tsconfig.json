@@ -1,10 +1,11 @@
+
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "ESNext",
     ],"baseUrl": "./",
     "paths": {
       "@reduxjs/toolkit": ["./node_modules/@reduxjs/toolkit"]
@@ -21,10 +22,24 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    //"noEmit": true,
     "jsx": "react-jsx"
   },
   "include": [
     "src"
   ]
 }
+
+// { 
+//     "compilerOptions": 
+//     {
+//         "target" : "ESNext",				// <= target ES version ("ESNext" is latest)
+//         "module": "esnext",
+//         "watch" : true,				// <= enable/disable live compilation (disabled if not specified)
+//         "lib": [ "dom", "es2017", "ESNext"],			// <= integrate intellisense, documentation and autocomplete features for libraries needed for a project
+//         "allowSyntheticDefaultImports":true,
+//         "moduleResolution": "node",
+
+        
+//     }
+//  }

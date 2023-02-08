@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { logout, User, reset } from 'src/app/state_management/user/authSlice';
 import { RootState } from 'src/app/store';
-import { createProject, getAllProjects, updateProject, deleteProject, reset__project } from 'src/app/state_management/project/projectSlice';
+import { createProject, getAllProjects, getProject, updateProject, deleteProject, reset__project } from 'src/app/state_management/project/projectSlice';
 
 function Home() {
 
@@ -47,6 +47,13 @@ function Home() {
     dispatch(updateProject({projectName: projectName, id: id, token: user.token}));
   }
 
+  const onEditProject = (e : any, id : any) => {
+    console.log("trying to EDIT PROJECT...........")
+    console.log(id);
+    dispatch(getProject({id: id, token: user.token}));
+    navigator('/project');
+  }
+
   //! Immigrants Border -----------------------------------------------------------------------------------------------------------------------
   
   const navigator = useNavigate();
@@ -76,6 +83,9 @@ function Home() {
           Email : {user.email}
         </p>
         <p>
+          ID : {user._id}
+        </p>
+        <p>
           <button onClick={onLogoutClicked}>Logout</button>
         </p>
       </div>}
@@ -96,7 +106,8 @@ function Home() {
             <p>
               Project Name: {project.projectName} 
               <button onClick={(e) => {onUpdateProjectName(e, project._id)}}>Update</button> 
-              <button onClick={() => {dispatch(deleteProject({projectId: project._id, token: user.token}))}}>Delete</button>
+              <button onClick={() => {dispatch(deleteProject({id: project._id, token: user.token}))}}>Delete</button>
+              <button onClick={(e) => {onEditProject(e, project._id)}}> Edit Project </button>
             </p>
             <p>
               Owner: {project.owner} 
