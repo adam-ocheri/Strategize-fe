@@ -36,21 +36,21 @@ function Home() {
     }
   }
 
-  const onLogoutClicked = () => {
-    dispatch(logout());
+  const onLogoutClicked = async () => {
+    await dispatch(logout());
     dispatch(reset());
     navigator('/');
   }
 
-  const onUpdateProjectName = (e : any, id : any) => {
+  const onUpdateProjectName = async (e : any, id : any) => {
     console.log(id);
-    dispatch(updateProject({projectName: projectName, id: id, token: user.token}));
+    await dispatch(updateProject({projectName: projectName, id: id, token: user.token}));
   }
 
-  const onEditProject = (e : any, id : any) => {
+  const manageSelectedStation = async (e : any, id : any) => {
     console.log("trying to EDIT PROJECT...........")
     console.log(id);
-    dispatch(getProject({id: id, token: user.token}));
+    await dispatch(getProject({id: id, token: user.token}));
     navigator('/project');
   }
 
@@ -105,9 +105,7 @@ function Home() {
           <div key={project._id} style={{border: '5px solid black', margin: '5px'}}>
             <p>
               Project Name: {project.projectName} 
-              <button onClick={(e) => {onUpdateProjectName(e, project._id)}}>Update</button> 
-              <button onClick={() => {dispatch(deleteProject({id: project._id, token: user.token}))}}>Delete</button>
-              <button onClick={(e) => {onEditProject(e, project._id)}}> Edit Project </button>
+              <button onClick={(e) => {manageSelectedStation(e, project._id)}}> Manage </button>
             </p>
             <p>
               Owner: {project.owner} 

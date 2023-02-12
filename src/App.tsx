@@ -3,6 +3,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Project from "./components/stations/project/Project";
+import Settings_Project from "./components/stations/project/Settings_Project";
+
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
         <Route path='/register' element={<Signup/>} />
         <Route path='/login' element={<Login/>} />
         <Route path="/project" element={<Project/>} />
+        <Route path="/project/settings" element={<Settings_Project/>} />
       </Routes>
     </BrowserRouter>
   );

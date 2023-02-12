@@ -1,20 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, update, getAll, getOne, deleteProjectById } from './projectService.js';
+import { create, update, getAll, getOne, deleteById } from './LTGService.js';
 const initialState = {
     data: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: '',
-    activeProject: {}
+    activeLTG: {}
 };
 //*Async Reducers -----------------------------------------------------------------------------------------------------------------------------------------------------
-//! ROUTE: api/projects -----------------------------------------------------------------------------------------------------------------------
-export const createProject = createAsyncThunk('project/create', async ({ projectName, owner, token }, thunkAPI) => {
+//! ROUTE: api/project/ltgs -----------------------------------------------------------------------------------------------------------------------
+export const createLTG = createAsyncThunk('LTG/create', async ({ LTGName, parentId, owner, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
-        console.log({ projectName });
-        return await create({ projectName, owner, token });
+        console.log({ LTGName });
+        return await create({ LTGName, parentId, owner, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -22,11 +22,11 @@ export const createProject = createAsyncThunk('project/create', async ({ project
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const getAllProjects = createAsyncThunk('project/getOne', async ({ owner, token }, thunkAPI) => {
+export const getAllLTGs = createAsyncThunk('LTG/getAll', async ({ parentId, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
-        console.log({ owner });
-        return await getAll({ owner, token });
+        console.log({ parentId });
+        return await getAll({ parentId, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -34,12 +34,12 @@ export const getAllProjects = createAsyncThunk('project/getOne', async ({ owner,
         return thunkAPI.rejectWithValue(message);
     }
 });
-//! ROUTE: api/projects/project -----------------------------------------------------------------------------------------------------------------
-export const updateProject = createAsyncThunk('project/update', async ({ body, id, token }, thunkAPI) => {
+//! ROUTE: api/project/ltgs/ltg -----------------------------------------------------------------------------------------------------------------
+export const updateLTG = createAsyncThunk('LTG/update', async ({ LTGName, id, parentId, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
-        console.log(body);
-        return await update({ body, id, token });
+        console.log({ LTGName });
+        return await update({ LTGName, id, parentId, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -47,7 +47,7 @@ export const updateProject = createAsyncThunk('project/update', async ({ body, i
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const getProject = createAsyncThunk('project/getAll', async ({ id, token }, thunkAPI) => {
+export const getLTG = createAsyncThunk('LTG/getOne', async ({ id, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({ id });
@@ -59,11 +59,11 @@ export const getProject = createAsyncThunk('project/getAll', async ({ id, token 
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const deleteProject = createAsyncThunk('project/delete', async ({ id, owner, token }, thunkAPI) => {
+export const deleteLTG = createAsyncThunk('LTG/delete', async ({ id, parentId, owner, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({ id });
-        return await deleteProjectById({ id, owner, token });
+        return await deleteById({ id, parentId, owner, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -72,10 +72,10 @@ export const deleteProject = createAsyncThunk('project/delete', async ({ id, own
     }
 });
 //*Slice Setup -----------------------------------------------------------------------------------------------------------------------------------------------------
-export const projectSlice = createSlice({
-    name: 'project',
+export const LTGSlice = createSlice({
+    name: 'ltg',
     initialState,
-    reducers: { reset__project: (state) => {
+    reducers: { reset__LTG: (state) => {
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = false;
@@ -84,81 +84,80 @@ export const projectSlice = createSlice({
     extraReducers: (builder) => {
         builder
             // Create CASES
-            .addCase(createProject.pending, (state) => {
+            .addCase(createLTG.pending, (state) => {
             state.isLoading = true;
         })
-            .addCase(createProject.fulfilled, (state, action) => {
+            .addCase(createLTG.fulfilled, (state, action) => {
             state.isSuccess = true;
             state.isLoading = false;
             state.data.push(action.payload);
         })
-            .addCase(createProject.rejected, (state, action) => {
+            .addCase(createLTG.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
             state.message = action.payload;
         })
             // getAll CASES
-            .addCase(getAllProjects.pending, (state) => {
+            .addCase(getAllLTGs.pending, (state) => {
             state.isLoading = true;
         })
-            .addCase(getAllProjects.fulfilled, (state, action) => {
+            .addCase(getAllLTGs.fulfilled, (state, action) => {
             state.isSuccess = true;
             state.isLoading = false;
             state.data = action.payload;
         })
-            .addCase(getAllProjects.rejected, (state, action) => {
+            .addCase(getAllLTGs.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
             state.message = action.payload;
         })
             // GET-One CASES
-            .addCase(getProject.pending, (state) => {
+            .addCase(getLTG.pending, (state) => {
             state.isLoading = true;
         })
-            .addCase(getProject.fulfilled, (state, action) => {
+            .addCase(getLTG.fulfilled, (state, action) => {
             state.isSuccess = true;
             state.isLoading = false;
-            state.activeProject = action.payload;
+            state.activeLTG = action.payload;
         })
-            .addCase(getProject.rejected, (state, action) => {
+            .addCase(getLTG.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
             state.message = action.payload;
         })
             // Update CASES
-            .addCase(updateProject.pending, (state) => {
+            .addCase(updateLTG.pending, (state) => {
             state.isLoading = true;
         })
-            .addCase(updateProject.fulfilled, (state, action) => {
+            .addCase(updateLTG.fulfilled, (state, action) => {
             state.isSuccess = true;
             state.isLoading = false;
             state.data = state.data.map((item) => {
                 if (item._id === action.payload._id) {
-                    return Object.assign({}, item, { projectName: action.payload.projectName });
+                    return Object.assign({}, item, { LTGName: action.payload.LTGName });
                 }
                 return item;
             });
         })
-            .addCase(updateProject.rejected, (state, action) => {
+            .addCase(updateLTG.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
             state.message = action.payload;
         })
             // Delete CASES
-            .addCase(deleteProject.pending, (state) => {
+            .addCase(deleteLTG.pending, (state) => {
             state.isLoading = true;
         })
-            .addCase(deleteProject.fulfilled, (state, action) => {
+            .addCase(deleteLTG.fulfilled, (state, action) => {
             state.isSuccess = true;
             state.isLoading = false;
             state.data = state.data.filter((item) => item._id !== action.payload._id);
-            state.activeProject = {};
         })
-            .addCase(deleteProject.rejected, (state, action) => {
+            .addCase(deleteLTG.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
@@ -166,5 +165,5 @@ export const projectSlice = createSlice({
         });
     }
 });
-export const { reset__project } = projectSlice.actions;
-export default projectSlice.reducer;
+export const { reset__LTG } = LTGSlice.actions;
+export default LTGSlice.reducer;
