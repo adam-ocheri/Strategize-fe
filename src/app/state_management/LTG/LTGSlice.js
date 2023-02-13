@@ -47,11 +47,11 @@ export const updateLTG = createAsyncThunk('LTG/update', async ({ body, id, paren
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const getLTG = createAsyncThunk('LTG/getOne', async ({ id, token }, thunkAPI) => {
+export const getLTG = createAsyncThunk('LTG/getOne', async ({ id, parentId, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({ id });
-        return await getOne({ id, token });
+        return await getOne({ id, parentId, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)

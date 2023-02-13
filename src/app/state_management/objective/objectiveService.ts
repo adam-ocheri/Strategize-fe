@@ -16,7 +16,7 @@ export const create = async ({objectiveName, parentId, owner, token} : any) => {
         }
     };
 
-    const response = await axios.post(API_URL + `?owner=${owner}&owningLTG=${parentId}`, {ObjectiveName: objectiveName}, authConfig);
+    const response = await axios.post(API_URL + `?owner=${owner}&owningLTG=${parentId}`, {objectiveName: objectiveName}, authConfig);
     console.log(response.data);
 
     return response.data;

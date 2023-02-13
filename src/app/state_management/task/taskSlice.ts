@@ -63,11 +63,11 @@ export const updateTask = createAsyncThunk('task/update',  async({body, id, pare
     }
 })
 
-export const getTask = createAsyncThunk('task/getOne',  async({id, token} : any, thunkAPI) => {
+export const getTask = createAsyncThunk('task/getOne',  async({id, parentId, token} : any, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({id});
-        return await getOne({id, token});
+        return await getOne({id, parentId, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();

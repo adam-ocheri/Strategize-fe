@@ -8,9 +8,9 @@ import { RootState } from 'src/app/store';
 
 function Project({}) {
     const [formData, setFormData] = useState({
-        newObjectiveName: '',
+        newLTGName: '',
     })
-    const {newObjectiveName} = formData;
+    const {newLTGName} = formData;
 
     const onFormUpdated = (e : Event | any) => {
         e.preventDefault();
@@ -22,23 +22,24 @@ function Project({}) {
     
     const onFormSubmitted = (e: Event | any) => {
         e.preventDefault();
-        if(!newObjectiveName)
+        if(!newLTGName)
         {
           throw new Error ("Please enter all fields!");
         }
         else{
           console.log("trying to login...");
           console.log(formData);
-          dispatch(createLTG({LTGName: newObjectiveName, parentId: activeProject._id, owner: user._id, token: user.token}))
+          dispatch(createLTG({LTGName: newLTGName, parentId: activeProject._id, owner: user._id, token: user.token}))
         }
     };
 
     const manageSelectedStation = async (e : any, id : any) => {
-        console.log("trying to EDIT PROJECT...........")
+        console.log("trying to EDIT LTG...........")
         console.log(id);
         await dispatch(getLTG({id: id, parentId: activeProject._id, token: user.token}));
-        navigator('/ltg');
+        navigator('/project/ltg');
     }
+
     //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
@@ -78,8 +79,8 @@ function Project({}) {
         </section>
         <section>
             <form onSubmit={(e) => onFormSubmitted(e)}>
-                <input className="form-input" type="text" placeholder="Objective Name" id="newObjectiveName" 
-                    name="newObjectiveName" value={newObjectiveName} onChange={(e) => {onFormUpdated(e)}}/>
+                <input className="form-input" type="text" placeholder="LTG Name" id="newLTGName" 
+                    name="newLTGName" value={newLTGName} onChange={(e) => {onFormUpdated(e)}}/>
                 <button type='submit'>Add New</button>
             </form> 
         </section>
