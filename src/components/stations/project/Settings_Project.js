@@ -13,6 +13,7 @@ function Settings_Project() {
             navigator('/');
         }
     }, [activeProject]);
+    const [deletePrompt, setDeletePrompt] = useState(false);
     const [savePrevented, setSavePrevented] = useState(true);
     const [formData, setFormData] = useState({
         projectName: '',
@@ -54,6 +55,7 @@ function Settings_Project() {
         await dispatch(deleteProject({ id: activeProject._id, owner: user._id, token: user.token }));
         navigator('/');
     };
-    return (_jsxs("div", { children: [_jsx("h2", { children: "Project Settings" }), _jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, children: [_jsxs("div", { children: ["Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeProject.projectName, id: "projectName", name: "projectName", value: projectName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs("div", { children: ["Station Type Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: "Project", id: "stationTypeName", name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsx("button", { type: 'submit', disabled: savePrevented, children: "Save" })] }), _jsx("button", { onClick: () => onDeleteProject(), children: "DELETE" })] }));
+    return (_jsxs("div", { children: [_jsx("h2", { children: "Project Settings" }), _jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, children: [_jsxs("div", { children: ["Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeProject.projectName, id: "projectName", name: "projectName", value: projectName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs("div", { children: ["Station Type Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: "Project", id: "stationTypeName", name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsx("button", { type: 'submit', disabled: savePrevented, children: "Save" })] }), deletePrompt ? _jsxs("div", { children: ["This will delete the project and all of it's sub-stations! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx("button", { onClick: () => onDeleteProject(), children: "Delete" }), _jsx("button", { onClick: () => setDeletePrompt(false), children: "Cancel" })] })
+                : _jsx("div", { children: _jsx("button", { onClick: () => setDeletePrompt(true), children: "DELETE" }) })] }));
 }
 export default Settings_Project;

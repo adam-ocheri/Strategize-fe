@@ -18,6 +18,8 @@ import { useEffect, useState } from 'react';
         }
     }, [activeProject])
 
+    const [deletePrompt, setDeletePrompt] = useState(false);
+
     const [savePrevented, setSavePrevented] = useState(true);
     const [formData, setFormData] = useState({
         projectName: '',
@@ -88,7 +90,16 @@ import { useEffect, useState } from 'react';
             </div>
             <button type='submit' disabled={savePrevented}>Save</button>
         </form>
-        <button onClick={() => onDeleteProject()}>DELETE</button>
+        {deletePrompt ? <div>
+            This will delete the project and all of it's sub-stations! <br/>
+            Are you sure? <br/>
+            <button onClick={() => onDeleteProject()}>Delete</button>
+            <button onClick={() => setDeletePrompt(false)}>Cancel</button>
+            </div> 
+            : <div>
+                <button onClick={() => setDeletePrompt(true)}>DELETE</button>
+            </div>}
+        
     </div>
   )
 }
