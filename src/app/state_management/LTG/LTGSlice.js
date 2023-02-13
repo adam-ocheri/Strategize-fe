@@ -35,11 +35,11 @@ export const getAllLTGs = createAsyncThunk('LTG/getAll', async ({ parentId, toke
     }
 });
 //! ROUTE: api/project/ltgs/ltg -----------------------------------------------------------------------------------------------------------------
-export const updateLTG = createAsyncThunk('LTG/update', async ({ LTGName, id, parentId, token }, thunkAPI) => {
+export const updateLTG = createAsyncThunk('LTG/update', async ({ body, id, parentId, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
-        console.log({ LTGName });
-        return await update({ LTGName, id, parentId, token });
+        console.log({ body });
+        return await update({ body, id, parentId, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)

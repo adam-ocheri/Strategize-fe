@@ -39,9 +39,9 @@ export const getAll = async ({parentId, token} : any) => {
 
 //! ROUTE: api/LTGs/LTG -----------------------------------------------------------------------------------------------------------------
 
-export const update = async ({LTGName, id, parentId, token} : any) => {
+export const update = async ({body, id, parentId, token} : any) => {
     (console.log('trying to create LTG...'));
-    console.log(LTGName);
+    console.log(body);
     console.log(id);
     console.log(token);
     const authConfig = {
@@ -50,7 +50,7 @@ export const update = async ({LTGName, id, parentId, token} : any) => {
         }
     };
 
-    const response = await axios.put(API_URL + 'ltg' + `?id=${id}&owningProject=${parentId}`, {LTGName: LTGName}, authConfig);
+    const response = await axios.put(API_URL + 'ltg' + `?id=${id}&owningProject=${parentId}`, body, authConfig);
     console.log(response.data);
 
     return response.data;

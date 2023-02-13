@@ -99,7 +99,6 @@ import { useEffect, useState } from 'react';
             : <div>
                 <button onClick={() => setDeletePrompt(true)}>DELETE</button>
             </div>}
-        
     </div>
   )
 }
