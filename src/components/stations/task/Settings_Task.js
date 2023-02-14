@@ -10,7 +10,7 @@ function Settings_Task() {
     const { user } = useAppSelector((state) => state.auth);
     useEffect(() => {
         if (!activeTask.taskName) {
-            navigator('/project/ltg');
+            navigator('/project/ltg/objective');
         }
     }, [activeTask]);
     const [deletePrompt, setDeletePrompt] = useState(false);
@@ -41,6 +41,7 @@ function Settings_Task() {
         }
         await dispatch(updateTask({ body, id: activeTask._id, parentId: activeTask.owningObjective, token: user.token }));
         await dispatch(getTask({ id: activeTask._id, parentId: activeTask.owningObjective, token: user.token }));
+        navigator('/project/ltg/objective/task');
     };
     const canSaveSettings = () => {
         let numModifiedProperties = 0;

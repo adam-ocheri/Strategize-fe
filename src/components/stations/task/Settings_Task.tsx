@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
     useEffect(() => {
         if(!activeTask.taskName)
         {
-            navigator('/project/ltg');
+            navigator('/project/ltg/objective');
         }
     }, [activeTask])
 
@@ -54,6 +54,7 @@ import { useEffect, useState } from 'react';
 
         await dispatch(updateTask({body, id: activeTask._id, parentId: activeTask.owningObjective, token: user.token}));
         await dispatch(getTask({id: activeTask._id, parentId: activeTask.owningObjective, token: user.token}));
+        navigator('/project/ltg/objective/task');
     }
 
     const canSaveSettings : () => boolean = () : boolean => {

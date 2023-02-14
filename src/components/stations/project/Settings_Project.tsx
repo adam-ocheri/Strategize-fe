@@ -53,6 +53,8 @@ import { useEffect, useState } from 'react';
         }
 
         await dispatch(updateProject({body, id: activeProject._id, token: user.token}))
+        await dispatch(getProject({id: activeProject._id, token: user.token}))
+        navigator('/project');
     }
 
     const canSaveSettings : () => boolean = () : boolean => {

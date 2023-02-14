@@ -41,6 +41,7 @@ function Settings_LTG() {
         }
         await dispatch(updateLTG({ body, id: activeLTG._id, parentId: activeLTG.owningProject, token: user.token }));
         await dispatch(getLTG({ id: activeLTG._id, parentId: activeLTG.owningProject, token: user.token }));
+        navigator('/project/ltg');
     };
     const canSaveSettings = () => {
         let numModifiedProperties = 0;

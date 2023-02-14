@@ -1,0 +1,306 @@
+@import './fonts.css';
+
+/* ! Global Page Config ---------------------------------------------------------------------------------------------- */
+
+body {
+    padding-top: 10vh;
+}
+
+.gradient-background {
+    background: linear-gradient(to bottom, #9997ae, #383848, #595b66);
+}
+
+/* ! Navigation ---------------------------------------------------------------------------------------------- */
+
+.navbar {
+    display: flex;
+    justify-content:left;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar a:hover {
+    color: #faa;
+}
+
+.item-list{
+    list-style: none;
+}
+
+.dropdown {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #6d6868;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: block;
+    /* animation: fade-in 0.3s ease-in-out; */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+  
+.dropdown.show {
+    opacity: 1;
+    visibility: visible;
+}
+  
+.dropdown.hide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* @keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+} */
+
+/* ! Generic Elements ---------------------------------------------------------------------------------------------- */
+
+.generic-container-1{
+    padding: 1%;
+    margin: 1%;
+}
+.generic-container-2{
+    padding: 2.5%;
+    margin: 2.5%;
+}
+.generic-container-3{
+    padding: 5%;
+    margin: 5%;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-generic{
+    padding: 1%;
+    margin: 1%;
+}
+
+.form-generic-input{
+    padding: 1%;
+    margin: 1%;
+}
+
+/* ! Visual Effects & Stylized Containers ---------------------------------------------------------------------------------------------- */
+
+.card-outer{
+    border: solid rgba(0, 0, 0, 1) 2px;
+    border-radius: 12px;
+    background: rgba(204, 204, 255, 0.245);
+}
+.card-main{
+    border: solid black 3px;
+    border-radius: 12px;
+    background: rgba(204, 204, 255, 0.253);
+}
+.card-sub-main{
+    border: solid black 3px;
+    border-radius: 25px;
+    background: rgba(204, 204, 255, 0.285);
+}
+.card-sub{
+    border: solid black 2px;
+    border-radius: 25px;
+    background: rgba(204, 204, 255, 0.489);
+}
+.card-sub-child{
+    border: solid black 2px;
+    border-radius: 25px;
+    background: rgba(204, 204, 255, 0.945);
+}
+
+.custom-border {
+    background-color: #232222;
+    clip-path: polygon(
+      0 0,
+      0 calc(100% - 25px),
+      25px 100%,
+      calc(100% - 25px) 100%,
+      100% calc(100% - 25px),
+      100% 0
+    );
+    padding: 20px;
+}
+
+.quad-box-shadow-1{
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2), 
+            0 -5px 5px 0 rgba(0, 0, 0, 0.2), 
+            -5px 0 5px 0 rgba(0, 0, 0, 0.2), 
+            0 5px 5px 0 rgba(0, 0, 0, 0.2);
+}
+.quad-box-shadow-2{
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.4), 
+            0 -10px 10px 0 rgba(0, 0, 0, 0.4), 
+            -10px 0 10px 0 rgba(0, 0, 0, 0.4), 
+            0 10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+.quad-box-shadow-3{
+    box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.6), 
+            0 -15px 15px 0 rgba(0, 0, 0, 0.6), 
+            -15px 0 15px 0 rgba(0, 0, 0, 0.6), 
+            0 15px 15px 0 rgba(0, 0, 0, 0.6);
+}
+.quad-box-shadow-4{
+    box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.8), 
+            0 -20px 20px 0 rgba(0, 0, 0, 0.8), 
+            -20px 0 20px 0 rgba(0, 0, 0, 0.8), 
+            0 20px 20px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* ! Button Components & Templates ---------------------------------------------------------------------------------------------- */
+
+
+
+button{
+    border-radius: 10px;
+    padding: 0.5vh 0.5vw;
+    margin: 0.5vh 0.5vw;
+}
+
+.btn-base{
+    padding: 1%;
+    margin: 1%;
+}
+
+.parent {
+    /* display: flex; */
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+.parent div {
+    align-items: left;
+}
+  
+.parent button {
+    margin-left: 30vw;
+    margin-bottom: -20vh;
+    
+}
+
+
+/* ! Justification Modifiers ---------------------------------------------------------------------------------------------- */
+
+/* margin ------------------*/
+.m1{
+    margin: 0.5vh 0.5vw;
+}
+.m2{
+    margin: 1vh 1vw;
+}
+.m3{
+    margin: 1.5vh 1.5vw;
+}
+.m4{
+    margin: 2vh 2vw;
+}
+.m5{
+    margin: 3vh 3vw;
+}
+.m6{
+    margin: 4vh 4vw;
+}
+.m7{
+    margin: 5vh 5vw;
+}
+
+/* padding ------------------*/
+.p1{
+    padding: 0.5vh 0.5vw;
+}
+.p2{
+    padding: 1vh 1vw;
+}
+.p3{
+    padding: 1.5vh 1.5vw;
+}
+.p4{
+    padding: 2vh 2vw;
+}
+.p5{
+    padding: 3vh 3vw;
+}
+.p6{
+    padding: 4vh 4vw;
+}
+.p7{
+    padding: 5vh 5vw;
+}
+
+/* justification ------------------*/
+.j-center{
+    justify-content: center;
+}
+.j-left{
+    justify-content: left;
+}
+.j-right{
+    justify-content: right;
+}
+.j-flex-start{
+    justify-content:flex-start;
+}
+.j-flex-end{
+    justify-content: flex-end;
+}
+.j-even{
+    justify-content: space-evenly;
+}
+
+/* flexing ------------------*/
+.flex{
+    display: flex;
+}
+.f-box{
+    display: flexbox;
+}
+.f-wrap{
+    flex-wrap: wrap;
+}
+.f-wrap-rev{
+    flex-wrap: wrap-reverse;
+}
+.f-dir-col{
+    flex-direction: column;
+}
+.f-dir-row{
+    flex-direction: row;
+}
+.f-flow-col{
+    flex-flow: column;
+}
+.f-flow-row{
+    flex-flow: row;
+}

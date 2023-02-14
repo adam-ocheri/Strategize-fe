@@ -1,0 +1,111 @@
+/* ! Font Families -------------------------------------------------------------------------------------------------------------- */
+
+.font-1 {
+    font-family: 'Kanit', cursive;
+    /*font-weight: 300;  Use the regular weight a*/
+}
+.font-2 {
+    font-family: 'Abril Fatface', cursive; 
+}
+
+.font-3 {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif; 
+}
+
+.font-4 {
+    font-family: 'Bitter', serif; 
+}
+
+.font-5 {
+    font-family: 'IBM Plex Mono', monospace; 
+}
+
+.font-6 {
+    font-family: 'Josefin Sans', sans-serif; 
+}
+
+.font-7 {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.font-8 {
+    font-family: 'Rajdhani', sans-serif; 
+}
+
+.font-9 {
+    font-family: 'Righteous', cursive; 
+}
+
+.font-10 {
+    font-family: 'Satisfy', cursive; 
+}
+
+.font-11 {
+    font-family: 'Julee', cursive;
+}
+
+/* ! Font Sizes -------------------------------------------------------------------------------------------------------------- */
+
+/*
+* px: Pixels, a fixed-size unit.
+* em: Relative to the font size of the parent element.
+* rem: Relative to the font size of the root element (usually the html element).
+* %: Relative to the font size of the parent element.
+* vw: Relative to 1% of the width of the viewport.
+* vh: Relative to 1% of the height of the viewport.     ?!? dvh, lvh, svh ?!?
+*/
+
+.s1{
+    font-size: 8pt;
+}
+
+.s2{
+    font-size: 16pt;
+}
+
+.s3{
+    font-size: 28pt;
+}
+
+.s4{
+    font-size: 40pt;
+}
+
+.s5{
+    font-size: 52vh;
+}
+
+.s6{
+    font-size: 64pt;
+}
+
+.s7{
+    font-size: 72pt;
+}
+
+/* ! Font Colors -------------------------------------------------------------------------------------------------------------- */
+
+.white{
+    color:antiquewhite;
+}
+
+.black{
+    color: rgb(14, 14, 14);
+}
+
+.red{
+    color:hsl(0, 90%, 37%);
+}
+
+.orange{
+    color:hsl(41, 98%, 49%);
+}
+
+.blue{
+    color: rgb(44, 31, 222);
+}
+
+.teal{
+    color: rgb(20, 243, 255);
+}
+

@@ -54,6 +54,7 @@ import { useEffect, useState } from 'react';
 
         await dispatch(updateLTG({body, id: activeLTG._id, parentId: activeLTG.owningProject, token: user.token}))
         await dispatch(getLTG({id: activeLTG._id, parentId: activeLTG.owningProject, token: user.token}));
+        navigator('/project/ltg');
     }
 
     const canSaveSettings : () => boolean = () : boolean => {

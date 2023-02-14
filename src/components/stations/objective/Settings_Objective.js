@@ -41,6 +41,7 @@ function Settings_Objective() {
         }
         await dispatch(updateObjective({ body, id: activeObjective._id, parentId: activeObjective.owningLTG, token: user.token }));
         await dispatch(getObjective({ id: activeObjective._id, parentId: activeObjective.owningLTG, token: user.token }));
+        navigator('/project/ltg/objective');
     };
     const canSaveSettings = () => {
         let numModifiedProperties = 0;

@@ -9,7 +9,7 @@ import { RootState } from 'src/app/store';
 function Project({}) {
     const [formData, setFormData] = useState({
         newLTGName: '',
-    })
+    });
     const {newLTGName} = formData;
 
     const onFormUpdated = (e : Event | any) => {

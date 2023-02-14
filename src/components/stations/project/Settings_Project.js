@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { updateProject, deleteProject } from 'src/app/state_management/project/projectSlice';
+import { getProject, updateProject, deleteProject } from 'src/app/state_management/project/projectSlice';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useEffect, useState } from 'react';
@@ -40,6 +40,8 @@ function Settings_Project() {
             }
         }
         await dispatch(updateProject({ body, id: activeProject._id, token: user.token }));
+        await dispatch(getProject({ id: activeProject._id, token: user.token }));
+        navigator('/project');
     };
     const canSaveSettings = () => {
         let numModifiedProperties = 0;

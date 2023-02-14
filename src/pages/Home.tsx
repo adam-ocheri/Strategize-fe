@@ -73,48 +73,55 @@ function Home() {
   }, [user, navigator])
 
   return (
-    <section>
-      {user && <div>
-        <h1>Welcome</h1>
-        <p>
-          Name: {user.name}
-        </p>
-        <p>
-          Email : {user.email}
-        </p>
-        <p>
-          ID : {user._id}
-        </p>
-        <p>
-          <button onClick={onLogoutClicked}>Logout</button>
-        </p>
-      </div>}
-      <div>
-        <h2>Create New Project</h2>
-        <form onSubmit={(e) => onFormSubmitted(e)}>
-            <input className="form-input" type="text" placeholder="Project Name" id="projectName" 
-                name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
-            <button type='submit'>Create</button>
-        </form>  
-      </div>
-      <div>
-        <h4>Existing Projects</h4>
-        {data && 
-        <div>
-          {data.map((project : any) => (
-          <div key={project._id} style={{border: '5px solid black', margin: '5px'}}>
-            <p>
-              Project Name: {project.projectName} 
-              <button onClick={(e) => {manageSelectedStation(e, project._id)}}> Manage </button>
-            </p>
-            <p>
-              Owner: {project.owner} 
-            </p>
+    <main className='generic-container-1 p1 m1'>
+      <section className='card-main quad-box-shadow-4 p1 m1'>
+        {user && <div className='generic-container-3 font-5'>
+          <div className='generic-container-3 card-sub quad-box-shadow-2'>
+            <h1 className='font-1 s6'>Welcome</h1>
+            <div className='generic-container-3 font-5'>
+              <p>
+                <strong className='font-6'>Name : </strong> {user.name}
+              </p>
+              <p>
+              <strong className='font-6'>Email : </strong> {user.email}
+              </p>
+              <p>
+                <button onClick={onLogoutClicked}>Logout</button>
+              </p>
+            </div>
           </div>
-          ))}
         </div>}
-      </div>
-    </section>
+        <article className='card-sub-main p4 m5 quad-box-shadow-2'>
+          <div className='centered'>
+            <h2 className='font-3'>Create New Project</h2>
+            <form className='form-generic' onSubmit={(e) => onFormSubmitted(e)}>
+                <input className="form-generic-input font-2" type="text" placeholder="Project Name" id="projectName" 
+                    name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
+                <button type='submit'>Create</button>
+            </form>  
+          </div>
+          <div className='p3 m3'>
+            {data && 
+            <div className='card-sub p3 m3 quad-box-shadow-1'>
+              <h4 className='s3'>Existing Projects</h4>
+              {data.map((project : any) => (
+              <div key={project._id} className='card-sub-child p3 m3'>
+                <div className='flex'>
+                  <h2 className='font-1 s1 p1 m1 '>Project Name :</h2> <h3 className='font-2 s4 p3 m3'>{project.projectName}</h3>
+                  <div className='flex parent flex-flow-left'>
+                    <button className='p3 m3' onClick={(e) => {manageSelectedStation(e, project._id)}}> Manage </button>
+                  </div>
+                </div>
+                <p>
+                  <h2 className='font-1 s1 p1 m1'>Owner :</h2> <h3 className='font-2 s2 p1 m1'>{user.name}</h3> 
+                </p>
+              </div>
+              ))}
+            </div>}
+          </div>
+        </article>
+      </section>
+    </main>
   )
 }
 
