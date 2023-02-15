@@ -4,6 +4,13 @@ import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { logout, User, reset } from 'src/app/state_management/user/authSlice';
 import { RootState } from 'src/app/store';
 import { createProject, getAllProjects, getProject, updateProject, deleteProject, reset__project } from 'src/app/state_management/project/projectSlice';
+import ChartGeneric from 'src/components/charts/ChartGeneric';
+import ChartBar from 'src/components/charts/ChartBar';
+import ChartLine from 'src/components/charts/ChartLine';
+import ChartPolarArea from 'src/components/charts/ChartPolarArea';
+import ChartScatter from 'src/components/charts/ChartScatter';
+import ChartPie from 'src/components/charts/ChartPie';
+import ChartRadar from 'src/components/charts/ChartRadar';
 
 function Home() {
 
@@ -39,7 +46,7 @@ function Home() {
   const onLogoutClicked = async () => {
     await dispatch(logout());
     dispatch(reset());
-    navigator('/');
+    navigator('/register');
   }
 
   const onUpdateProjectName = async (e : any, id : any) => {
@@ -64,7 +71,7 @@ function Home() {
   useEffect(() => {
     if (!user)
     {
-      navigator('/login');
+      navigator('/register');
     }
     else {
       dispatch(getAllProjects({owner: user._id, token: user.token}));
@@ -74,9 +81,8 @@ function Home() {
 
   return (
     <main className='generic-container-1 p1 m1'>
-      <section className='card-main quad-box-shadow-4 p1 m1'>
-        {user && <div className='generic-container-3 font-5'>
-          <div className='generic-container-3 card-sub quad-box-shadow-2'>
+      {user && <div className='generic-container-3 font-5'>
+          <div className='generic-container-3 card-sub-main quad-box-shadow-2'>   {/* generic-container-3 card-sub-main quad-box-shadow-2 */}
             <h1 className='font-1 s6'>Welcome</h1>
             <div className='generic-container-3 font-5'>
               <p>
@@ -88,9 +94,21 @@ function Home() {
               <p>
                 <button onClick={onLogoutClicked}>Logout</button>
               </p>
+              
+            </div>
+            <div className='flex p2 m2 j-center j-even'>
+              <div className='p1 m1' > <ChartPie/> </div>
+              <div className='p1 m1' > <ChartBar /> </div>
+              <div className='p1 m1' > <ChartLine/> </div>
+              {/* <div> </div>
+              <div> </div>
+              <ChartPolarArea/>
+              <ChartScatter/>
+              <ChartRadar/> */}
             </div>
           </div>
         </div>}
+      <section className='card-main quad-box-shadow-4 p1 m1'>  
         <article className='card-sub-main p4 m5 quad-box-shadow-2'>
           <div className='centered'>
             <h2 className='font-3'>Create New Project</h2>
@@ -101,20 +119,20 @@ function Home() {
             </form>  
           </div>
           <div className='p3 m3'>
-            {data && 
+            {data && user  && 
             <div className='card-sub p3 m3 quad-box-shadow-1'>
-              <h4 className='s3'>Existing Projects</h4>
+              <h4 className='s3 p2 m2 orange font-5 centered'>Existing Projects</h4>
               {data.map((project : any) => (
               <div key={project._id} className='card-sub-child p3 m3'>
                 <div className='flex'>
-                  <h2 className='font-1 s1 p1 m1 '>Project Name :</h2> <h3 className='font-2 s4 p3 m3'>{project.projectName}</h3>
+                  <h2 className='font-1 s1 p1 m1 orange '>Project Name :</h2> <h3 className='font-2 s4 p3 m3 white'>{project.projectName}</h3>
                   <div className='flex parent flex-flow-left'>
                     <button className='p3 m3' onClick={(e) => {manageSelectedStation(e, project._id)}}> Manage </button>
                   </div>
                 </div>
-                <p>
-                  <h2 className='font-1 s1 p1 m1'>Owner :</h2> <h3 className='font-2 s2 p1 m1'>{user.name}</h3> 
-                </p>
+                <div>
+                  <h2 className='font-1 s1 p1 m1 orange'>Owner :</h2> <h3 className='font-2 s2 p1 m1 black'>{user.name}</h3> 
+                </div>
               </div>
               ))}
             </div>}

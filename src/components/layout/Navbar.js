@@ -1,11 +1,14 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from 'react';
-import '../../css/main.css';
+import { useAppDispatch, useAppSelector } from 'src/app/hooks';
+//import '../../css/main.css';
 export default function Navbar() {
     const [showDropdown, setShowDropdown] = useState(false);
+    const dispatch = useAppDispatch();
+    const { user } = useAppSelector((state) => state.auth);
     function toggleDropdown() {
         // setShowDropdown((prevState) => !prevState);
         setShowDropdown(!showDropdown);
     }
-    return (_jsx("nav", { className: 'navbar', children: _jsxs("ul", { className: 'item-list flex j-center', children: [_jsx("li", { children: _jsx("button", { children: "Projects" }) }), _jsx("li", { children: _jsx("button", { children: "Workspace" }) }), _jsx("li", { className: '', children: _jsx("button", { children: "Settings" }) }), _jsxs("li", { className: '', children: [_jsx("button", { onClick: toggleDropdown, children: "Profile" }), _jsxs("div", { className: `dropdown ${showDropdown ? 'show' : 'hide'}`, children: [_jsx("p", { children: "Name: John Doe" }), _jsx("p", { children: "Email: john.doe@example.com" }), _jsx("button", { children: "Logout" })] })] })] }) }));
+    return (_jsxs("nav", { className: 'navbar', children: [_jsx("img", { src: 's-logo.png', alt: 'logo', height: '80px', width: '85px' }), _jsxs("ul", { className: 'item-list flex j-center', children: [_jsx("li", { children: _jsx("button", { children: "Projects" }) }), _jsx("li", { children: _jsx("button", { children: "Workspace" }) }), _jsx("li", { className: '', children: _jsx("button", { children: "Settings" }) }), _jsxs("li", { className: '', children: [_jsx("button", { onClick: toggleDropdown, children: "Profile" }), _jsx("div", { className: `dropdown ${showDropdown ? 'show' : 'hide'}`, children: user ? (_jsxs("div", { children: [_jsx("p", { children: "Name: John Doe" }), _jsx("p", { children: "Email: john.doe@example.com" }), _jsx("button", { children: "Logout" })] })) : (_jsxs("div", { children: [_jsx("button", { children: "Login" }), _jsx("button", { children: "Signup" })] })) })] })] })] }));
 }

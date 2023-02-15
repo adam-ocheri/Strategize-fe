@@ -4,6 +4,7 @@
 
 body {
     padding-top: 10vh;
+    padding-bottom: 10vh;
 }
 
 .gradient-background {
@@ -22,7 +23,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    
+    z-index: 2;
 }
 
 .navbar a {
@@ -118,27 +119,29 @@ body {
 .card-outer{
     border: solid rgba(0, 0, 0, 1) 2px;
     border-radius: 12px;
-    background: rgba(204, 204, 255, 0.245);
+    background: rgba(249, 3, 3, 0.245);
 }
 .card-main{
     border: solid black 3px;
     border-radius: 12px;
-    background: rgba(204, 204, 255, 0.253);
+    /* background: rgba(0, 85, 255, 0.253); */
+    background: linear-gradient(to bottom, #0e1a3465, #35445d65, #42485965);
 }
 .card-sub-main{
     border: solid black 3px;
     border-radius: 25px;
-    background: rgba(204, 204, 255, 0.285);
+    /* background: rgba(0, 122, 253, 0.285); */
+    background: linear-gradient(to bottom, #0d1a6f90, #212b6f90, #3c447c90)
 }
 .card-sub{
     border: solid black 2px;
     border-radius: 25px;
-    background: rgba(204, 204, 255, 0.489);
+    background: linear-gradient(to bottom, #1529aabc, #3445b3bc, #505ba2bc)
 }
 .card-sub-child{
     border: solid black 2px;
     border-radius: 25px;
-    background: rgba(204, 204, 255, 0.945);
+    background: linear-gradient(to right, #05081fee, #0a1352ee, #0f1d75ee)
 }
 
 .custom-border {
@@ -279,6 +282,16 @@ button{
     justify-content: space-evenly;
 }
 
+.jt-center{
+    text-align: center;
+}
+.jt-left{
+    text-align: center;
+}
+.jt-right{
+    text-align: center;
+}
+
 /* flexing ------------------*/
 .flex{
     display: flex;
@@ -304,3 +317,444 @@ button{
 .f-flow-row{
     flex-flow: row;
 }
+
+/* ! Pseudo Elements ---------------------------------------------------------------------------------------------- */
+
+/* Pseudo Elements:
+    
+    1)::first-line: Selects the first line of a block-level element.
+    2)::first-letter: Selects the first letter of a block-level element.
+    3)::before: Inserts content before the content of the selected element(s).
+    4)::after: Inserts content after the content of the selected element(s).
+    5)::selection: Selects the portion of an element that is selected by the user.
+    6)::placeholder: Selects the placeholder text in an input field.
+    7)::marker: Selects the marker of a list item.
+    8)::backdrop: Applies styles to the background behind an element that has been opened in fullscreen mode (for example, a modal).
+*/
+
+/** Decorations ---------------------------------------- */
+.PE-top-border-circles {
+    position: relative;
+    border-top: 1px solid black;
+} 
+.PE-top-border-circles::before,
+.PE-top-border-circles::after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid black;
+    border-radius: 50%;
+} 
+.PE-top-border-circles::before {
+    left: -16px;
+}
+.PE-top-border-circles::after {
+    right: -16px;
+}
+
+/** Inputs ---------------------------------------- */
+.PE-input-normal{
+    position: relative;
+    max-width: fit-content;
+    justify-content: center;
+    align-self: center;
+}
+.PE-input-normal::before{
+    content:"";
+    position:absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black;
+    background-color: #171a26;
+    border-radius: 25%;
+    left: -16px;
+    top: +16px
+    /* vertical-align: middle; */
+}
+.PE-input-valid{
+    position: relative;
+    max-width: fit-content;
+    justify-content: center;
+    align-self: center;
+    
+}
+.PE-input-valid::before{
+    content:"";
+    position:absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black;
+    background-color: #0fda75;
+    border-radius: 25%;
+    left: -16px;
+    vertical-align: middle;
+}
+.PE-input-invalid{
+    position: relative;
+    max-width: fit-content;
+    justify-content: center;
+    align-self: center;
+    
+}
+.PE-input-invalid::before{
+    content:"";
+    position:absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black;
+    background-color: #da0f2a;
+    border-radius: 25%;
+    left: -16px;
+    vertical-align: middle;
+}
+
+/* ! Borders ---------------------------------------------------------------------------------------------- */
+
+/** Globals -------------------------------------------------*/
+
+/* Styles --------------------- */
+
+.border-dashed{
+    border-style: dashed;
+}
+.border-dotted{
+    border-style: dotted;
+}
+.border-double{
+    border-style: double;
+}
+.border-groove{
+    border-style: groove;
+}
+.border-inset{
+    border-style: inset;
+}
+.border-outset{
+    border-style: outset;
+}
+.border-ridge{
+    border-style: ridge;
+}
+.border-solid{
+    border-style: solid;
+}
+
+/* Widths --------------------- */
+
+.border-w1{
+    border-width: 2px;
+}
+.border-w2{
+    border-width: 4px;
+}
+.border-w3{
+    border-width: 6px;
+}
+.border-w4{
+    border-width: 8px;
+}
+.border-w5{
+    border-width: 10px;
+}
+
+/* Colors --------------------- */
+.border-black{
+    border-color: #131313;
+}  
+.border-white{
+    border-color: #e5dddd;
+}
+.border-red{
+    border-color: #912626;
+}
+.border-green{
+    border-color: #0fda75;
+}  
+.border-blue{
+    border-color: #1768eb;
+}  
+
+/* Radii --------------------- */
+.border-r1{
+    border-radius: 5px;
+}
+.border-r2{
+    border-radius: 10px;
+}
+.border-r3{
+    border-radius: 15px;
+}
+.border-r4{
+    border-radius: 20px;
+}
+.border-r5{
+    border-radius: 25px;
+}
+
+/** Top -------------------------------------------------*/
+
+/* Styles --------------------- */
+
+.border-top-dashed{
+    border-top-style: dashed;
+}
+.border-top-dotted{
+    border-top-style: dotted;
+}
+.border-top-double{
+    border-top-style: double;
+}
+.border-top-groove{
+    border-top-style: groove;
+}
+.border-top-inset{
+    border-top-style: inset;
+}
+.border-top-outset{
+    border-top-style: outset;
+}
+.border-top-ridge{
+    border-top-style: ridge;
+}
+.border-top-solid{
+    border-top-style: solid;
+}
+
+/* Widths --------------------- */
+.border-top-w1{
+    border-top-width: 3px;
+}
+.border-top-w2{
+    border-top-width: 5px;
+}
+.border-top-w3{
+    border-top-width: 7px;
+}
+.border-top-w4{
+    border-top-width: 10px;
+}
+.border-top-w5{
+    border-top-width: 12px;
+}
+.border-top-w6{
+    border-top-width: 15px;
+}
+
+/* Colors --------------------- */
+.border-top-black{
+    border-top-color: #131313;
+}  
+.border-top-white{
+    border-top-color: #e5dddd;
+}
+.border-top-red{
+    border-top-color: #912626;
+}
+.border-top-green{
+    border-top-color: #0fda75;
+}  
+.border-top-blue{
+    border-top-color: #1768eb;
+}  
+
+/** Bottom -------------------------------------------------*/
+
+/* Styles --------------------- */
+
+.border-bottom-dashed{
+    border-bottom-style: dashed;
+}
+.border-bottom-dotted{
+    border-bottom-style: dotted;
+}
+.border-bottom-double{
+    border-bottom-style: double;
+}
+.border-bottom-groove{
+    border-bottom-style: groove;
+}
+.border-bottom-inset{
+    border-bottom-style: inset;
+}
+.border-bottom-outset{
+    border-bottom-style: outset;
+}
+.border-bottom-ridge{
+    border-bottom-style: ridge;
+}
+.border-bottom-solid{
+    border-bottom-style: solid;
+}
+
+/* Widths --------------------- */
+.border-bottom-w1{
+    border-bottom-width: 3px;
+}
+.border-bottom-w2{
+    border-bottom-width: 5px;
+}
+.border-bottom-w3{
+    border-bottom-width: 7px;
+}
+.border-bottom-w4{
+    border-bottom-width: 10px;
+}
+.border-bottom-w5{
+    border-bottom-width: 12px;
+}
+.border-bottom-w6{
+    border-bottom-width: 15px;
+}
+
+/* Colors --------------------- */
+.border-bottom-black{
+    border-bottom-color: #131313;
+}  
+.border-bottom-white{
+    border-bottom-color: #e5dddd;
+}
+.border-bottom-red{
+    border-bottom-color: #912626;
+}
+.border-bottom-green{
+    border-bottom-color: #0fda75;
+}  
+.border-bottom-blue{
+    border-bottom-color: #1768eb;
+}  
+
+
+/** Left -------------------------------------------------*/
+
+/* Styles --------------------- */
+
+.border-left-dashed{
+    border-left-style: dashed;
+}
+.border-left-dotted{
+    border-left-style: dotted;
+}
+.border-left-double{
+    border-left-style: double;
+}
+.border-left-groove{
+    border-left-style: groove;
+}
+.border-left-inset{
+    border-left-style: inset;
+}
+.border-left-outset{
+    border-left-style: outset;
+}
+.border-left-ridge{
+    border-left-style: ridge;
+}
+.border-left-solid{
+    border-left-style: solid;
+}
+
+/* Widths --------------------- */
+.border-left-w1{
+    border-left-width: 3px;
+}
+.border-left-w2{
+    border-left-width: 5px;
+}
+.border-left-w3{
+    border-left-width: 7px;
+}
+.border-left-w4{
+    border-left-width: 10px;
+}
+.border-left-w5{
+    border-left-width: 12px;
+}
+.border-left-w6{
+    border-left-width: 15px;
+}
+
+/* Colors --------------------- */
+.border-left-black{
+    border-left-color: #131313;
+}  
+.border-left-white{
+    border-left-color: #e5dddd;
+}
+.border-left-red{
+    border-left-color: #912626;
+}
+.border-left-green{
+    border-left-color: #0fda75;
+}  
+.border-left-blue{
+    border-left-color: #1768eb;
+}
+
+
+/** Right -------------------------------------------------*/
+
+/* Styles --------------------- */
+
+.border-right-dashed{
+    border-right-style: dashed;
+}
+.border-right-dotted{
+    border-right-style: dotted;
+}
+.border-right-double{
+    border-right-style: double;
+}
+.border-right-groove{
+    border-right-style: groove;
+}
+.border-right-inset{
+    border-right-style: inset;
+}
+.border-right-outset{
+    border-right-style: outset;
+}
+.border-right-ridge{
+    border-right-style: ridge;
+}
+.border-right-solid{
+    border-right-style: solid;
+}
+
+/* Widths --------------------- */
+.border-right-w1{
+    border-right-width: 3px;
+}
+.border-right-w2{
+    border-right-width: 5px;
+}
+.border-right-w3{
+    border-right-width: 7px;
+}
+.border-right-w4{
+    border-right-width: 10px;
+}
+.border-right-w5{
+    border-right-width: 12px;
+}
+.border-right-w6{
+    border-right-width: 15px;
+}
+
+/* Colors --------------------- */
+.border-right-black{
+    border-right-color: #131313;
+}  
+.border-right-white{
+    border-right-color: #e5dddd;
+}
+.border-right-red{
+    border-right-color: #912626;
+}
+.border-right-green{
+    border-right-color: #0fda75;
+}  
+.border-right-blue{
+    border-right-color: #1768eb;
+}  
