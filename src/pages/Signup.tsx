@@ -65,15 +65,39 @@ function Signup() {
         <div className="centered ">
           <h1 className="font-3 s5 p4 m4 PE-top-border-circles">Strategize</h1>
         </div>
-        <article className="PE-top-border-circles p6 m6">
-          <div>
-            <p>
-
-            </p>
+        <article className="p2 m2">
+          <div className="flex f-wrap p1 m1 j-center j-even">
+            <article className="p1 m1 f-basis-3 box-sizing-border story-box">
+              <h3 className="font-5 s2 under-title">Plan</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis,
+                sed totam saepe minima! Architecto, modi aut. Accusamus ullam hic error dolore! Distinctio.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis,
+                sed totam saepe minima! Architecto, modi aut. Accusamus ullam hic error dolore! Distinctio.
+              </p>
+            </article>
+            <article className="p1 m1 f-basis-3 box-sizing-border story-box">
+              <h3 className="font-5 s2 under-title">Create</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis,
+                sed totam saepe minima! Architecto, modi aut. Accusamus ullam hic error dolore! Distinctio.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis,
+                sed totam saepe minima! Architecto, modi aut. Accusamus ullam hic error dolore! Distinctio.
+              </p>
+            </article>
+            <article className="p1 m1 f-basis-3 box-sizing-border story-box ">
+              <h3 className="font-5 s2 under-title">Excel</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis,
+                sed totam saepe minima! Architecto, modi aut. Accusamus ullam hic error dolore! Distinctio.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis,
+                sed totam saepe minima! Architecto, modi aut. Accusamus ullam hic error dolore! Distinctio.
+              </p>
+            </article>
           </div>
         </article>
       </section>
-      <section>
+      <section className="PE-top-border-circles p6 m6">
         <div className="flex f-dir-col jt-center j-center">
           <h2 className="font-2 s3">Join Us</h2>
             <form className="p3 m3 jt-center j-center flex f-dir-col" onSubmit={(e) => onFormSubmitted(e)}>
