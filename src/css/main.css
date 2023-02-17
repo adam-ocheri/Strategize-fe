@@ -50,7 +50,7 @@ body {
     border-color: transparent;
     background-color: #333;
     display: flex;
-    transition: border-color 2.0 ease;
+    transition: border-color 0.3s ease;
     /* height: 100%; */
 }
 .navbar li:hover {
@@ -60,7 +60,7 @@ body {
     border-width: 3px;
     border-style: solid;
     /* position: static; */
-    transition: border-color 2.0 ease;
+    transition: border-color 0.5s ease;
 }
 
 .anchor1{
@@ -350,20 +350,18 @@ section:nth-of-type(even) .landing__container {
 }
 
 .backdrop-1{
-    /* background: url('../../public/b2.jpg') transparent; */
-    /* background-color: #ffffff2f; */
-    /* background-size: 100% 1px; */
     border: 2px solid rgba(255, 255, 255, 0);
     background-image: linear-gradient(to right, #ffffff00, #1d88fa00, #ffffff00);
-    transition: background-image 3.5s ease, border 3.5s ease;
+    transform: scale(1);
+    transition: transform 0.4s ease, border 0.5s ease;
 }
 
 .backdrop-1:hover{
     border: 2px solid rgba(255, 255, 255, 0.028);
-    background-image: linear-gradient(to right, #ffffff00, #78b7fa2b, #ffffff00);
-    transition: background-image 3.5s ease, border 3.5s ease;
+    background-image: linear-gradient(to right, #ffffff00, #78b7fa30, #ffffff00);
+    transform: scale(1.05);
+    transition: transform 0.4s ease, border 0.5s ease;
 }
-
 
 .in-title{
     /* background-image: linear-gradient(to right, #ffffff, #ffffff7d, #ffffff00); */
