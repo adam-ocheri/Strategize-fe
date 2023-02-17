@@ -14,13 +14,14 @@ export default function Navbar() {
     }
   return (
     <nav className='navbar'>
-      <img src='s-logo.png' alt='logo' height='80px' width='85px'/>
+      <img src='s-logo.png' alt='logo' height='70px' width='75px'/>
+      {/* <h2 className='font-9 s4 white flex j-center m1'>S</h2> */}
       <ul className='item-list flex j-center'>
-        <li><button>Projects</button></li>
-        <li><button>Workspace</button></li>
-        <li className=''><button>Settings</button></li>
-        <li className=''>
-          <button onClick={toggleDropdown}>Profile</button>
+        <li><a className='anchor1'>Projects</a></li>
+        <li><a className='anchor1'>Workspace</a></li>
+        <li><a className='anchor1'>Settings</a></li>
+        <li>
+          <a className='anchor1' onClick={toggleDropdown}>Profile</a>
             <div 
             className={`dropdown ${showDropdown ? 'show' : 'hide'}`}
             >
