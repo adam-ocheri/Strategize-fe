@@ -1,0 +1,93 @@
+/* ! Pseudo Elements ---------------------------------------------------------------------------------------------- */
+
+/* Pseudo Elements:
+    
+    1)::first-line: Selects the first line of a block-level element.
+    2)::first-letter: Selects the first letter of a block-level element.
+    3)::before: Inserts content before the content of the selected element(s).
+    4)::after: Inserts content after the content of the selected element(s).
+    5)::selection: Selects the portion of an element that is selected by the user.
+    6)::placeholder: Selects the placeholder text in an input field.
+    7)::marker: Selects the marker of a list item.
+    8)::backdrop: Applies styles to the background behind an element that has been opened in fullscreen mode (for example, a modal).
+*/
+
+/** Decorations ---------------------------------------- */
+.PE-top-border-circles {
+    position: relative;
+    border-top: 1px solid black;
+} 
+.PE-top-border-circles::before,
+.PE-top-border-circles::after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid black;
+    border-radius: 50%;
+} 
+.PE-top-border-circles::before {
+    left: -16px;
+}
+.PE-top-border-circles::after {
+    right: -16px;
+}
+
+/** Inputs ---------------------------------------- */
+.PE-input-normal{
+    position: relative;
+    max-width: fit-content;
+    justify-content: center;
+    align-self: center;
+}
+.PE-input-normal::before{
+    content:"";
+    position:absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black;
+    background-color: #171a26;
+    border-radius: 50%;
+    left: -16px;
+    top: +24px
+    /* vertical-align: middle; */
+}
+.PE-input-valid{
+    position: relative;
+    max-width: fit-content;
+    justify-content: center;
+    align-self: center;
+    
+}
+.PE-input-valid::before{
+    content:"";
+    position:absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black;
+    background-color: #0fda75;
+    border-radius: 50%;
+    left: -16px;
+    top: +24px;
+    vertical-align: middle;
+}
+.PE-input-invalid{
+    position: relative;
+    max-width: fit-content;
+    justify-content: center;
+    align-self: center;
+    
+}
+.PE-input-invalid::before{
+    content:"";
+    position:absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black;
+    background-color: #da0f2a;
+    border-radius: 50%;
+    left: -16px;
+    top: +24px;
+    vertical-align: middle;
+}

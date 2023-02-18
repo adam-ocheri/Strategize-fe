@@ -1,0 +1,107 @@
+/* ! Visual Effects & Stylized Containers ---------------------------------------------------------------------------------------------- */
+
+.card-outer{
+    border: solid rgba(0, 0, 0, 1) 2px;
+    border-radius: 12px;
+    background: rgba(249, 3, 3, 0.245);
+}
+.card-main{
+    border: solid black 3px;
+    border-radius: 12px;
+    /* background: rgba(0, 85, 255, 0.253); */
+    background: linear-gradient(to bottom, #0e1a3465, #35445d65, #42485965);
+}
+.card-sub-main{
+    border: solid black 3px;
+    border-radius: 25px;
+    /* background: rgba(0, 122, 253, 0.285); */
+    background: linear-gradient(to bottom, #0d1a6f90, #212b6f90, #3c447c90)
+}
+.card-sub{
+    border: solid black 2px;
+    border-radius: 25px;
+    background: linear-gradient(to bottom, #1529aabc, #3445b3bc, #505ba2bc)
+}
+.card-sub-child{
+    border: solid black 2px;
+    border-radius: 25px;
+    background: linear-gradient(to right, #05081fee, #0a1352ee, #0f1d75ee)
+}
+
+.story-box{
+    max-width: 600px;
+    min-width: 200px;
+}
+
+.under-title{
+    /* border-width: 0 0 10px 0;
+    border-image: linear-gradient(to right, #ffffff, #ffffff7d, #ffffff00) 100% 0 0 0 stretch; */
+    background-image: linear-gradient(to right, #ffffff, #ffffff7d, #ffffff00);
+    background-position: bottom;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    border-end-end-radius:inherit;
+    /* background: url('../../public/b1.jpg'); */
+}
+
+.backdrop-1{
+    border: 2px solid rgba(255, 255, 255, 0);
+    background-image: linear-gradient(to right, #ffffff00, #1d88fa00, #ffffff00);
+    transform: scale(1);
+    transition: transform 0.4s ease, border 0.5s ease;
+}
+
+.backdrop-1:hover{
+    border: 2px solid rgba(255, 255, 255, 0.028);
+    background-image: linear-gradient(to right, #ffffff00, #78b7fa30, #ffffff00);
+    transform: scale(1.05);
+    transition: transform 0.4s ease, border 0.5s ease;
+}
+
+.in-title{
+    /* background-image: linear-gradient(to right, #ffffff, #ffffff7d, #ffffff00); */
+    background-position: bottom;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    /* background: url('../../public/b1.jpg'); */
+    background: transparent;
+    background-image: linear-gradient(to right, #ffffff00, #1d88fa37, #ffffff00);
+}
+
+.quad-box-shadow-1{
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2), 
+            0 -5px 5px 0 rgba(0, 0, 0, 0.2), 
+            -5px 0 5px 0 rgba(0, 0, 0, 0.2), 
+            0 5px 5px 0 rgba(0, 0, 0, 0.2);
+}
+.quad-box-shadow-2{
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.4), 
+            0 -10px 10px 0 rgba(0, 0, 0, 0.4), 
+            -10px 0 10px 0 rgba(0, 0, 0, 0.4), 
+            0 10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+.quad-box-shadow-3{
+    box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.6), 
+            0 -15px 15px 0 rgba(0, 0, 0, 0.6), 
+            -15px 0 15px 0 rgba(0, 0, 0, 0.6), 
+            0 15px 15px 0 rgba(0, 0, 0, 0.6);
+}
+.quad-box-shadow-4{
+    box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.8), 
+            0 -20px 20px 0 rgba(0, 0, 0, 0.8), 
+            -20px 0 20px 0 rgba(0, 0, 0, 0.8), 
+            0 20px 20px 0 rgba(0, 0, 0, 0.8);
+}
+
+.custom-border {
+    background-color: #232222;
+    clip-path: polygon(
+      0 0,
+      0 calc(100% - 25px),
+      25px 100%,
+      calc(100% - 25px) 100%,
+      100% calc(100% - 25px),
+      100% 0
+    );
+    padding: 20px;
+}

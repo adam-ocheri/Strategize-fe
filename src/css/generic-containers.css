@@ -1,0 +1,40 @@
+/* ! Generic Elements ---------------------------------------------------------------------------------------------- */
+
+.generic-container-1{
+    padding: 1%;
+    margin: 1%;
+}
+.generic-container-2{
+    padding: 2.5%;
+    margin: 2.5%;
+}
+.generic-container-3{
+    padding: 5%;
+    margin: 5%;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-generic{
+    padding: 1%;
+    margin: 1%;
+}
+
+.form-generic-input{
+    padding: 1%;
+    margin: 1%;
+}
+
+.form-input{
+    padding: 1%;
+    margin: 1%;
+    border-radius: 10px;
+    min-width: 12vw;
+    min-height: 2.5vh;
+    
+}
+

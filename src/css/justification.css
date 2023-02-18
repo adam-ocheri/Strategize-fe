@@ -1,0 +1,338 @@
+/* ! Justification Modifiers ----------------------------------------------------------------------------------------------------------------------------------------- */
+
+/*TODO| Margin -----------------------------------------------------------------------------------------------------------*/
+
+/** Global margins -----------------------------------------------*/
+.m1{
+    margin: 0.5vh 0.5vw;
+}
+.m2{
+    margin: 1vh 1vw;
+}
+.m3{
+    margin: 1.5vh 1.5vw;
+}
+.m4{
+    margin: 2vh 2vw;
+}
+.m5{
+    margin: 3vh 3vw;
+}
+.m6{
+    margin: 4vh 4vw;
+}
+.m7{
+    margin: 5vh 5vw;
+}
+
+/** Top Margins -----------------------------------------------*/
+
+.mt1{
+    margin-top: 0.5vh;
+}
+.mt2{
+    margin-top: 1vh;
+}
+.mt3{
+    margin-top: 1.5vh;
+}
+.mt4{
+    margin-top: 2vh;
+}
+.mt5{
+    margin-top: 2.5vh;
+}
+.mt6{
+    margin-top: 3vh;
+}
+.mt7{
+    margin-top: 3.5vh;
+}
+
+/** Bottom Margins -----------------------------------------------*/
+
+.mb1{
+    margin-bottom: 0.5vh;
+}
+.mb2{
+    margin-bottom: 1vh;
+}
+.mb3{
+    margin-bottom: 1.5vh;
+}
+.mb4{
+    margin-bottom: 2vh;
+}
+.mb5{
+    margin-bottom: 2.5vh;
+}
+.mb6{
+    margin-bottom: 3vh;
+}
+.mb7{
+    margin-bottom: 3.5vh;
+}
+
+/** Left Margins -----------------------------------------------*/
+
+.ml1{
+    margin-left: 0.5vw;
+}
+.ml2{
+    margin-left: 1vw;
+}
+.ml3{
+    margin-left: 1.5vw;
+}
+.ml4{
+    margin-left: 2vw;
+}
+.ml5{
+    margin-left: 2.5vw;
+}
+.ml6{
+    margin-left: 3vw;
+}
+.ml7{
+    margin-left: 3.5vw;
+}
+
+/** Right Margins -----------------------------------------------*/
+
+.mr1{
+    margin-right: 0.5vw;
+}
+.mr2{
+    margin-right: 1vw;
+}
+.mr3{
+    margin-right: 1.5vw;
+}
+.mr4{
+    margin-right: 2vw;
+}
+.mr5{
+    margin-right: 2.5vw;
+}
+.mr6{
+    margin-right: 3vw;
+}
+.mr7{
+    margin-right: 3.5vw;
+}
+
+/*TODO| Padding ----------------------------------------------------------------------------------------------------------*/
+
+/** Global Padding ------------------------------------------------*/
+
+.p1{
+    padding: 0.5vh 0.5vw;
+}
+.p2{
+    padding: 1vh 1vw;
+}
+.p3{
+    padding: 1.5vh 1.5vw;
+}
+.p4{
+    padding: 2vh 2vw;
+}
+.p5{
+    padding: 3vh 3vw;
+}
+.p6{
+    padding: 4vh 4vw;
+}
+.p7{
+    padding: 5vh 5vw;
+}
+
+/** Top Padding -----------------------------------------------*/
+
+.pt1{
+    padding-top: 0.5vh;
+}
+.pt2{
+    padding-top: 1vh;
+}
+.pt3{
+    padding-top: 1.5vh;
+}
+.pt4{
+    padding-top: 2vh;
+}
+.pt5{
+    padding-top: 2.5vh;
+}
+.pt6{
+    padding-top: 3vh;
+}
+.pt7{
+    padding-top: 3.5vh;
+}
+
+/** Bottom Padding -----------------------------------------------*/
+
+.pb1{
+    padding-bottom: 0.5vh;
+}
+.pb2{
+    padding-bottom: 1vh;
+}
+.pb3{
+    padding-bottom: 1.5vh;
+}
+.pb4{
+    padding-bottom: 2vh;
+}
+.pb5{
+    padding-bottom: 2.5vh;
+}
+.pb6{
+    padding-bottom: 3vh;
+}
+.pb7{
+    padding-bottom: 3.5vh;
+}
+
+/** Left Padding -----------------------------------------------*/
+
+.pl1{
+    padding-left: 0.5vw;
+}
+.pl2{
+    padding-left: 1vw;
+}
+.pl3{
+    padding-left: 1.5vw;
+}
+.pl4{
+    padding-left: 2vw;
+}
+.pl5{
+    padding-left: 2.5vw;
+}
+.pl6{
+    padding-left: 3vw;
+}
+.pl7{
+    padding-left: 3.5vw;
+}
+
+/** Right Padding -----------------------------------------------*/
+
+.pr1{
+    padding-right: 0.5vw;
+}
+.pr2{
+    padding-right: 1vw;
+}
+.pr3{
+    padding-right: 1.5vw;
+}
+.pr4{
+    padding-right: 2vw;
+}
+.pr5{
+    padding-right: 2.5vw;
+}
+.pr6{
+    padding-right: 3vw;
+}
+.pr7{
+    padding-right: 3.5vw;
+}
+
+/*TODO| Justification ------------------------------------------------------------------------------------------------------*/
+
+.j-center{
+    justify-content: center;
+}
+.j-left{
+    justify-content: left;
+}
+.j-right{
+    justify-content: right;
+}
+.j-flex-start{
+    justify-content:flex-start;
+}
+.j-flex-end{
+    justify-content: flex-end;
+}
+.j-even{
+    justify-content: space-evenly;
+}
+.j-between{
+    justify-content: space-between;
+}
+.j-around{
+    justify-content: space-around;
+}
+
+.jt-center{
+    text-align: center;
+}
+.jt-left{
+    text-align: left;
+}
+.jt-right{
+    text-align: right;
+}
+
+/*TODO| Flexing ------------------------------------------------------------------------------------------------------------*/
+
+.flex{
+    display: flex;
+}
+
+.f-box{
+    display: flexbox;
+    flex: content;
+}
+
+.f-wrap{
+    flex-wrap: wrap;
+}
+.f-wrap-rev{
+    flex-wrap: wrap-reverse;
+}
+
+.f-dir-col{
+    flex-direction: column;
+}
+.f-dir-row{
+    flex-direction: row;
+}
+
+.f-flow-col{
+    flex-flow: column;
+}
+.f-flow-row{
+    flex-flow: row;
+}
+
+.f-basis-1{
+    flex-basis: 10%;
+}
+.f-basis-2{
+    flex-basis: 20%;
+}
+.f-basis-3{
+    flex-basis: 30%;
+}
+.f-basis-4{
+    flex-basis: 40%;
+}
+.f-basis-5{
+    flex-basis: 50%;
+}
+
+/*TODO| Sizing ------------------------------------------------------------------------------------------------------------*/
+
+.box-sizing-border{
+    box-sizing: border-box;
+}
+.box-sizing-content{
+    box-sizing: content-box;
+}

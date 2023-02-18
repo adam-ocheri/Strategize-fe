@@ -126,11 +126,11 @@ export default function ScrollFadeGeneric({children} : any) {
 
   return (
     <>
-          <VisibilitySensor className="child-scroll-container" onChange={onChange} partialVisibility>
-            <div className={`  ${isVisible ? 'fade-in' : 'scroll-element'}`}> {/*flex f-wrap p1 m1 j-center j-even*/}
-              {children}
-            </div>
-          </VisibilitySensor>
+      <VisibilitySensor className="child-scroll-container" onChange={onChange} partialVisibility>
+        <div className={`  ${isVisible ? 'fade-in' : 'scroll-element'}`}> {/*flex f-wrap p1 m1 j-center j-even*/}
+          {children}
+        </div>
+      </VisibilitySensor>
     </>
   );
 }

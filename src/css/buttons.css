@@ -1,0 +1,34 @@
+/* ! Button Components & Templates -------------------------------------------------------------------------------------------------------------------------------- */
+
+.btn-base{
+    padding: 1%;
+    margin: 1%;
+    border-radius: 10px;
+    border-color: transparent;
+    padding: 0.5vh 0.5vw;
+    margin: 0.5vh 0.5vw;
+    
+}
+
+.btn-form{
+    min-width: 25%;
+    min-height: 5vh;
+    border-color: transparent;
+    background-color: rgb(116, 167, 214);
+    transition: background-color 0.2s ease;
+}
+
+.btn-form:hover{
+    min-width: 25%;
+    min-height: 5vh;
+    /* border-color:rgb(45, 67, 67); */
+    background-color: rgb(165, 207, 246);
+    transition: background-color 0.2s ease;
+}
+
+.btn-form-disabled{
+    min-width: 25%;
+    min-height: 5vh;
+    border-color: transparent;
+    background-color: rgb(92, 108, 123);
+}

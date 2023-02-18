@@ -1,0 +1,110 @@
+/* ! Basic Transitions ---------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* TODO| Interactive Anchor -----------------------------------------------------------------------------------------------------------*/
+
+.box-link {
+    transform: scale(1);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+}
+  
+.box-link:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+.box-link:visited{
+    color: #131313;
+}
+
+/*TODO| Scroll animated elements -----------------------------------------------------------------------------------------------------*/
+
+/** Generic Fade In ---------------------------------------------------------------------------------------------*/
+
+.scroll-element{
+    opacity: 0;
+    transform: scale(0.8);
+    transition: transform 1.3s ease, opacity 1.3s ease;
+    padding: 1em;
+}
+.fade-in{
+    opacity: 1;
+    transform: scale(1.0);
+    transition: transform 1.3s ease, opacity 1.3s ease;
+    padding: 1em;
+}
+
+/** Left Right elements Fade In -------------------------------------------------------------------------------*/
+
+/* Define Parent container, and child sections left-right positioning ------------------------*/
+/* 
+    The ParentScrollContainer should contain child sections
+    The child sections should contain a `.fade-in` or `.scroll-element` child
+*/ 
+.parent-scroll-container{                             
+    padding: 1em;    
+}
+.parent-scroll-container .visible:nth-of-type(odd){      
+    text-align: left;
+    justify-content: flex-start;
+    padding: 1em;
+    margin-top: 20vh;
+    margin-bottom: 20vh;
+    border-left: solid 1px white;
+    transition: border-left 3.0s ease;
+}
+.parent-scroll-container .visible:nth-of-type(even){
+    text-align: right;
+    justify-content: flex-end;
+    padding: 1em;
+    margin-top: 20vh;
+    margin-bottom: 20vh;  
+    border-right: solid 1px white;
+    transition: border-right 3.0s ease;
+}
+
+.parent-scroll-container .hidden:nth-of-type(odd) {      
+    text-align: left;
+    justify-content: flex-start;
+    padding: 1em;
+    margin-top: 20vh;
+    margin-bottom: 20vh;
+    border-left: solid 1px rgba(255, 255, 255, 0);
+    transition: border-left 3.0s ease;
+}
+.parent-scroll-container .hidden:nth-of-type(even) {
+    text-align: right;
+    justify-content: flex-end;
+    padding: 1em;
+    margin-top: 20vh;
+    margin-bottom: 20vh;  
+    border-right: solid 1px rgba(255, 255, 255, 0);
+    transition: border-right 3.0s ease;
+}
+
+
+/* Define behavior for ODD elements fade in and out ------------------------------------------*/
+.parent-scroll-container section:nth-of-type(odd) .fade-in {
+    transform: translateX(5vw) scale(1.0);
+    opacity: 1;
+    transition: transform 1.3s ease, opacity 1.3s ease;
+}
+.parent-scroll-container section:nth-of-type(odd) .scroll-element {
+    transform: translateX(-5vw) scale(0.8);
+    opacity: 0;
+    transition: transform 1.3s ease, opacity 1.3s ease;
+    
+}
+
+/* Define behavior for EVEN elements fade in and out -----------------------------------------*/
+.parent-scroll-container section:nth-of-type(even) .fade-in {
+    transform: translateX(-5vw) scale(1.0);
+    opacity: 1;
+    transition: transform 1.3s ease, opacity 1.3s ease;
+}
+.parent-scroll-container section:nth-of-type(even) .scroll-element {
+    transform: translateX(5vw) scale(0.8);
+    opacity: 0;
+    transition: transform 1.3s ease, opacity 1.3s ease;
+}
+
+
