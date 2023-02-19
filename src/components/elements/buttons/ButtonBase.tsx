@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ButtonBase({text} : any) {
+export default function ButtonBase({children, className, onClick} : any) {
   return (
     <>
-        <button className='btn-base'>{text}</button>
+        <button className={`btn-base ${className}`} onClick={onClick}>{children}</button>
     </>
   )
 }

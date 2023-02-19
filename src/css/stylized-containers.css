@@ -93,6 +93,13 @@
             0 20px 20px 0 rgba(0, 0, 0, 0.8);
 }
 
+.quad-box-shadow-button-1{
+    box-shadow: 0 0 5px 5px rgba(1, 200, 255, 0.2), 
+            0 -5px 5px 0 rgba(1, 200, 255, 0.2), 
+            -5px 0 5px 0 rgba(1, 200, 255, 0.2), 
+            0 5px 5px 0 rgba(1, 200, 255, 0.2);
+}
+
 .custom-border {
     background-color: #232222;
     clip-path: polygon(

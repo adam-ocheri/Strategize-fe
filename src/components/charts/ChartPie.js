@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-export default function ChartPie() {
+export default function ChartPie({ style }) {
     ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
     const chartData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
@@ -16,5 +16,5 @@ export default function ChartPie() {
             }
         ]
     };
-    return (_jsx("div", { children: _jsx(Pie, { data: chartData }) }));
+    return (_jsx("div", { style: style, children: _jsx(Pie, { data: chartData }) }));
 }

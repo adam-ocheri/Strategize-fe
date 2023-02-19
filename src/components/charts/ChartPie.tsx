@@ -2,7 +2,7 @@ import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-export default function ChartPie() {
+export default function ChartPie({style} : any) {
     ChartJS.register(
         ArcElement,
         Tooltip,
@@ -25,7 +25,7 @@ export default function ChartPie() {
     };
 
   return (
-    <div>
+    <div style={style}>
         <Pie data={chartData}/>
     </div>
   )

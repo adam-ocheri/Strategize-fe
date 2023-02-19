@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Chart as ChartJS, LinearScale, Tooltip, Legend, BarElement, CategoryScale } from "chart.js";
 import { Bar } from "react-chartjs-2";
-export default function ChartBar() {
+export default function ChartBar({ style }) {
     ChartJS.register(LinearScale, BarElement, Tooltip, Legend, CategoryScale);
     const chartData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
@@ -27,5 +27,5 @@ export default function ChartBar() {
             ]
         }
     };
-    return (_jsx("div", { children: _jsx("div", { children: _jsx(Bar, { data: chartData }) }) }));
+    return (_jsx("div", { children: _jsx("div", { style: style, className: "bar-chart", children: _jsx(Bar, { data: chartData }) }) }));
 }

@@ -3,7 +3,7 @@ import { Doughnut, Bar, Chart, Line, Pie, PolarArea, Radar, Scatter } from "reac
 
 import React from 'react'
 
-export default function ChartBar() {
+export default function ChartBar({style}:any) {
 
     ChartJS.register(LinearScale, BarElement, Tooltip, Legend, CategoryScale);
 
@@ -34,7 +34,7 @@ export default function ChartBar() {
   };
   return (
     <div>
-        <div /*style={{border: 'solid black 5px'}}*/>
+        <div style={style} className="bar-chart">
             <Bar data={chartData}  />
         </div>
     </div>

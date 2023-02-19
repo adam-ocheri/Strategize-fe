@@ -1,5 +1,14 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import ScrollBoxContainer_LoginPage from './ScrollBoxContainer_LoginPage';
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from 'react';
+import VisibilitySensor from 'react-visibility-sensor';
+import ScrollFadeGeneric from 'src/components/layout/ScrollFadeGeneric';
 export default function ScrollBox_LoginPage() {
-    return (_jsx(_Fragment, { children: _jsxs("div", { className: "parent-scroll-container p3 m3", children: [_jsx("div", { className: "j-center flex p6 m6 jt-center", children: _jsx("h2", { className: "font-3 s3", children: "Empowering Individuals and Teams" }) }), _jsx(ScrollBoxContainer_LoginPage, {}), _jsx(ScrollBoxContainer_LoginPage, {}), _jsx(ScrollBoxContainer_LoginPage, {}), _jsx(ScrollBoxContainer_LoginPage, {})] }) }));
+    const [isVisible, setIsVisible] = useState(false);
+    // const elementRef = useRef(children);
+    const onChange = (isVisible) => {
+        setIsVisible(isVisible);
+        console.log('Checking visibility:');
+        console.log(isVisible);
+    };
+    return (_jsx(VisibilitySensor, { onChange: onChange, partialVisibility: true, children: _jsxs("section", { className: `  ${isVisible ? 'visible' : 'hidden'}`, children: [" ", _jsx(ScrollFadeGeneric, { children: _jsxs("div", { children: [_jsx("img", { src: 'b4.jpg', alt: 'logo', height: '200px', width: '350px' }), _jsx("p", { className: "font-3", children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ipsa incidunt ratione accusamus eligendi, quidem impedit quis," })] }) })] }) }));
 }

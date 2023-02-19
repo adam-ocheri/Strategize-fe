@@ -32,3 +32,17 @@
     border-color: transparent;
     background-color: rgb(92, 108, 123);
 }
+
+.btn-style-1{
+    border: 2.5px solid rgb(1, 200, 255);
+    color:  rgb(1, 200, 255);
+    background-color: transparent;
+    /* border-radius: 25%; */
+}
+
+.btn-style-1:hover{
+    box-shadow: 0 0 5px 5px rgba(1, 200, 255, 0.2), 
+    0 -5px 5px 0 rgba(1, 200, 255, 0.2), 
+    -5px 0 5px 0 rgba(1, 200, 255, 0.2), 
+    0 5px 5px 0 rgba(1, 200, 255, 0.2);
+}
