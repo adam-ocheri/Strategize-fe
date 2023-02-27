@@ -11,13 +11,15 @@
     left: 0;
     width: 100%;
     z-index: 2;
-    height: 5%;
+    height: 65px;
 }
 
 .navbar ul {
     /* background-color: #333;  */
-    /* display: flex; */
-    height: 100%;
+    display: flex;
+    flex-direction: row;
+    /* height: 100%; */
+    /* flex-basis: content; */
     /* position: relative; */
 }
 
@@ -26,10 +28,12 @@
     background-color: #333;
     text-decoration: none;
     /* margin: 0 10px; */
+    padding: 15px;
     margin: 10px;
     /* min-width: 2vw; */
     align-items: center;
     text-align: center;
+    flex-basis: 10%;
     /* vertical-align: middle; */
     border-radius: 10px;
     border-width: 3px;

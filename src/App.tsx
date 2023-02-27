@@ -1,8 +1,8 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import {Helmet} from 'react-helmet'
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Signup from "./pages/Signup/Signup";
+import Login from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
 import Project from "./components/stations/project/Project";
 import Settings_Project from "./components/stations/project/Settings_Project";
 import LTG from "./components/stations/LTG/LTG";
@@ -11,7 +11,9 @@ import Objective from "./components/stations/objective/Objective";
 import Settings_Objective from "./components/stations/objective/Settings_Objective";
 import Task from "./components/stations/task/Task";
 import Settings_Task from "./components/stations/task/Settings_Task";
-import Navbar from "./components/layout/Navbar";
+import Navbar from "./components/layout/navbar/Navbar";
+import DND_Container from "./components/drag_n_drop/test2/DND_Container";
+import DND from "./components/drag_n_drop/test/dnd";
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
         <Navbar/>
         <Routes>
           <Route path='/' element={<Home/>} />
+          <Route path='/test' element={<DND/>} />
           <Route path='/register' element={<Signup />} />
           <Route path='/login' element={<Login/>} />
           <Route path="/project" element={<Project/>} />
