@@ -24,7 +24,7 @@ type DropAnimation = {
   scale: number | null | undefined;
 };
 
-const ListItem : any = ({item, provided, snapshot, className} : {item: DataElement, provided: DraggableProvided, snapshot: DraggableStateSnapshot} | any )  => {
+const DragItem : any = ({item, provided, snapshot, className} : {item: DataElement, provided: DraggableProvided, snapshot: DraggableStateSnapshot} | any )  => {
   // const style = {
   //   ...provided.draggableProps.style,
   //   backgroundColor: snapshot.isDragging ? 'blue' : 'white',
@@ -39,4 +39,4 @@ const ListItem : any = ({item, provided, snapshot, className} : {item: DataEleme
   )
 }
 
-export default ListItem;
+export default DragItem;

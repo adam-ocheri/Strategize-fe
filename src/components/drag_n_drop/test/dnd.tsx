@@ -1,9 +1,10 @@
 
 import {DragEventHandler, useState} from 'react'
-import { DragDropContext, Position, Draggable, Droppable, DraggableId, DragDropContextProps, OnDragEndResponder, DraggableProvided, DraggableStateSnapshot, DroppableProvided, DropResult, OnDragStartResponder, DragStart, DraggableChildrenFn } from 'react-beautiful-dnd';
-import ListItem from './ListItem';
+import { DragDropContext, Position, Draggable, Droppable, DraggableId, DragDropContextProps, 
+    OnDragEndResponder, DraggableProvided, DraggableStateSnapshot, DroppableProvided, DropResult, 
+    OnDragStartResponder, DragStart, DraggableChildrenFn } from 'react-beautiful-dnd';
 import Dropper from './Dropper';
-import Dragger from './Dragger';
+
 
 interface DataElement {
     id: string;
@@ -51,18 +52,7 @@ export const clone = (data: any) => {
 };
 
 const DND : any = ()  =>{
-    const [tasks, setTasks] : any = useState([
-        {
-            id: "AAA",
-            content: "YTR! Nahhhhhh!!"
-        },
-        {
-            id: "DDD",
-            content: "VGH borrring"
-        }
-    ]);
-
-    const [tasks2, setTasks2] : any = useState([
+    const [tasks, setTasks2] : any = useState([
         {
             id: "SSS",
             content: "doStuff!!"
@@ -70,6 +60,16 @@ const DND : any = ()  =>{
         {
             id: "GGG",
             content: "KAKI!!!!!"
+        }
+    ]);
+    const [tasks2, setTasks] : any = useState([
+        {
+            id: "AAA",
+            content: "YTR! Nahhhhhh!!"
+        },
+        {
+            id: "DDD",
+            content: "VGH borrring"
         }
     ]);
 

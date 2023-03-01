@@ -6,17 +6,7 @@ export const clone = (data) => {
     return JSON.parse(JSON.stringify(data));
 };
 const DND = () => {
-    const [tasks, setTasks] = useState([
-        {
-            id: "AAA",
-            content: "YTR! Nahhhhhh!!"
-        },
-        {
-            id: "DDD",
-            content: "VGH borrring"
-        }
-    ]);
-    const [tasks2, setTasks2] = useState([
+    const [tasks, setTasks2] = useState([
         {
             id: "SSS",
             content: "doStuff!!"
@@ -24,6 +14,16 @@ const DND = () => {
         {
             id: "GGG",
             content: "KAKI!!!!!"
+        }
+    ]);
+    const [tasks2, setTasks] = useState([
+        {
+            id: "AAA",
+            content: "YTR! Nahhhhhh!!"
+        },
+        {
+            id: "DDD",
+            content: "VGH borrring"
         }
     ]);
     const [items, setItems] = useState(tasks);
