@@ -13,7 +13,7 @@ import Task from "./components/stations/task/Task";
 import Settings_Task from "./components/stations/task/Settings_Task";
 import Navbar from "./components/layout/navbar/Navbar";
 //import DND_Container from "./components/drag_n_drop/test2/DND_Container";
-import DND from "./components/drag_n_drop/test_2.0/dnd";
+import DND from "./components/drag_n_drop/test_3.0/dnd";
 
 
 function App() {
