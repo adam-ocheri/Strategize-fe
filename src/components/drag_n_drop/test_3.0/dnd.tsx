@@ -1,13 +1,14 @@
 
 import {DragEventHandler, useEffect, useState} from 'react'
 import styled from 'styled-components';
-import Calendar, { CalendarTileProperties } from 'react-calendar';
-import { MonthView } from 'react-calendar';
+import Calendar, { CalendarProps, CalendarTileProperties, Detail, ViewType } from 'react-calendar';
+import { MonthView, Navigation } from 'react-calendar';
 import { DragDropContext, Position, Draggable, Droppable, DraggableId, DragDropContextProps, 
     OnDragEndResponder, DraggableProvided, DraggableStateSnapshot, DroppableProvided, DropResult, 
     OnDragStartResponder, DragStart, DraggableChildrenFn } from 'react-beautiful-dnd';
 import Dropper from './Dropper';
 import Dragger from './Dragger';
+import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 
 
 interface DataElement {
@@ -71,7 +72,7 @@ const DND : any = ()  =>{
         return {
             One:
             [
-                {id: '1', date: '', content: 'Hello'},
+                {id: '1', date: Date(), content: 'Hello'},
                 {id: '2', date: '', content: 'World'},
                 {id: '3', date: '', content: 'How'},
                 {id: '4', date: '', content: 'Are'},
@@ -98,8 +99,29 @@ const DND : any = ()  =>{
     
     //TODO Dummy Data------------------------------------------------------
     const [date, setDate] : any = useState(new Date());
-    const [items, setItems] : any = useState(generateDummyData());
-    const [tasks, setTasks] : any = useState([]);
+    const [currentlyViewedMonth, setCurrentlyViewedMonth] = useState('');
+    const [items, setItems] : any = useState(generateDummyData());      //backend unmodified tasks
+    const [tasks, setTasks] : any = useState([]);                       //backend modified tasks
+
+    //Handle init data
+    useEffect(() => {
+        let initTasks : any[] = [];
+        for (let doc in items){
+            //console.log(item);
+            const init = items[doc].filter((item : any, index : any) => {
+                if(item.date !== '')
+                {
+                    items[doc].splice(index, 1);
+                }
+                return item.date
+            });
+            initTasks = [...initTasks, ...init]; 
+        }
+        setTasks((prev : any) : any => [...prev, ...initTasks]);
+        
+    }, [])
+
+    useEffect(() => {console.log(tasks);}, [tasks])
 
     const onDragStart : OnDragStartResponder | undefined = (result : DragStart) => {
         // console.log(result.draggableId)
@@ -108,6 +130,7 @@ const DND : any = ()  =>{
         // console.log(result.type)
     }
 
+    //Drag and drop logic
     const  onDragEnd : DraggableChildrenFn | any = (result : any) => {
         console.log(result);
         console.log(`result.source.droppableId is: `);
@@ -163,17 +186,53 @@ const DND : any = ()  =>{
 
         // setItems(newItems);
         }
-    } 
+    }
+    
+    //Save changes in backend
+    const saveChanges = () => {
+        console.log('saving changes...');
+        console.log(tasks);
+        //then send to backend to an algorithm that takes each task in the array and updates it:
+        /*
+            for (task of tasks){
+                const DOC = objectiveModel.findOne({_id: task.id});
+                if (DOC){
+                    objectiveModel.findOneAndUpdate({_id: task.id}, req.body)
+                }
+            }
+        */
+    }
 
+    //Day Tile JSX function
     const tileContent = ({ view, date }: any) => {
+
+        const bBelongsToMonth = date.toString().slice(4, 7) === currentlyViewedMonth;
+
+        if(view == 'year' || view == 'decade'){
+            return <div className='p1 m1 tile-inner'>
+
+            </div>
+        }
         return (
             <Droppable droppableId={date.toString()} type='COL1'>
                 {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef}>
+                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'}`} {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef}>
                         {tasks.filter(
-                            (item : any) => item.date === provided.droppableProps['data-rbd-droppable-id']).map(
+                            (item : any) => 
+                            item.date.slice(0, 15) 
+                            === 
+                            provided.droppableProps['data-rbd-droppable-id'].slice(0, 15)
+                            )
+                            .map(
                                 (task : any, index : any) => (
-                            <Dragger key={task.id} item={task} index={index}/>
+                                    <div key={task.id}>
+                                        <Dragger item={task} index={index}/>
+                                        {task.date}
+                                        {provided.droppableProps['data-rbd-droppable-id']}
+                                        {console.log('LOGGING WITHIN DIV!!!:')}
+                                        {console.log(task.date)}
+                                        {console.log(provided.droppableProps['data-rbd-droppable-id'])}
+                                    </div>
                             
                         ))}
                         {provided.placeholder}
@@ -182,20 +241,50 @@ const DND : any = ()  =>{
             </Droppable>
         )
     }
-  return (
-    <div className='mt6 pt6'>
-        <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-            {/* <MonthView activeStartDate={date} tileContent={tileContent}/> */}
-            <Calendar value={date} tileContent={tileContent}/>
-            <ListGrid>
-                {lists.map((listKey) => (
-                    <Dropper key={listKey} droppableId={`${listKey}`} type='COL1' items={items[listKey]}/>
-                ))}
-            </ListGrid>
-        </DragDropContext>
-    </div>
+
+    //Day tile className callback function
+    const tileClassName : any = ({activeStartDate, date, view} : CalendarTileProperties) => {
+        if (date.toString().slice(4, 7) === activeStartDate.toString().slice(4, 7))
+        {
+            return 'tile-outer white font-9'
+        }
+        else{
+            return 'tile-outer-outdate font-9'
+        }
+    }
+
+    //Get currently viewed month from navigation
+    const updateNavigation : CalendarProps["navigationLabel"] = ({date, label, locale, view}) : string | JSX.Element | null => {
+        useEffect(()=> {
+            console.log('Modifying navigation...')
+            console.log(date.toString().slice(4, 7));
+            setCurrentlyViewedMonth(date.toString().slice(4, 7));
+        }, [date])
+        return <div className=''>
+            {date.toString().slice(4, 8) + date.toString().slice(11, 15)}
+        </div>
+    }
     
-  );
+    //DEFAULT: Station Calendar
+    return (
+        <div className='mt6 pt6'>
+            <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+                <Calendar 
+                navigationLabel={updateNavigation} 
+                value={date} tileContent={tileContent} 
+                tileClassName={tileClassName} 
+                className={'calendar-container'}
+                />
+                <Button_S1 onClick={saveChanges}>Save Changes</Button_S1>
+                <ListGrid>
+                    {lists.map((listKey) => (
+                        <Dropper key={listKey} droppableId={`${listKey}`} type='COL1' items={items[listKey]}/>
+                    ))}
+                </ListGrid>
+            </DragDropContext>    
+        </div>
+        
+    );
 }
 
 export default DND;

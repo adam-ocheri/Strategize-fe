@@ -13,7 +13,15 @@ const DragItem = ({ item, provided, snapshot, className }) => {
             // console.log('time is:')
             // console.log(time);
         }
-    }, [item.date]);
-    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [_jsx("h3", { children: item.id }), _jsx("h3", { children: item.content }), _jsx("input", { type: 'time', value: time, onChange: (t) => setTime(t) })] }));
+    }, []);
+    const updateTime = (t) => {
+        setTime(t.target.value);
+        item.date = item.date.slice(0, 16) + t.target.value + item.date.slice(21);
+        console.log('time is:');
+        console.log(t.target.value);
+        console.log('date is:');
+        console.log(item.date);
+    };
+    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [_jsx("h3", { children: item.id }), _jsx("h3", { children: item.content }), _jsx("input", { type: 'time', value: time, onChange: (t) => updateTime(t) })] }));
 };
 export default DragItem;

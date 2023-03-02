@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Draggable, DraggableProps, DraggableOptions, DraggableProvided, 
-  DraggableChildrenFn, DraggableDescriptor, DraggableId, DraggableRubric, 
-  DraggingState, DragActions, DragDropContext, DraggableProvidedDragHandleProps, 
-  DraggableDimension, DraggableDimensionMap, DraggableProvidedDraggableProps, DraggableStateSnapshot, Position,   } from 'react-beautiful-dnd'
+import { DraggableProvided, DraggableStateSnapshot, Position } from 'react-beautiful-dnd'
 
 interface DataElement {
     id: string;
@@ -37,13 +34,23 @@ const DragItem : any = ({item, provided, snapshot, className} : {item: DataEleme
       // console.log('time is:')
       // console.log(time);
     }
-  },[item.date])
+  },[])
+
+  const updateTime : any = (t : any) => {
+    setTime(t.target.value);
+    item.date = item.date.slice(0, 16) + t.target.value + item.date.slice(21);
+    console.log('time is:')
+    console.log(t.target.value);
+    console.log('date is:')
+    console.log(item.date);
+  }
+
   return (
     
     <div className='dragger p3 m3 b-color-dark-2'>
         <h3>{item.id}</h3>
         <h3 >{item.content}</h3>
-        <input type='time' value={time} onChange={(t)=> setTime(t)}></input>
+        <input type='time' value={time} onChange={(t)=> updateTime(t)}></input>
     </div>
   )
 }
