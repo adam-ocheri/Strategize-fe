@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
 import { getTask, updateTask, deleteTask } from 'src/app/state_management/task/taskSlice';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
@@ -17,12 +17,13 @@ function Settings_Task() {
     const [savePrevented, setSavePrevented] = useState(true);
     const [formData, setFormData] = useState({
         taskName: '',
-        stationTypeName: ''
+        stationTypeName: '',
+        description: ''
     });
-    const { taskName, stationTypeName } = formData;
+    const { taskName, stationTypeName, description } = formData;
     useEffect(() => {
         setSavePrevented(canSaveSettings());
-    }, [taskName, stationTypeName]);
+    }, [taskName, stationTypeName, description]);
     const onFormUpdated = (e) => {
         e.preventDefault();
         setFormData((prevState) => ({
@@ -57,7 +58,7 @@ function Settings_Task() {
         await dispatch(deleteTask({ id: activeTask._id, owningLTG: activeTask.owningLTG, owner: user._id, token: user.token }));
         navigator('/');
     };
-    return (_jsxs("div", { children: [_jsx("h2", { children: "Task Settings" }), _jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, children: [_jsxs("div", { children: ["Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeTask.taskName, id: "taskName", name: "taskName", value: taskName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs("div", { children: ["Station Type Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeTask.stationTypeName, id: "stationTypeName", name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsx("button", { type: 'submit', disabled: savePrevented, children: "Save" })] }), deletePrompt ? _jsxs("div", { children: ["This will delete the Task and all of it's data! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx("button", { onClick: () => onDeleteTask(), children: "Delete" }), _jsx("button", { onClick: () => setDeletePrompt(false), children: "Cancel" })] })
+    return (_jsxs("div", { children: [_jsxs("h2", { children: [`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType}`, " Settings"] }), _jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, children: [_jsxs("div", { children: ["Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeTask.taskName, id: "taskName", name: "taskName", value: taskName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs("div", { children: ["Station Type Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeTask.stationTypeName, id: "stationTypeName", name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs("div", { children: ["Description: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeTask.description, id: "Description", name: "description", value: description, onChange: (e) => { onFormUpdated(e); } })] }), _jsx("button", { type: 'submit', disabled: savePrevented, children: "Save" })] }), deletePrompt ? _jsxs("div", { children: ["This will delete the Task and all of it's data! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx("button", { onClick: () => onDeleteTask(), children: "Delete" }), _jsx("button", { onClick: () => setDeletePrompt(false), children: "Cancel" })] })
                 : _jsx("div", { children: _jsx("button", { onClick: () => setDeletePrompt(true), children: "DELETE" }) })] }));
 }
 export default Settings_Task;

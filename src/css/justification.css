@@ -336,3 +336,64 @@
 .box-sizing-content{
     box-sizing: content-box;
 }
+
+.fit-content-center{
+    max-width: fit-content;
+    max-height: fit-content;
+    align-self: center;
+}
+.fit-content-left{
+    max-width: fit-content;
+    max-height: fit-content;
+    align-self: left;
+}
+.fit-content-right{
+    max-width: fit-content;
+    max-height: fit-content;
+    align-self: right;
+}
+
+.max-content-center{
+    max-width: max-content;
+    max-height: max-content;
+    align-self: center;
+}
+.max-content-left{
+    max-width: max-content;
+    max-height: max-content;
+    align-self: left;
+}
+.max-content-right{
+    max-width: max-content;
+    max-height: max-content;
+    align-self: right;
+}
+
+.min-content-center{
+    max-width: min-content;
+    max-height: min-content;
+    align-self: center;
+}
+.min-content-left{
+    max-width: min-content;
+    max-height: min-content;
+    align-self: left;
+}
+.min-content-right{
+    max-width: min-content;
+    max-height: min-content;
+    align-self: right;
+}
+
+.inherit-size{
+    max-width: inherit;
+    max-height: inherit;
+}
+
+.normalize-content{
+    display: flex;
+    justify-content: space-evenly;
+    /* align-content: space-between; */
+    flex-wrap: wrap;
+
+}

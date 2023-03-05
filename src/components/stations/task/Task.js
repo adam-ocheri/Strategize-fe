@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 //Child sub-station
 import { createTask, getTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
+import Settings_Task from './Settings_Task';
 function Task({}) {
     const [formData, setFormData] = useState({
         newTaskName: '',
@@ -48,7 +49,7 @@ function Task({}) {
             dispatch(getAllTasks({ parentId: activeTask._id, token: user.token }));
         }
     }, []);
-    return (_jsx("div", { children: _jsxs("section", { children: [_jsxs("h2", { children: [" ", activeTask.taskName, " "] }), _jsx("div", { children: _jsx("button", { onClick: (e) => { navigator('/project/ltg/objective/task/settings'); }, children: "Settings" }) })] }) }));
+    return (_jsx("div", { className: 'p2 m2 pt5 mt5', children: _jsxs("section", { children: [_jsxs("h2", { className: 'font-3', children: [" ", activeTask.taskName, " "] }), "Date: ", `${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`, " ", _jsx("br", {}), "Time: ", `${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`, _jsx("div", { children: _jsx(Settings_Task, {}) })] }) }));
 }
 ;
 export default Task;

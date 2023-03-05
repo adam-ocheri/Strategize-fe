@@ -5,6 +5,7 @@ import { RootState } from 'src/app/store';
 
 //Child sub-station
 import { createTask, getTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
+import Settings_Task from './Settings_Task';
 
 
 
@@ -60,11 +61,14 @@ function Task({}) {
     }, [])
     
     return (
-    <div>
+    <div className='p2 m2 pt5 mt5'>
         <section>
-            <h2> {activeTask.taskName} </h2>
+            <h2 className='font-3'> {activeTask.taskName} </h2>
+            Date: {`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} <br/>
+            Time: {`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`}
             <div>
-                <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button>
+                {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
+                <Settings_Task />
             </div>
         </section>
     </div>

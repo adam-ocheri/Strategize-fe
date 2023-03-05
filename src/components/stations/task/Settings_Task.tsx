@@ -23,13 +23,14 @@ import { useEffect, useState } from 'react';
     const [savePrevented, setSavePrevented] = useState(true);
     const [formData, setFormData] = useState({
         taskName: '',
-        stationTypeName: ''
+        stationTypeName: '',
+        description: ''
     })
-    const {taskName, stationTypeName} = formData;
+    const {taskName, stationTypeName, description} = formData;
 
     useEffect(()=> {
         setSavePrevented(canSaveSettings())
-    }, [taskName, stationTypeName])
+    }, [taskName, stationTypeName, description])
 
     const onFormUpdated = (e : Event | any) => {
         e.preventDefault();
@@ -77,7 +78,7 @@ import { useEffect, useState } from 'react';
 
   return (
     <div>
-        <h2>Task Settings</h2>
+        <h2>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType}`} Settings</h2>
         <form onSubmit={(e) => {onFormSubmitted(e)}}>
             
             <div>
@@ -89,6 +90,11 @@ import { useEffect, useState } from 'react';
                 Station Type Name: <br/>
                 <input className="form-input" type="text" placeholder={activeTask.stationTypeName} id="stationTypeName" 
                     name="stationTypeName" value={stationTypeName} onChange={(e) => {onFormUpdated(e)}}/>
+            </div>
+            <div>
+                Description: <br/>
+                <input className="form-input" type="text" placeholder={activeTask.description} id="Description" 
+                    name="description" value={description} onChange={(e) => {onFormUpdated(e)}}/>
             </div>
             <button type='submit' disabled={savePrevented}>Save</button>
         </form>
