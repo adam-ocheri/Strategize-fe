@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, update, getAll, getOne, deleteById } from './LTGService.js';
 const initialState = {
     data: [],
+    subData: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -60,6 +61,18 @@ export const getLTG = createAsyncThunk('LTG/getOne', async ({ id, parentId, toke
     }
 });
 export const deleteLTG = createAsyncThunk('LTG/delete', async ({ id, parentId, owner, token }, thunkAPI) => {
+    try {
+        console.log("Slicing...");
+        console.log({ id });
+        return await deleteById({ id, parentId, owner, token });
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+export const getAllSubStations_LTG = createAsyncThunk('LTG/getAllSubstations', async ({ id, parentId, owner, token }, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({ id });
@@ -158,6 +171,21 @@ export const LTGSlice = createSlice({
             state.data = state.data.filter((item) => item._id !== action.payload._id);
         })
             .addCase(deleteLTG.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
+            // GET-One CASES
+            .addCase(getAllSubStations_LTG.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(getAllSubStations_LTG.fulfilled, (state, action) => {
+            state.isSuccess = true;
+            state.isLoading = false;
+            state.subData = action.payload;
+        })
+            .addCase(getAllSubStations_LTG.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

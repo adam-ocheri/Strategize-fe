@@ -58,9 +58,12 @@ function Project({}) {
     }, [])
     
     return (
-    <div>
+    <div className='pt5 mt5'>
         <section>
-            <h2> {activeProject.projectName} </h2>
+            <h2> 
+                {activeProject.projectName} :    
+                {`${activeProject.stationTypeName ? activeProject.stationTypeName : activeProject.stationType ? activeProject.stationType : 'Project'}`}
+            </h2>
             <div>
                 <button onClick={(e) => {navigator('/project/settings')}}>Settings</button>
             </div>

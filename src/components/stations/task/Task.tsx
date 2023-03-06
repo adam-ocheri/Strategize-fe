@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { RootState } from 'src/app/store';
 
@@ -46,6 +46,7 @@ function Task({}) {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
     const {activeProject} : any = useAppSelector((state) => state.project)
+    const {activeLTG} : any = useAppSelector((state) => state.ltg)
     const {activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {activeTask} : any = useAppSelector((state : RootState) => state.task);
     const {user} : any = useAppSelector((state : RootState) => state.auth);
@@ -62,8 +63,12 @@ function Task({}) {
     
     return (
     <div className='p2 m2 pt5 mt5'>
+        <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> {'>'} <Link to='/project/ltg/objective/task'>{activeTask.taskName}</Link></h3>
         <section>
-            <h2 className='font-3'> {activeTask.taskName} </h2>
+            <h2 className='font-3'> 
+                {activeTask.taskName} : 
+                {`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}
+            </h2>
             Date: {`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} <br/>
             Time: {`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`}
             <div>

@@ -85,3 +85,19 @@ export const deleteById = async ({id, parentId, owner, token} : any) => {
 
     return response.data;
 }
+
+export const getAllSubstations = async ({id, parentId, owner, token} : any) => {
+    (console.log('trying to get all LTGs...'));
+    console.log(token);
+    const authConfig = {
+        headers: {
+            authorization: `Bearer ${token}` 
+        }
+    };
+
+    const response = await axios.get(API_URL + 'ltg/all'+ `?id=${id}&owningProject=${parentId}&owner=${owner}`, authConfig);
+    console.log('GETTING ALLLLLLLLLLLLLLLLL SUBSTATIONS!!!!!!!!!!!!!!!!');
+    console.log(response.data);
+
+    return response.data;
+}

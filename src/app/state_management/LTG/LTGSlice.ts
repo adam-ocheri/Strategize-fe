@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
-import {create, update, getAll, getOne, deleteById} from './LTGService.js'
+import {create, update, getAll, getOne, deleteById, getAllSubstations} from './LTGService.js'
 
 
 export interface LTG {
     data: [];
+    subData: [];
     isError: boolean;
     isSuccess: boolean;
     isLoading: boolean;
@@ -13,6 +14,7 @@ export interface LTG {
 
 const initialState : LTG = {
     data: [],
+    subData: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -77,6 +79,19 @@ export const getLTG = createAsyncThunk('LTG/getOne',  async({id, parentId, token
 })
 
 export const deleteLTG = createAsyncThunk('LTG/delete',  async({id, parentId, owner, token} : any, thunkAPI) => {
+    try {
+        console.log("Slicing...");
+        console.log({id});
+        return await deleteById({id, parentId, owner, token});
+    } catch (error : any) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const getAllSubStations_LTG = createAsyncThunk('LTG/getAllSubstations',  async({id, parentId, owner, token} : any, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({id});
@@ -177,6 +192,21 @@ export const LTGSlice = createSlice({
                 state.data = state.data.filter((item : any) => item._id !== action.payload._id);
             })
             .addCase(deleteLTG.rejected, (state : any, action: any) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+            })
+            // GET-One CASES
+            .addCase(getAllSubStations_LTG.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAllSubStations_LTG.fulfilled, (state : any, action : any) => {
+                state.isSuccess = true;
+                state.isLoading = false;
+                state.subData = action.payload;
+            })
+            .addCase(getAllSubStations_LTG.rejected, (state : any, action: any) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

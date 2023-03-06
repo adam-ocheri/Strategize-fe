@@ -101,20 +101,20 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, acti
             await getAllSubstations();
         }
     };
-    //Day Tile JSX function
+    //Day TileContent JSX function
     const tileContent = ({ view, date }) => {
         const bBelongsToMonth = date.toString().slice(4, 7) === currentlyViewedMonth;
         if (view == 'year' || view == 'decade') {
             return _jsx("div", { className: 'p1 m1 tile-inner' });
         }
-        return (_jsx(Droppable, { droppableId: date.toString(), type: 'COL1', children: (provided) => (_jsxs("div", { className: `p1 m1 ${bBelongsToMonth ? 'tile-inner' : 'tile-inner-outdate'}`, ...provided.droppableProps, ref: provided.innerRef, ...provided.innerRef, children: [tasks.filter((item) => item.date.slice(0, 15)
+        return (_jsx(Droppable, { droppableId: date.toString(), type: 'COL1', children: (provided) => (_jsxs("div", { className: `p1 m1 ${bBelongsToMonth ? 'tile-inner' : 'tile-inner-outdate'}`, ...provided.droppableProps, ref: provided.innerRef, ...provided.innerRef, children: [tasks.filter((item) => item.date?.slice(0, 15)
                         ===
                             provided.droppableProps['data-rbd-droppable-id'].slice(0, 15))
                         .sort((a, b) => a.date.slice(15, 18) - b.date.slice(15, 18))
                         .sort((a, b) => a.date.slice(19, 21) - b.date.slice(19, 21))
                         .map((task, index) => (_jsx("div", { children: _jsx(Dragger, { item: task, index: index, updateTimeForDate: updateTime, manage: manage, droppableProvided: provided }) }, task._id))), provided.placeholder] })) }));
     };
-    //Day tile className callback function
+    //Day Tile className callback function
     const tileClassName = ({ activeStartDate, date, view }) => {
         if (date.toString().slice(4, 7) === activeStartDate.toString().slice(4, 7)) {
             return 'tile-outer white font-9';
@@ -132,7 +132,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, acti
         }, [date]);
         return _jsx("div", { className: '', children: date.toString().slice(4, 8) + date.toString().slice(11, 15) });
     };
-    //DEFAULT: Station Calendar
+    //DEFAULT: Station Calendar & List of Pending Stations
     return (_jsx("div", { className: 'mt6 pt6', children: _jsxs(DragDropContext, { onDragStart: onDragStart, onDragEnd: onDragEnd, children: [_jsx(Calendar, { navigationLabel: updateNavigation, value: date, tileContent: tileContent, tileClassName: tileClassName, className: 'calendar-container' }), items && _jsxs(ListGrid, { children: [_jsx("h3", { className: 'white font-2 p2 m2', children: "Pending Tasks:" }), _jsx(Dropper, { droppableId: 'Data', type: 'COL1', items: items, updateTime: updateTime, manage: manage })] })] }) }));
 };
 export default CalendarDND;

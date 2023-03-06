@@ -170,7 +170,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
     }
     
 
-    //Day Tile JSX function
+    //Day TileContent JSX function
     const tileContent = ({ view, date }: any) => {
 
         const bBelongsToMonth = date.toString().slice(4, 7) === currentlyViewedMonth;
@@ -186,7 +186,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                     <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'}`} {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef}>
                         {tasks.filter(
                             (item : any) => 
-                            item.date.slice(0, 15) 
+                            item.date?.slice(0, 15) 
                             === 
                             provided.droppableProps['data-rbd-droppable-id'].slice(0, 15)
                             )
@@ -206,7 +206,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         )
     }
 
-    //Day tile className callback function
+    //Day Tile className callback function
     const tileClassName : any = ({activeStartDate, date, view} : CalendarTileProperties) => {
         if (date.toString().slice(4, 7) === activeStartDate.toString().slice(4, 7))
         {
@@ -229,7 +229,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         </div>
     }
     
-    //DEFAULT: Station Calendar
+    //DEFAULT: Station Calendar & List of Pending Stations
     return (
         <div className='mt6 pt6'>
             <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>

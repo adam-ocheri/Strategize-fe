@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { RootState } from 'src/app/store';
 
@@ -54,6 +54,7 @@ function Objective({}) {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
     const {activeProject} : any = useAppSelector((state) => state.project)
+    const {activeLTG} : any = useAppSelector((state) => state.ltg)
     const {activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {data, activeTask, isLoading} : any = useAppSelector((state : RootState) => state.task);
     const {user} : any = useAppSelector((state : RootState) => state.auth);
@@ -75,9 +76,10 @@ function Objective({}) {
     return (
     <div className='pt5 mt5'>
         <section>
-            <h2> 
+            <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> </h3>
+            <h2 className='font-1'> 
                 {activeObjective.objectiveName} : 
-                {`${activeObjective.stationTypeName ? activeObjective.stationTypeName : activeObjective.stationType ? activeObjective.stationType : ' Objective'}`} 
+                {`${activeObjective.stationTypeName ? activeObjective.stationTypeName : activeObjective.stationType ? activeObjective.stationType : 'Objective'}`} 
             </h2>
             <div>
                 <button onClick={(e) => {navigator('/project/ltg/objective/settings')}}>Settings</button>
