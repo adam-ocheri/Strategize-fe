@@ -65,11 +65,14 @@ function LTG({}) {
         }
     }, [])
 
-    // useEffect(() => {
-    //     if (data.length > 0){
-    //         dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))
-    //     }
-    // }, [data])
+    useEffect(() => {
+        const getStuff = async() => {
+            if (data){
+                await dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))
+            }
+        }
+        getStuff();
+    }, [data])
     
     return (
     <div className='pt5 mt5'>
@@ -103,8 +106,8 @@ function LTG({}) {
             </form> 
         </section>
         <section>
-        {/* <CalendarDND 
-                    data={data} 
+        <CalendarDND 
+                    data={subData} 
                     getAllSubstations={() => {dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))}} 
                     updateSubStation={updateTask} 
                     dispatch={dispatch} 
@@ -112,7 +115,7 @@ function LTG({}) {
                     user={user} 
                     isLoading={isLoading}
                     manage={manageSelectedStation}
-                /> */}
+                />
         </section>
     </div>
     )

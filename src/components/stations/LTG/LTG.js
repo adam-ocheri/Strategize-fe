@@ -2,7 +2,11 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
+//Child sub-station
+import { getAllSubStations_LTG } from 'src/app/state_management/LTG/LTGSlice';
 import { createObjective, getObjective, deleteObjective, getAllObjectives, } from 'src/app/state_management/objective/objectiveSlice';
+import { updateTask } from 'src/app/state_management/task/taskSlice';
+import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
 function LTG({}) {
     const [formData, setFormData] = useState({
         newObjectiveName: '',
@@ -48,12 +52,15 @@ function LTG({}) {
             dispatch(getAllObjectives({ parentId: activeLTG._id, token: user.token }));
         }
     }, []);
-    // useEffect(() => {
-    //     if (data.length > 0){
-    //         dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))
-    //     }
-    // }, [data])
-    return (_jsxs("div", { className: 'pt5 mt5', children: [_jsxs("h3", { className: 'font-1 white', children: [" ", _jsx(Link, { to: '/project', children: activeProject.projectName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg', children: activeLTG.LTGName })] }), _jsxs("section", { children: [_jsxs("h2", { children: [activeLTG.LTGName, " :", `${activeLTG.stationTypeName ? activeLTG.stationTypeName : activeLTG.stationType ? activeLTG.stationType : 'Long Term Goal'}`] }), _jsx("div", { children: _jsx("button", { onClick: (e) => { navigator('/project/ltg/settings'); }, children: "Settings" }) })] }), _jsxs("section", { children: [_jsx("h3", { children: " Objectives " }), data && _jsx("div", { children: data.map((Objective) => (_jsxs("div", { children: ["Objective: ", Objective.objectiveName, _jsxs("p", { children: [_jsx("button", { onClick: (e) => { manageSelectedStation(e, Objective._id); }, children: " Manage " }), _jsx("button", { onClick: () => { dispatch(deleteObjective({ id: Objective._id, parentId: activeLTG._id, owner: user._id, token: user.token })); }, children: "Delete" })] })] }, Objective._id))) })] }), _jsx("section", { children: _jsxs("form", { onSubmit: (e) => onFormSubmitted(e), children: [_jsx("input", { className: "form-input", type: "text", placeholder: "Objective Name", id: "newObjectiveName", name: "newObjectiveName", value: newObjectiveName, onChange: (e) => { onFormUpdated(e); } }), _jsx("button", { type: 'submit', children: "Add New" })] }) }), _jsx("section", {})] }));
+    useEffect(() => {
+        const getStuff = async () => {
+            if (data) {
+                await dispatch(getAllSubStations_LTG({ id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token }));
+            }
+        };
+        getStuff();
+    }, [data]);
+    return (_jsxs("div", { className: 'pt5 mt5', children: [_jsxs("h3", { className: 'font-1 white', children: [" ", _jsx(Link, { to: '/project', children: activeProject.projectName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg', children: activeLTG.LTGName })] }), _jsxs("section", { children: [_jsxs("h2", { children: [activeLTG.LTGName, " :", `${activeLTG.stationTypeName ? activeLTG.stationTypeName : activeLTG.stationType ? activeLTG.stationType : 'Long Term Goal'}`] }), _jsx("div", { children: _jsx("button", { onClick: (e) => { navigator('/project/ltg/settings'); }, children: "Settings" }) })] }), _jsxs("section", { children: [_jsx("h3", { children: " Objectives " }), data && _jsx("div", { children: data.map((Objective) => (_jsxs("div", { children: ["Objective: ", Objective.objectiveName, _jsxs("p", { children: [_jsx("button", { onClick: (e) => { manageSelectedStation(e, Objective._id); }, children: " Manage " }), _jsx("button", { onClick: () => { dispatch(deleteObjective({ id: Objective._id, parentId: activeLTG._id, owner: user._id, token: user.token })); }, children: "Delete" })] })] }, Objective._id))) })] }), _jsx("section", { children: _jsxs("form", { onSubmit: (e) => onFormSubmitted(e), children: [_jsx("input", { className: "form-input", type: "text", placeholder: "Objective Name", id: "newObjectiveName", name: "newObjectiveName", value: newObjectiveName, onChange: (e) => { onFormUpdated(e); } }), _jsx("button", { type: 'submit', children: "Add New" })] }) }), _jsx("section", { children: _jsx(CalendarDND, { data: subData, getAllSubstations: () => { dispatch(getAllSubStations_LTG({ id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, activeStation: activeLTG, user: user, isLoading: isLoading, manage: manageSelectedStation }) })] }));
 }
 ;
 export default LTG;

@@ -95,7 +95,7 @@ export const getAllSubStations_LTG = createAsyncThunk('LTG/getAllSubstations',  
     try {
         console.log("Slicing...");
         console.log({id});
-        return await deleteById({id, parentId, owner, token});
+        return await getAllSubstations({id, parentId, owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
