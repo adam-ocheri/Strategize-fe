@@ -49,7 +49,7 @@ const DragItem : any = ({item, updateTimeForDate, droppableProvided, manage, sna
       return;
     }
 
-    await updateTimeForDate(item.date, t.target.value, item._id)
+    await updateTimeForDate(item.date, t.target.value, item._id, item.owningObjective)
     console.log('time is:')
     console.log(t.target.value);
     console.log('date is:')
@@ -62,7 +62,7 @@ const DragItem : any = ({item, updateTimeForDate, droppableProvided, manage, sna
         <h3 >{item.taskName}</h3>
 
         <input type='time' value={time} onChange={(t)=> updateTime(t)}></input>
-        <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manage(e, item._id)}>Manage</a>
+        <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manage(e, item._id, item.owningObjective)}>Manage</a>
         
     </div>
   )

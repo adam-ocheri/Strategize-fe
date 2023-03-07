@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { RootState } from 'src/app/store';
+import { reset__Task } from 'src/app/state_management/task/taskSlice';
 
 //Child sub-station
 import { createTask, getTask, updateTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
@@ -50,6 +51,14 @@ function Objective({}) {
         await dispatch(getTask({id: id, parentId: activeObjective._id, token: user.token}));
         navigator('/project/ltg/objective/task');
     }
+    
+    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any) => {
+        console.log("trying to EDIT Task...........")
+        console.log('manageSelectedTask_Remote.....')
+        console.log(id);
+        await dispatch(getTask({id: id, parentId: parentObjectiveId, token: user.token}));
+        navigator('/project/ltg/objective/task');
+    }
     //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
@@ -65,7 +74,9 @@ function Objective({}) {
             navigator("/");
         }
         else {
-            dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+            // reset__Task();
+            const getData = async () => await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+            getData();
         }
     }, [])
 
@@ -90,13 +101,11 @@ function Objective({}) {
             {data && <div>
                 <CalendarDND 
                     data={data} 
-                    getAllSubstations={() => {dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}))}} 
+                    getAllSubstations={async () => {await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}))}} 
                     updateSubStation={updateTask} 
                     dispatch={dispatch} 
-                    activeStation={activeObjective} 
                     user={user} 
-                    isLoading={isLoading}
-                    manage={manageSelectedStation}
+                    manage={manageSelectedTask_Remote}
                 />
                 <article>
                     <div className='flex f-dir-col jt-center j-even border-white border-w2 border-solid border-r3 b-color-dark-2 white p7 m7'>
@@ -119,7 +128,7 @@ function Objective({}) {
                     <input type='checkbox' id='collapse' checked={showData} onChange={() => setShowData(!showData)}></input> 
                     <label htmlFor='collapse'> View All Tasks </label>
 
-                    {showData && data.map((Task : any) => (<div key={Task._id} className='flex j-between p1 m1 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2'>
+                    {showData && data && data.map((Task : any) => (<div key={Task._id} className='flex j-between p1 m1 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2'>
                         Task: {Task.taskName}
                         <span>
                             <button onClick={(e) => {manageSelectedStation(e, Task._id)}}> Manage </button>

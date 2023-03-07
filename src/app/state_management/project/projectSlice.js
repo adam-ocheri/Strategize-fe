@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, update, getAll, getOne, deleteProjectById } from './projectService.js';
+import { create, update, getAll, getOne, deleteProjectById, getAllSubstations } from './projectService.js';
 const initialState = {
     data: [],
+    subData: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -64,6 +65,18 @@ export const deleteProject = createAsyncThunk('project/delete', async ({ id, own
         console.log("Slicing...");
         console.log({ id });
         return await deleteProjectById({ id, owner, token });
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+export const getAllSubstations_Project = createAsyncThunk('project/getAllTasks', async ({ id, owner, token }, thunkAPI) => {
+    try {
+        console.log("Slicing...");
+        console.log({ id });
+        return await getAllSubstations({ id, owner, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -159,6 +172,21 @@ export const projectSlice = createSlice({
             state.activeProject = {};
         })
             .addCase(deleteProject.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
+            // getAllSubstations CASES
+            .addCase(getAllSubstations_Project.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(getAllSubstations_Project.fulfilled, (state, action) => {
+            state.isSuccess = true;
+            state.isLoading = false;
+            state.subData = action.payload;
+        })
+            .addCase(getAllSubstations_Project.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

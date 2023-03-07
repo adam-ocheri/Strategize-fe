@@ -57,7 +57,7 @@ function Task({}) {
             navigator("/project/ltg/objective");
         }
         else {
-            dispatch(getAllTasks({parentId: activeTask._id, token: user.token}));
+            dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
         }
     }, [])
     

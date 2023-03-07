@@ -98,6 +98,7 @@ export const TaskSlice = createSlice({
         state.isError = false;
         state.isSuccess = false;
         state.message = '';
+        // state.data = [];
     }},
     extraReducers: (builder) => {
         builder
@@ -156,7 +157,7 @@ export const TaskSlice = createSlice({
                 state.data = state.data.map((item : any) => {
                     if(item._id === action.payload._id)
                     {
-                        return Object.assign({}, item, {TaskName: action.payload.TaskName})
+                        return Object.assign({}, item, {taskName: action.payload.taskName, date: action.payload.date})
                     }
                     return item;
                 })

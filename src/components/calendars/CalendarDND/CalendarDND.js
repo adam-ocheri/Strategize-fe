@@ -15,14 +15,15 @@ const ListGrid = styled.div `
   background-color: rgb(20, 8, 23);
   border: 3px solid white;
 `;
-const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, activeStation, user, isLoading, manage }) => {
+const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user, manage }) => {
     const [date, setDate] = useState(new Date());
     const [currentlyViewedMonth, setCurrentlyViewedMonth] = useState('');
     const [items, setItems] = useState(); //backend unmodified tasks
     const [tasks, setTasks] = useState([]); //backend modified tasks
+    const [ctrlPressed, setCtrlPressed] = useState(false);
     //Handle INIT and UPDATEd data
     useEffect(() => {
-        if (data.length >= 1 && !isLoading) {
+        if (data.length >= 1) {
             const mutableData = Array.from(data);
             const newTasks = [];
             const newItems = [];
@@ -48,10 +49,39 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, acti
             setTasks(newTasks);
             setItems(newItems);
         }
-    }, [data, isLoading]);
-    const updateTime = async (date, time, id) => {
+        else {
+            const newTasks = [];
+            const newItems = [];
+            setTasks(newTasks);
+            setItems(newItems);
+        }
+    }, [data]);
+    const handleKeyDown = (event) => {
+        if (event.key === 'Control') {
+            setCtrlPressed(true);
+            console.log('CTRL PRESSED....');
+        }
+    };
+    const handleKeyUp = (event) => {
+        if (event.key === 'Control') {
+            setCtrlPressed(false);
+            console.log('CTRL RELEASED....');
+        }
+    };
+    //copying Item
+    useEffect(() => {
+        // const getData = async () => {await getAllSubstations()};
+        // getData();
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
+    const updateTime = async (date, time, id, parentId) => {
         const body = { date: date.slice(0, 16) + time + date.slice(21) };
-        await dispatch(updateSubStation({ body, id: id, parentId: activeStation._id, token: user.token }));
+        await dispatch(updateSubStation({ body, id: id, parentId: parentId, token: user.token }));
         await getAllSubstations();
     };
     const onDragStart = (result) => {
@@ -62,6 +92,9 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, acti
     };
     //Drag and drop logic
     const onDragEnd = async (result) => {
+        if (ctrlPressed) {
+            return;
+        }
         console.log(result);
         console.log(`result.source.droppableId is: `);
         console.log(result.source.droppableId);
@@ -85,7 +118,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, acti
                     }
                 });
                 const body = { date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15) };
-                await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: activeStation._id, token: user.token }));
+                await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
                 setTasks((prev) => newTasks);
                 await getAllSubstations();
                 return;
@@ -95,7 +128,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, acti
             let newItems = items;
             let [selectedItem] = newItems.splice(result.source.index, 1);
             const body = { date: result.destination.droppableId };
-            await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: activeStation._id, token: user.token }));
+            await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
             setTasks((prev) => [...prev, selectedItem]);
             setItems(newItems);
             await getAllSubstations();

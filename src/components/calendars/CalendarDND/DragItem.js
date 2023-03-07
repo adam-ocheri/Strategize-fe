@@ -23,12 +23,12 @@ const DragItem = ({ item, updateTimeForDate, droppableProvided, manage, snapshot
             // await updateTimeForDate(droppableProvided.droppableId, t.target.value, item._id);
             return;
         }
-        await updateTimeForDate(item.date, t.target.value, item._id);
+        await updateTimeForDate(item.date, t.target.value, item._id, item.owningObjective);
         console.log('time is:');
         console.log(t.target.value);
         console.log('date is:');
         console.log(item.date);
     };
-    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [_jsx("h3", { children: item.taskName }), _jsx("input", { type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id), children: "Manage" })] }));
+    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [_jsx("h3", { children: item.taskName }), _jsx("input", { type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
 };
 export default DragItem;

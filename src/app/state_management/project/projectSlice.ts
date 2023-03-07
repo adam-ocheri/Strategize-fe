@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
-import {create, update, getAll, getOne, deleteProjectById} from './projectService.js'
+import {create, update, getAll, getOne, deleteProjectById, getAllSubstations} from './projectService.js'
 
 import mongoose from 'mongoose';
 
 export interface Project {
     data: [];
+    subData: [];
     isError: boolean;
     isSuccess: boolean;
     isLoading: boolean;
@@ -14,6 +15,7 @@ export interface Project {
 
 const initialState : Project = {
     data: [],
+    subData: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -83,6 +85,19 @@ export const deleteProject = createAsyncThunk('project/delete',  async({id, owne
         console.log("Slicing...");
         console.log({id});
         return await deleteProjectById({id, owner, token});
+    } catch (error : any) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const getAllSubstations_Project = createAsyncThunk('project/getAllTasks',  async({id, owner, token} : any, thunkAPI) => {
+    try {
+        console.log("Slicing...");
+        console.log({id});
+        return await getAllSubstations({id, owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -180,6 +195,21 @@ export const projectSlice = createSlice({
                 state.activeProject = {};
             })
             .addCase(deleteProject.rejected, (state : any, action: any) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+            })
+            // getAllSubstations CASES
+            .addCase(getAllSubstations_Project.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAllSubstations_Project.fulfilled, (state : any, action : any) => {
+                state.isSuccess = true;
+                state.isLoading = false;
+                state.subData = action.payload;
+            })
+            .addCase(getAllSubstations_Project.rejected, (state : any, action: any) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

@@ -47,7 +47,7 @@ function Task({}) {
             navigator("/project/ltg/objective");
         }
         else {
-            dispatch(getAllTasks({ parentId: activeTask._id, token: user.token }));
+            dispatch(getAllTasks({ parentId: activeObjective._id, token: user.token }));
         }
     }, []);
     return (_jsxs("div", { className: 'p2 m2 pt5 mt5', children: [_jsxs("h3", { className: 'font-1 white', children: [" ", _jsx(Link, { to: '/project', children: activeProject.projectName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg', children: activeLTG.LTGName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg/objective', children: activeObjective.objectiveName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg/objective/task', children: activeTask.taskName })] }), _jsxs("section", { children: [_jsxs("h2", { className: 'font-3', children: [activeTask.taskName, " :", `${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`] }), "Date: ", `${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`, " ", _jsx("br", {}), "Time: ", `${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`, _jsx("div", { children: _jsx(Settings_Task, {}) })] })] }));

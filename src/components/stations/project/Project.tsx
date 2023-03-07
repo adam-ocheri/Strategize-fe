@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { createLTG, getLTG, getAllLTGs, updateLTG, deleteLTG } from 'src/app/state_management/LTG/LTGSlice';
-import { getProject, updateProject, deleteProject, reset__project } from 'src/app/state_management/project/projectSlice';
+import { getProject, updateProject, deleteProject, reset__project, getAllSubstations_Project } from 'src/app/state_management/project/projectSlice';
+import { updateTask, getTask } from 'src/app/state_management/task/taskSlice';
 import { RootState } from 'src/app/store';
+import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
+
 
 
 function Project({}) {
@@ -39,13 +42,21 @@ function Project({}) {
         await dispatch(getLTG({id: id, parentId: activeProject._id, token: user.token}));
         navigator('/project/ltg');
     }
+    
+    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any) => {
+        console.log("trying to EDIT Objective...........")
+        console.log(id);
+        await dispatch(getTask({id: id, parentId: parentObjectiveId, token: user.token}));
+        navigator('/project/ltg/objective/task');
+    }
 
     //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const {activeProject} : any = useAppSelector((state) => state.project)
+    const {activeProject, subData} : any = useAppSelector((state) => state.project)
     const {user} : any = useAppSelector((state : RootState) => state.auth);
     const {data, activeLTG} : any = useAppSelector((state : RootState) => state.ltg);
+    const {activeTask, isLoading} : any = useAppSelector((state) => state.task)
 
     useEffect(() => {
         if (!activeProject.projectName)
@@ -53,9 +64,23 @@ function Project({}) {
             navigator("/");
         }
         else {
-            dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}));
+            const getData = async () => {
+                await dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}));
+            }
+            getData();
         }
     }, [])
+
+    useEffect(() => {
+        if (activeProject._id){
+            const getSubData = async () => {
+                console.log('TRYING TO SEE USER ID.....');
+                console.log(user._id)
+                await dispatch(getAllSubstations_Project({id: activeProject._id, owner: user._id, token: user.token}))
+            }
+            getSubData();
+        }
+    }, [activeProject])
     
     return (
     <div className='pt5 mt5'>
@@ -86,6 +111,16 @@ function Project({}) {
                     name="newLTGName" value={newLTGName} onChange={(e) => {onFormUpdated(e)}}/>
                 <button type='submit'>Add New</button>
             </form> 
+        </section>
+        <section>
+        <CalendarDND 
+                data={subData} 
+                getAllSubstations={() => {dispatch(getAllSubstations_Project({id: activeProject._id, owner: user._id, token: user.token}))}} 
+                updateSubStation={updateTask} 
+                dispatch={dispatch} 
+                user={user} 
+                manage={manageSelectedTask_Remote}
+            />
         </section>
     </div>
     )

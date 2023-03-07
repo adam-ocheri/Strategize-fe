@@ -6,7 +6,7 @@ import { RootState } from 'src/app/store';
 //Child sub-station
 import { getAllSubStations_LTG } from 'src/app/state_management/LTG/LTGSlice';
 import { createObjective, getObjective, deleteObjective, getAllObjectives, } from 'src/app/state_management/objective/objectiveSlice';
-import { updateTask } from 'src/app/state_management/task/taskSlice';
+import { updateTask, getTask } from 'src/app/state_management/task/taskSlice';
 import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
 
 
@@ -45,6 +45,13 @@ function LTG({}) {
         console.log(id);
         await dispatch(getObjective({id: id, parentId: activeLTG._id, token: user.token}));
         navigator('/project/ltg/objective');
+    }
+
+    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any) => {
+        console.log("trying to EDIT Objective...........")
+        console.log(id);
+        await dispatch(getTask({id: id, parentId: parentObjectiveId, token: user.token}));
+        navigator('/project/ltg/objective/task');
     }
     //
     const navigator = useNavigate();
@@ -106,16 +113,14 @@ function LTG({}) {
             </form> 
         </section>
         <section>
-        <CalendarDND 
-                    data={subData} 
-                    getAllSubstations={() => {dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))}} 
-                    updateSubStation={updateTask} 
-                    dispatch={dispatch} 
-                    activeStation={activeLTG} 
-                    user={user} 
-                    isLoading={isLoading}
-                    manage={manageSelectedStation}
-                />
+            <CalendarDND 
+                data={subData} 
+                getAllSubstations={() => {dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))}} 
+                updateSubStation={updateTask} 
+                dispatch={dispatch} 
+                user={user} 
+                manage={manageSelectedTask_Remote}
+            />
         </section>
     </div>
     )
