@@ -129,6 +129,35 @@ body {
     font-family: 'Righteous', cursive; 
 }
 /*TODO Calendar -------------------------------------------------------------------- */
+
+.circle-clicker-active{
+    color: aliceblue;
+    border: 2px solid black;
+    background-color: rgb(100, 149, 237);
+    border-radius: 50%;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.circle-clicker-active:hover{
+    color: aliceblue;
+    border: 2px solid rgb(0, 237, 254);
+    background-color: rgb(64, 126, 240);
+    border-radius: 50%;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.circle-clicker-inactive{
+    color: rgb(87, 95, 103);
+    border: 2px solid black;
+    background-color: rgb(39, 56, 88);
+    border-radius: 50%;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 .b-img-0{
     background: url('../../public/b7.jpg');
     background-repeat: no-repeat;

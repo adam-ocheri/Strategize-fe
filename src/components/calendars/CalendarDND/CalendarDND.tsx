@@ -93,10 +93,33 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                     newItems.push(mutableData[i])
                 }
             }
-            console.log('newTasks is:')
-            console.log(newTasks);
-            console.log("newItems is:");
-            console.log(newItems)
+
+            //Subtasks
+            {
+                const subTasks = [];
+                const subItems = [];
+
+                for (let task of newTasks){
+                    console.log('trying to loop over tasks for SUBTASKS......');
+                    console.log(task)
+                    for (let subtask of task.HISTORY_TaskIterations){
+                        console.log(subtask)
+                        if(subtask.date !== ''){
+                            subTasks.push(subtask);
+                        }else{
+                            subItems.push(subtask);
+                        }
+                        
+                    }
+                }
+            
+                newItems.push(...subItems);
+                newTasks.push(...subTasks);
+                console.log('newTasks is:')
+                console.log(newTasks);
+                console.log("newItems is:");
+                console.log(newItems)
+            }
 
             setTasks(newTasks);
             setItems(newItems);
@@ -159,8 +182,8 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             return;
         }
         console.log(result);
-        console.log(`result.source.droppableId is: `);
-        console.log(result.source.droppableId);
+        console.log(`result.draggableId is: `);
+        console.log(result.draggableId);
         if (!result.destination){
             return;
         }
@@ -169,6 +192,81 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
 
         }
 
+        let updateComplete = false;
+        // first check if is moving in calendar
+        // then check if subtask or Origin task
+
+        //* if Subtask - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        //moving in calendar
+        // for (let task of tasks){
+        //     const newTasks = tasks;
+        //     for (let subtask of task.HISTORY_TaskIterations){
+        //         if (result.source.draggableId === subtask._id){
+        //             console.log("Subtask FOUND!!!");
+        //             console.log('SUBTASK ID is: ');
+        //             console.log(subtask);
+        //         }
+        //         else{
+        //             console.log("NOT A subtask")
+        //         }
+        //     }
+        // }
+        //adding to calendar
+        const newItems : any[] = Array.from(items);
+        console.log('Checking for subtasks.....');
+        console.log(items);
+        for (let task of tasks){ 
+            if (updateComplete) return;
+            for (let subtask of task.HISTORY_TaskIterations){
+                if (updateComplete) return;
+
+                if (result.draggableId === subtask._id){
+                    console.log('MOVING SUBTASK!');
+                    const [selectedItem] : any = newItems.filter((item : any, index : number) => {
+                        if (item._id === subtask._id){
+                            return newItems.splice(index, 1);
+                        }
+                        else return item._id === subtask._id;
+                    });
+
+                    if(selectedItem){
+                        updateComplete = true;
+                        setItems(newItems);
+                        let copy : any = {};
+                        for (let field in selectedItem){
+                            Object.defineProperty(copy, field, {value: selectedItem[field], writable: true, enumerable: true, configurable: true })
+                        }
+                        console.log("COPY IS:")
+                        console.log(copy);
+                        copy.date = result.destination.droppableId;
+                        const newTasks = [...tasks, copy];
+                        setTasks(newTasks);
+
+                        const updateSubtask = async () => {
+                            let insertIndex = 0;
+                            const newIterationsArray = task.HISTORY_TaskIterations.filter((item : any, index : number) => {
+                                if (item._id === subtask._id){
+                                    insertIndex = index;
+                                    return;
+                                }
+                                return item._id !== subtask._id;
+                            });
+                            newIterationsArray.splice(insertIndex, 0, copy);
+                            console.log('newIterationsArray is::::::::::::::::::::::::::::::::');
+                            console.log(newIterationsArray)
+                            await dispatch(updateSubStation({body: {HISTORY_TaskIterations: newIterationsArray}, id: task._id, parentId: task.owningObjective, token: user.token}));
+                            await getAllSubstations();
+                        }
+                        updateSubtask();
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (updateComplete) return;
+
+        //* If Task - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
         const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         let movingInCalendar = false;
 
@@ -224,18 +322,17 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             <Droppable droppableId={date.toString()} type='COL1'>
                 {(provided) => (
                     <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'}`} {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef}>
-                        {tasks.filter(
-                            (item : any) => 
-                            item.date?.slice(0, 15) 
-                            === 
-                            provided.droppableProps['data-rbd-droppable-id'].slice(0, 15)
+                        {tasks.filter((item : any) => 
+                                item.date?.slice(0, 15) 
+                                === 
+                                provided.droppableProps['data-rbd-droppable-id'].slice(0, 15)
                             )
                             .sort((a : any, b : any) => a.date.slice(15, 18) - b.date.slice(15, 18))
                             .sort((a : any, b : any) => a.date.slice(19, 21) - b.date.slice(19, 21))
                             .map(
                                 (task : any, index : any) => (
                                     <div key={task._id}>
-                                        <Dragger item={task} index={index} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided}/>
+                                        <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided}/>
                                     </div>
                             
                         ))}
@@ -281,7 +378,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 />
                 {items && <ListGrid>
                     <h3 className='white font-2 p2 m2'>Pending Tasks:</h3>
-                    <Dropper droppableId={'Data'} type='COL1' items={items} updateTime={updateTime} manage={manage}/>
+                    <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage}/>
                 </ListGrid>}
             </DragDropContext>    
         </div>

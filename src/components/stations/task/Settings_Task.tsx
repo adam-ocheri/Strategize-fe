@@ -72,7 +72,7 @@ import { useEffect, useState } from 'react';
     }
 
     const onDeleteTask = async () => {
-        await dispatch(deleteTask({id: activeTask._id, owningLTG: activeTask.owningLTG, owner: user._id, token: user.token}));
+        await dispatch(deleteTask({id: activeTask._id, parentId: activeTask.owningObjective, owner: user._id, token: user.token}));
         navigator('/')
     }
 

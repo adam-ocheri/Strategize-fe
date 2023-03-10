@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { RootState } from 'src/app/store';
 
+import { getObjective } from 'src/app/state_management/objective/objectiveSlice';
+import { getAllLTGs, getLTG } from 'src/app/state_management/LTG/LTGSlice';
 //Child sub-station
 import { createTask, getTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
 import Settings_Task from './Settings_Task';
@@ -46,24 +48,45 @@ function Task({}) {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
     const {activeProject} : any = useAppSelector((state) => state.project)
-    const {activeLTG} : any = useAppSelector((state) => state.ltg)
+    const {activeLTG, data} : any = useAppSelector((state) => state.ltg)
     const {activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {activeTask} : any = useAppSelector((state : RootState) => state.task);
     const {user} : any = useAppSelector((state : RootState) => state.auth);
 
+    //INIT component & data
     useEffect(() => {
         if (!activeTask.taskName)
         {
             navigator("/project/ltg/objective");
         }
         else {
-            dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+            if (!activeObjective.objectiveName){
+                const getSuperStations = async () => {
+                    await dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}));
+                    let stationsFound = false;
+
+                    for (let LTG of data){
+                        if (!stationsFound){
+                            await dispatch(getObjective({id: activeTask.owningObjective, parentId: LTG._id, token: user.token}))
+                            .then(async (response) => {
+                                if (response.payload){
+                                    console.log(' getting ALL LTGs for Task Tree...'); console.log(response);
+                                    await dispatch(getLTG({id: response.payload.owningLTG, parentId: activeProject._id, token: user.token}));
+                                    stationsFound = true;
+                                }  
+                            });
+                        }
+                        
+                    }  
+                }
+                getSuperStations();
+            } 
         }
     }, [])
     
     return (
     <div className='p2 m2 pt5 mt5'>
-        <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> {'>'} <Link to='/project/ltg/objective/task'>{activeTask.taskName}</Link></h3>
+        {activeLTG && activeObjective && <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> {'>'} <Link to='/project/ltg/objective/task'>{activeTask.taskName}</Link></h3>}
         <section>
             <h2 className='font-3'> 
                 {activeTask.taskName} : 
