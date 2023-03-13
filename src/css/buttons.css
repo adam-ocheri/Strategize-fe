@@ -53,3 +53,11 @@
     -5px 0 5px 0 rgba(1, 200, 255, 0.2), 
     0 5px 5px 0 rgba(1, 200, 255, 0.2);
 }
+
+.time-input{
+    border-radius: 10px;
+    width: 99%;
+    color: rgb(0, 19, 19);
+    background-color: rgb(222, 221, 254);
+    min-width: 24px;
+}

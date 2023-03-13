@@ -129,7 +129,7 @@ function Objective({}) {
                     <label htmlFor='collapse'> View All Tasks </label>
 
                     {showData && data && data.map((Task : any) => (<div key={Task._id} className='flex j-between p3 m3 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2 b-color-dark-1'>
-                        Task: {Task.taskName}
+                        <h4 className='font-5'>Task: <span className='font-2 s2'> {Task.taskName} </span></h4>
                         <span>
                             <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Task._id)}}> Manage </Button_S2>
                             <Button_S2 onClick={() => {dispatch(deleteTask({id: Task._id, parentId: activeObjective._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>

@@ -99,7 +99,7 @@ function LTG({}) {
             <h3 className='s3 font-4'> Objectives </h3>
             {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
                 {data.map((Objective : any) => (<div key={Objective._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
-                    Objective: {Objective.objectiveName}
+                    Objective: <span className='font-2 s2'>{Objective.objectiveName}</span>
                     <p>
                         <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Objective._id)}}> Manage </Button_S2>
                         <Button_S2 onClick={() => {dispatch(deleteObjective({id: Objective._id, parentId: activeLTG._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>

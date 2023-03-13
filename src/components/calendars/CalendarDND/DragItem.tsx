@@ -38,6 +38,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   const {activeTask} : any = useAppSelector((state) => state.task);
 
   const [time, setTime] = useState(item.date.slice(16, 21));
+  const [isItemHovered, setIsItemHovered] = useState(false);
   useEffect(()=>{
     if(item.date){
       setTime(item.date.slice(16, 21));
@@ -115,11 +116,11 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
 
   return (
     
-    <div className='dragger p3 m3 b-color-dark-2'>
+    <div className={`dragger p3 m3 b-color-dark-2 ${isItemHovered ? 'drag-hover' : ''}`} onMouseOver={()=>setIsItemHovered(true)} onMouseLeave={()=>setIsItemHovered(false)} onMouseDown={() => setIsItemHovered(false)}>
         {/* {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>} */}
         <h3 >{item.taskName}</h3>
   
-        <input type='time' value={time} onChange={(t)=> updateTime(t)}></input>
+        <input className='time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}></input>
         <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manage(e, item._id, item.owningObjective)}>Manage</a>
         
     </div>

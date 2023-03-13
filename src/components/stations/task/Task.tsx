@@ -92,12 +92,15 @@ function Task({}) {
                 {activeTask.taskName} : 
                 <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
             </h2>
-            Date: {`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} <br/>
-            Time: {`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`}
-            <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
-                {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
-                <Settings_Task />
-            </div>
+            <article className='p3 m3'>
+                Date: <span className='s3 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
+                Time: <span className='s3 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>
+                {activeTask.description && <div className='font-5 s2 p3 m3'>Description: <span className='s3 ml4'>{activeTask.description}</span></div>}
+                <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
+                    {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
+                    <Settings_Task />
+                </div>
+            </article>
         </section>
     </div>
     )

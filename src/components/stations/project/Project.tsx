@@ -98,7 +98,7 @@ function Project({}) {
             <h3 className='s3 font-4'> Long Term Goals </h3>
             {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
                 {data.map((LTG : any) => (<div key={LTG._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
-                    Long Term Goal: {LTG.LTGName}
+                    Long Term Goal: <span className='font-2 s2'>{LTG.LTGName}</span>
                     <p>
                         <Button_S2 onClick={(e : any) => {manageSelectedStation(e, LTG._id)}}> Manage </Button_S2>
                         <Button_S2 onClick={() => {dispatch(deleteLTG({id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>

@@ -13,6 +13,7 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
     const { user } = useAppSelector((state) => state.auth);
     const { activeTask } = useAppSelector((state) => state.task);
     const [time, setTime] = useState(item.date.slice(16, 21));
+    const [isItemHovered, setIsItemHovered] = useState(false);
     useEffect(() => {
         if (item.date) {
             setTime(item.date.slice(16, 21));
@@ -75,6 +76,6 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         await dispatch(updateSubStation({ body, id: id, parentId: item.owningObjective, token: user.token }));
         await getAllSubstations();
     };
-    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [_jsx("h3", { children: item.taskName }), _jsx("input", { type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
+    return (_jsxs("div", { className: `dragger p3 m3 b-color-dark-2 ${isItemHovered ? 'drag-hover' : ''}`, onMouseOver: () => setIsItemHovered(true), onMouseLeave: () => setIsItemHovered(false), onMouseDown: () => setIsItemHovered(false), children: [_jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
 };
 export default DragItem;

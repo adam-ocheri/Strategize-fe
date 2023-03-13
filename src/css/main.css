@@ -69,11 +69,14 @@ body {
     border-width: 2px;
     background-color: rgb(15, 6, 53);
     border-color: aliceblue;
+    /* align-content: center;
+    align-items: center; */
 }
 .tile-inner{
     border-radius: 5px;
     border-width: 1px;
-    background-color: rgb(109, 138, 169);
+    background-color: rgb(66, 113, 164);
+    /* min-width: 205px; */
 }
 .tile-outer:hover{
     background-color: rgb(27, 17, 72);
@@ -208,10 +211,12 @@ body {
     /* min-height: 50vw; */
     border: 1px solid lightgray;
     /* background-color: #fff; */
-    margin-right: 0.5rem;
+    /* margin-right: 0.5rem; */
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
+    min-width: 80px;
     /* padding: 10px;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -220,6 +225,12 @@ body {
     display: grid;
     grid-gap: 20px;
     flex-direction: column; */
+}
+
+.drag-hover{
+    position: absolute;
+    width:3vw;
+    z-index: 1;
 }
 
 .chart{
