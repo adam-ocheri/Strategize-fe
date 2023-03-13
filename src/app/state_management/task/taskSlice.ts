@@ -89,6 +89,18 @@ export const deleteTask = createAsyncThunk('task/delete',  async({id, parentId, 
     }
 })
 
+// sync/async reducer for setting active task
+export const setActiveTask = createAsyncThunk('task/setActive',  async({item} : any, thunkAPI) => {
+    try {
+        return item;
+    } catch (error : any) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 //*Slice Setup -----------------------------------------------------------------------------------------------------------------------------------------------------
 export const TaskSlice = createSlice({
     name: 'task',
@@ -178,6 +190,21 @@ export const TaskSlice = createSlice({
                 state.data = state.data.filter((item : any) => item._id !== action.payload._id);
             })
             .addCase(deleteTask.rejected, (state : any, action: any) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+            })
+            // SetActiveTask CASES
+            .addCase(setActiveTask.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(setActiveTask.fulfilled, (state : any, action : any) => {
+                state.isSuccess = true;
+                state.isLoading = false;
+                state.activeTask = action.payload;
+            })
+            .addCase(setActiveTask.rejected, (state : any, action: any) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

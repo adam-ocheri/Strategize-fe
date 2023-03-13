@@ -9,7 +9,7 @@ import { DragDropContext, Position, Draggable, Droppable, DraggableId, DragDropC
 import Dropper from './Dropper';
 import Dragger from './Dragger';
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
-import { reset__Task } from 'src/app/state_management/task/taskSlice';
+import { getTask, reset__Task } from 'src/app/state_management/task/taskSlice';
 
 
 interface DataElement {
@@ -65,12 +65,13 @@ const ListGrid = styled.div`
   border: 3px solid white;
 `;
 
-const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch, user, manage} : any)  =>{
+const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch, user, manage, activeTask} : any)  =>{
     
     const [date, setDate] : any = useState(new Date());
     const [currentlyViewedMonth, setCurrentlyViewedMonth] = useState('');
     const [items, setItems] : any = useState();                                   //backend unmodified tasks
     const [tasks, setTasks] : any = useState([]);                       //backend modified tasks
+    const [isDragging, setIsDragging] = useState(false);
     const [ctrlPressed, setCtrlPressed] = useState(false);
 
     //Handle INIT and UPDATEd data
@@ -170,14 +171,12 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
     }
 
     const onDragStart : OnDragStartResponder | undefined = (result : DragStart) => {
-        // console.log(result.draggableId)
-        // console.log(result.mode)
-        // console.log(result.source)
-        // console.log(result.type)
+        setIsDragging(true);
     }
 
     //Drag and drop logic
     const  onDragEnd : DraggableChildrenFn | any = async (result : any) => {
+        setIsDragging(false);
         if (ctrlPressed){
             return;
         }
@@ -288,6 +287,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 const body = {date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15)}
                 await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
                 setTasks((prev : any) : any => newTasks);
+                await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
                 await getAllSubstations();
 
                 return;
@@ -321,7 +321,11 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         return (
             <Droppable droppableId={date.toString()} type='COL1'>
                 {(provided) => (
-                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'}`} {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef}>
+                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'}`}
+                        {...provided.droppableProps} 
+                        ref={provided.innerRef} 
+                        {...provided.innerRef}
+                    >
                         {tasks.filter((item : any) => 
                                 item.date?.slice(0, 15) 
                                 === 
@@ -331,8 +335,8 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                             .sort((a : any, b : any) => a.date.slice(19, 21) - b.date.slice(19, 21))
                             .map(
                                 (task : any, index : any) => (
-                                    <div key={task._id}>
-                                        <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided}/>
+                                    <div key={task._id} className={`${activeTask && activeTask.date? activeTask.date.slice(0, 15) === task.date.slice(0, 15) ? 'drag-drag' : '' : ''}`}>
+                                        <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging}/>
                                     </div>
                             
                         ))}
@@ -378,7 +382,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 />
                 {items && <ListGrid>
                     <h3 className='white font-2 p2 m2'>Pending Tasks:</h3>
-                    <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage}/>
+                    <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage} isDragging={isDragging}/>
                 </ListGrid>}
             </DragDropContext>    
         </div>

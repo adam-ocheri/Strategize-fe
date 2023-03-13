@@ -3,13 +3,14 @@ import { Droppable, Draggable, DraggableProvided ,DroppableProvided, DraggableSt
 import Dragger from './Dragger'
 import Calendar from 'react-calendar'
 
-export default function Dropper({items , droppableId , type, children, getAllSubstations, updateTime, manage} : {items : any, droppableId : string, type: string, children? : ReactNode, getAllSubstations : any, updateTime : any, manage : any}) {
+export default function Dropper({items , droppableId , type, children, getAllSubstations, updateTime, manage, isDragging} : 
+  {items : any, droppableId : string, type: string, children? : ReactNode, getAllSubstations : any, updateTime : any, manage : any, isDragging : boolean}) {
   return (
     <Droppable droppableId={droppableId} type={type}>
             {(provided : DroppableProvided, snapshot : any) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef} className='normalize-content'>
                     {items.map((item : any, index : any | number) => (
-                      <Dragger key={item._id} item={item} index={index} getAllSubstations={getAllSubstations} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided}/>
+                      <Dragger key={item._id} item={item} index={index} getAllSubstations={getAllSubstations} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging}/>
                     ))}
                     {provided.placeholder}
                 </div>

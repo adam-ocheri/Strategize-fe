@@ -106,6 +106,7 @@ function Objective({}) {
                     dispatch={dispatch} 
                     user={user} 
                     manage={manageSelectedTask_Remote}
+                    activeTask={activeTask}
                 />
                 <article>
                     <div className='flex f-dir-col jt-center j-even border-white border-w2 border-solid border-r3 b-color-dark-1 white p7 m7'>

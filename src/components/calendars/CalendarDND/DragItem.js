@@ -2,8 +2,8 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import mongoose from 'mongoose';
-import { getTask } from 'src/app/state_management/task/taskSlice';
-const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className }) => {
+import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
+const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className, isDragging }) => {
     // const style = {
     //   ...provided.draggableProps.style,
     //   backgroundColor: snapshot.isDragging ? 'blue' : 'white',
@@ -14,6 +14,8 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
     const { activeTask } = useAppSelector((state) => state.task);
     const [time, setTime] = useState(item.date.slice(16, 21));
     const [isItemHovered, setIsItemHovered] = useState(false);
+    const [isItemSelected, setIsItemSelected] = useState(false);
+    const [isLMBPressed, setIsLMBPressed] = useState(false);
     useEffect(() => {
         if (item.date) {
             setTime(item.date.slice(16, 21));
@@ -21,6 +23,15 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
             // console.log(time);
         }
     }, []);
+    // useEffect(() => {
+    //   console.log('______________________________________________________________________')
+    //   console.log('isDragging is')
+    //   console.log(isDragging)
+    //   console.log('isItemHovered is')
+    //   console.log(isItemHovered)
+    //   console.log('CONDITION:');
+    //   console.log(isItemHovered && !isDragging )
+    // }, [isDragging, isItemHovered])
     const updateTime = async (t) => {
         setTime(t.target.value);
         console.log('trying to update time...');
@@ -76,6 +87,17 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         await dispatch(updateSubStation({ body, id: id, parentId: item.owningObjective, token: user.token }));
         await getAllSubstations();
     };
-    return (_jsxs("div", { className: `dragger p3 m3 b-color-dark-2 ${isItemHovered ? 'drag-hover' : ''}`, onMouseOver: () => setIsItemHovered(true), onMouseLeave: () => setIsItemHovered(false), onMouseDown: () => setIsItemHovered(false), children: [_jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
+    const setSelectedItemAsActiveTask = async () => {
+        setIsItemSelected(true);
+        if (item._id !== activeTask._id) {
+            // setActiveTask(item);
+            dispatch(setActiveTask({ item }));
+            ;
+            // await dispatch(getTask({id: item._id, parentId: item.owningObjective, token: user.token}));
+        }
+    };
+    return (
+    // className={`dragger p3 m3 b-color-dark-2 ${isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : 'drag-drag'}`} 
+    _jsxs("div", { className: `dragger p3 m3 b-color-dark-2 ${item.date && isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : ''}`, onMouseOver: async () => { setIsItemHovered(true); await setSelectedItemAsActiveTask(); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), onClick: () => setSelectedItemAsActiveTask(), children: [_jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
 };
 export default DragItem;

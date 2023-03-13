@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import mongoose from 'mongoose';
 import { DraggableProvided, DraggableStateSnapshot, DroppableProvided, Position } from 'react-beautiful-dnd'
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
-import { getTask } from 'src/app/state_management/task/taskSlice';
+import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
 
 
 
@@ -27,7 +27,7 @@ type DropAnimation = {
   scale: number | null | undefined;
 };
 
-const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className} : {item: DataElement , droppableProvided: DroppableProvided, snapshot: DraggableStateSnapshot} | any )  => {
+const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className, isDragging} : {item: DataElement , droppableProvided: DroppableProvided, snapshot: DraggableStateSnapshot} | any )  => {
   // const style = {
   //   ...provided.draggableProps.style,
   //   backgroundColor: snapshot.isDragging ? 'blue' : 'white',
@@ -39,6 +39,8 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
 
   const [time, setTime] = useState(item.date.slice(16, 21));
   const [isItemHovered, setIsItemHovered] = useState(false);
+  const [isItemSelected, setIsItemSelected] = useState(false);
+  const [isLMBPressed, setIsLMBPressed] = useState(false);
   useEffect(()=>{
     if(item.date){
       setTime(item.date.slice(16, 21));
@@ -46,6 +48,17 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       // console.log(time);
     }
   },[])
+
+  // useEffect(() => {
+  //   console.log('______________________________________________________________________')
+  //   console.log('isDragging is')
+  //   console.log(isDragging)
+  //   console.log('isItemHovered is')
+  //   console.log(isItemHovered)
+
+  //   console.log('CONDITION:');
+  //   console.log(isItemHovered && !isDragging )
+  // }, [isDragging, isItemHovered])
 
   const updateTime : any = async (t : any) => {
     setTime(t.target.value);
@@ -114,15 +127,31 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     await getAllSubstations();
   }
 
-  return (
+  const setSelectedItemAsActiveTask = async () => {
+    setIsItemSelected(true)
+    if(item._id !== activeTask._id){
+      // setActiveTask(item);
+      dispatch(setActiveTask({item}));
+      ;
+      // await dispatch(getTask({id: item._id, parentId: item.owningObjective, token: user.token}));
+    }
     
-    <div className={`dragger p3 m3 b-color-dark-2 ${isItemHovered ? 'drag-hover' : ''}`} onMouseOver={()=>setIsItemHovered(true)} onMouseLeave={()=>setIsItemHovered(false)} onMouseDown={() => setIsItemHovered(false)}>
-        {/* {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>} */}
-        <h3 >{item.taskName}</h3>
-  
-        <input className='time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}></input>
-        <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manage(e, item._id, item.owningObjective)}>Manage</a>
-        
+  }
+  return (
+    // className={`dragger p3 m3 b-color-dark-2 ${isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : 'drag-drag'}`} 
+    <div className={`dragger p3 m3 b-color-dark-2 ${item.date && isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : ''}`} 
+      onMouseOver={async ()=>{setIsItemHovered(true); await setSelectedItemAsActiveTask()}} 
+      onMouseLeave={()=> {setIsItemHovered(false);}} 
+      onMouseDown={() => {setIsLMBPressed(true); }}
+      onMouseUp={() => setIsLMBPressed(false)}
+      onClick={()=> setSelectedItemAsActiveTask()}
+    >
+      {/* {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>} */}
+      <h3 >{item.taskName}</h3>
+      
+      <input className='time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}></input>
+      <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manage(e, item._id, item.owningObjective)}>Manage</a>
+      
     </div>
   )
 }
