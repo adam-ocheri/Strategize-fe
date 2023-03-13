@@ -4,13 +4,13 @@ import { LineController, CategoryScale, LinearScale, PointElement, LineElement, 
 import { Line } from 'react-chartjs-2';
 
 
-export default function ChartLine() {
+export default function ChartLine({title, style} : any) {
     ChartJS.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
     const chartData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
         datasets: [
           {
-            label: 'My First Dataset',
+            label: title,
             data: [65, 59, 80, 81, 56, 55, 40, 10],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
@@ -21,7 +21,7 @@ export default function ChartLine() {
     };
   return (
     <div className='chart'>
-        <Line data={chartData}/>
+        <Line style={style} data={chartData}/>
     </div>
   )
 }

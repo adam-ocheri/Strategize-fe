@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { RootState } from 'src/app/store';
+import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
+import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { reset__Task } from 'src/app/state_management/task/taskSlice';
 
 //Child sub-station
 import { createTask, getTask, updateTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
-import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
-import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
-import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
+
 
 
 
@@ -85,20 +85,20 @@ function Objective({}) {
     } , [creatingNewTask])
     
     return (
-    <div className='pt5 mt5'>
+    <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
         <section>
             <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> </h3>
-            <h2 className='font-1'> 
+            <h2 className='font-1 s4'> 
                 {activeObjective.objectiveName} : 
-                {`${activeObjective.stationTypeName ? activeObjective.stationTypeName : activeObjective.stationType ? activeObjective.stationType : 'Objective'}`} 
+                <span className='font-5 s2 m3 orange'>{`${activeObjective.stationTypeName ? activeObjective.stationTypeName : activeObjective.stationType ? activeObjective.stationType : 'Objective'}`} </span>
             </h2>
             <div>
-                <button onClick={(e) => {navigator('/project/ltg/objective/settings')}}>Settings</button>
+                <Button_S2 onClick={(e : any) => {navigator('/project/ltg/objective/settings')}}>Settings</Button_S2>
             </div>
         </section>
-        <section>
-            <h3> Tasks </h3>
-            {data && <div>
+        <section className='p3 m3 border-top-w1 border-top-white border-top-solid'>
+            <h3 className='s3 font-4'> Tasks </h3>
+            {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
                 <CalendarDND 
                     data={data} 
                     getAllSubstations={async () => {await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}))}} 
@@ -108,7 +108,7 @@ function Objective({}) {
                     manage={manageSelectedTask_Remote}
                 />
                 <article>
-                    <div className='flex f-dir-col jt-center j-even border-white border-w2 border-solid border-r3 b-color-dark-2 white p7 m7'>
+                    <div className='flex f-dir-col jt-center j-even border-white border-w2 border-solid border-r3 b-color-dark-1 white p7 m7'>
                         {!creatingNewTask && 
                         <a  onClick={()=>setCreatingNewTask(true)}>
                             <p className='s4'>+</p>
@@ -128,11 +128,11 @@ function Objective({}) {
                     <input type='checkbox' id='collapse' checked={showData} onChange={() => setShowData(!showData)}></input> 
                     <label htmlFor='collapse'> View All Tasks </label>
 
-                    {showData && data && data.map((Task : any) => (<div key={Task._id} className='flex j-between p1 m1 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2'>
+                    {showData && data && data.map((Task : any) => (<div key={Task._id} className='flex j-between p3 m3 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2 b-color-dark-1'>
                         Task: {Task.taskName}
                         <span>
-                            <button onClick={(e) => {manageSelectedStation(e, Task._id)}}> Manage </button>
-                            <button onClick={() => {dispatch(deleteTask({id: Task._id, parentId: activeObjective._id, owner: user._id, token: user.token}))}}>Delete</button>
+                            <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Task._id)}}> Manage </Button_S2>
+                            <Button_S2 onClick={() => {dispatch(deleteTask({id: Task._id, parentId: activeObjective._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
                         </span>
                     </div>))}
                 </article>

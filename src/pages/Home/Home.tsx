@@ -8,6 +8,7 @@ import { createProject, getAllProjects, getProject, updateProject, deleteProject
 import ChartBar from 'src/components/charts/ChartBar/ChartBar';
 import ChartLine from 'src/components/charts/ChartLine/ChartLine';
 import ChartPie from 'src/components/charts/ChartPie/ChartPie';
+import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 
 
 function Home() {
@@ -81,7 +82,7 @@ function Home() {
     <main className='generic-container-1 p1 m1'>
       {user && <div className='generic-container-3 font-5'>
           <div className='generic-container-3 card-sub-main quad-box-shadow-2'>   {/* generic-container-3 card-sub-main quad-box-shadow-2 */}
-            <h1 className='font-1 s6'>Welcome</h1>
+            <h1 className='font-1 white s5'>Welcome</h1>
             <div className='generic-container-3 font-5'>
               <p>
                 <strong className='font-6'>Name : </strong> {user.name}
@@ -90,46 +91,36 @@ function Home() {
               <strong className='font-6'>Email : </strong> {user.email}
               </p>
               <p>
-                <button onClick={onLogoutClicked}>Logout</button>
+                <Button_S2 onClick={onLogoutClicked}>Logout</Button_S2>
               </p>
               
             </div>
-            <div className='flex p2 m2 j-center j-even'>
-              <div className='p1 m1' > <ChartPie/> </div>
-              <div className='p1 m1' > <ChartBar /> </div>
-              <div className='p1 m1' > <ChartLine/> </div>
-              {/* <div> </div>
-              <div> </div>
-              <ChartPolarArea/>
-              <ChartScatter/>
-              <ChartRadar/> */}
-            </div>
           </div>
         </div>}
-      <section className='card-main quad-box-shadow-4 p1 m1'>  
+      <section >  {/*className='card-main quad-box-shadow-4 p1 m1'*/}
         <article className='card-sub-main p4 m5 quad-box-shadow-2'>
           <div className='centered'>
             <h2 className='font-3'>Create New Project</h2>
             <form className='form-generic' onSubmit={(e) => onFormSubmitted(e)}>
                 <input className="form-generic-input font-2" type="text" placeholder="Project Name" id="projectName" 
                     name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
-                <button type='submit'>Create</button>
+                <Button_S2 type='submit'>Create</Button_S2>
             </form>  
           </div>
           <div className='p3 m3'>
             {data && user  && 
             <div className='card-sub p3 m3 quad-box-shadow-1'>
-              <h4 className='s3 p2 m2 orange font-5 centered'>Existing Projects</h4>
+              <h4 className='s3 p2 m2 font-3 centered'>Existing Projects</h4>
               {data.map((project : any) => (
               <div key={project._id} className='card-sub-child p3 m3'>
                 <div className='flex'>
                   <h2 className='font-1 s1 p1 m1 orange '>Project Name :</h2> <h3 className='font-2 s4 p3 m3 white'>{project.projectName}</h3>
                   <div className='flex parent flex-flow-left'>
-                    <button className='p3 m3' onClick={(e) => {manageSelectedStation(e, project._id)}}> Manage </button>
+                    <Button_S2 className='p3 m3' onClick={(e : any) => {manageSelectedStation(e, project._id)}}> Manage </Button_S2>
                   </div>
                 </div>
                 <div>
-                  <h2 className='font-1 s1 p1 m1 orange'>Owner :</h2> <h3 className='font-2 s2 p1 m1 black'>{user.name}</h3> 
+                  <h2 className='font-1 s1 p1 m1 orange'>Owner :</h2> <h3 className='font-2 s2 p1 m1 white'>{user.name}</h3> 
                 </div>
               </div>
               ))}

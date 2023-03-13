@@ -116,7 +116,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   return (
     
     <div className='dragger p3 m3 b-color-dark-2'>
-        {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
+        {/* {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>} */}
         <h3 >{item.taskName}</h3>
   
         <input type='time' value={time} onChange={(t)=> updateTime(t)}></input>

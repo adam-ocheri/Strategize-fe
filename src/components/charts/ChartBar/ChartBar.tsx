@@ -3,7 +3,7 @@ import { Doughnut, Bar, Chart, Line, Pie, PolarArea, Radar, Scatter } from "reac
 
 import React from 'react'
 
-export default function ChartBar({style}:any) {
+export default function ChartBar({style, title}:any) {
 
     ChartJS.register(LinearScale, BarElement, Tooltip, Legend, CategoryScale);
 
@@ -11,7 +11,7 @@ export default function ChartBar({style}:any) {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
     datasets: [
       {
-        label: 'My First Dataset',
+        label: title,
         data: [65, 59, 80, 81, 56, 55, 40, 10],
         fill: false,
         borderColor: 'rgb(75, 192, 192)',

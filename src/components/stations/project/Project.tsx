@@ -6,6 +6,7 @@ import { getProject, updateProject, deleteProject, reset__project, getAllSubstat
 import { updateTask, getTask } from 'src/app/state_management/task/taskSlice';
 import { RootState } from 'src/app/store';
 import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
+import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 
 
 
@@ -83,33 +84,33 @@ function Project({}) {
     }, [activeProject])
     
     return (
-    <div className='pt5 mt5'>
+    <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
         <section>
-            <h2> 
-                {activeProject.projectName} :    
-                {`${activeProject.stationTypeName ? activeProject.stationTypeName : activeProject.stationType ? activeProject.stationType : 'Project'}`}
+            <h2 className='font-1 s4'> 
+                {activeProject.projectName} :     
+                <span className='font-5 s2 m3 orange'>{`${activeProject.stationTypeName ? activeProject.stationTypeName : activeProject.stationType ? activeProject.stationType : 'Project'}`} </span>
             </h2>
             <div>
-                <button onClick={(e) => {navigator('/project/settings')}}>Settings</button>
+                <Button_S2 onClick={(e : any) => {navigator('/project/settings')}}>Settings</Button_S2>
             </div>
         </section>
-        <section>
-            <h3> Long Term Goals </h3>
-            {data && <div>
-                {data.map((LTG : any) => (<div key={LTG._id}>
+        <section className='p3 m3 border-top-w1 border-top-white border-top-solid'>
+            <h3 className='s3 font-4'> Long Term Goals </h3>
+            {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
+                {data.map((LTG : any) => (<div key={LTG._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
                     Long Term Goal: {LTG.LTGName}
                     <p>
-                        <button onClick={(e) => {manageSelectedStation(e, LTG._id)}}> Manage </button>
-                        <button onClick={() => {dispatch(deleteLTG({id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token}))}}>Delete</button>
+                        <Button_S2 onClick={(e : any) => {manageSelectedStation(e, LTG._id)}}> Manage </Button_S2>
+                        <Button_S2 onClick={() => {dispatch(deleteLTG({id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
                     </p>
                 </div>))}
             </div>}
         </section>
-        <section>
+        <section className='p3 m3'>
             <form onSubmit={(e) => onFormSubmitted(e)}>
                 <input className="form-input" type="text" placeholder="LTG Name" id="newLTGName" 
                     name="newLTGName" value={newLTGName} onChange={(e) => {onFormUpdated(e)}}/>
-                <button type='submit'>Add New</button>
+                <Button_S2 type='submit'>Add New</Button_S2>
             </form> 
         </section>
         <section>

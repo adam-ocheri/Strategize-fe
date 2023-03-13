@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { RootState } from 'src/app/store';
 import { useEffect, useState } from 'react';
+import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 
  function Settings_Task() {
 
@@ -96,16 +97,16 @@ import { useEffect, useState } from 'react';
                 <input className="form-input" type="text" placeholder={activeTask.description} id="Description" 
                     name="description" value={description} onChange={(e) => {onFormUpdated(e)}}/>
             </div>
-            <button type='submit' disabled={savePrevented}>Save</button>
+            <Button_S2 type='submit' disabled={savePrevented}>Save</Button_S2>
         </form>
         {deletePrompt ? <div>
             This will delete the Task and all of it's data! <br/>
             Are you sure? <br/>
-            <button onClick={() => onDeleteTask()}>Delete</button>
-            <button onClick={() => setDeletePrompt(false)}>Cancel</button>
+            <Button_S2 onClick={() => onDeleteTask()}>Delete</Button_S2>
+            <Button_S2 onClick={() => setDeletePrompt(false)}>Cancel</Button_S2>
             </div> 
             : <div>
-                <button onClick={() => setDeletePrompt(true)}>DELETE</button>
+                <Button_S2 onClick={() => setDeletePrompt(true)}>DELETE</Button_S2>
             </div>}
     </div>
   )

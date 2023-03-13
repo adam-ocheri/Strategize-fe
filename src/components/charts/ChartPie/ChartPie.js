@@ -1,13 +1,13 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-export default function ChartPie({ style }) {
+export default function ChartPie({ style, title }) {
     ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
     const chartData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
         datasets: [
             {
-                label: 'My First Dataset',
+                label: title,
                 data: [65, 59, 80, 81, 56, 55, 40, 10],
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
@@ -16,5 +16,5 @@ export default function ChartPie({ style }) {
             }
         ]
     };
-    return (_jsx("div", { className: 'chart', style: style, children: _jsx(Pie, { data: chartData }) }));
+    return (_jsx("div", { className: 'chart', children: _jsx(Pie, { style: style, data: chartData }) }));
 }

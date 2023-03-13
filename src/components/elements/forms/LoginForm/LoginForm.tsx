@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import ButtonForm from '../../buttons/ButtonForm/ButtonForm';
+
 
 export default function LoginForm({formData, onFormUpdated, onFormSubmitted} : any) {
 
@@ -60,7 +62,7 @@ export default function LoginForm({formData, onFormUpdated, onFormSubmitted} : a
               </label>
               <div className="p2 m2">
                 <ButtonForm additionalStyles='font-1 s2' text={'Signup'} disabled={!formValid}/>
-                <h4 className='s0 white font-1'>Already a user? <a href='' style={{color: '#22aaff'}}>Sign In</a></h4>
+                <h4 className='s0 white font-1'>Already a user? <Link to='/login' style={{color: '#22aaff'}}>Sign In</Link></h4>
               </div>
     </form>  
   )

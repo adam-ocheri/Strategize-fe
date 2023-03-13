@@ -85,16 +85,16 @@ function Task({}) {
     }, [])
     
     return (
-    <div className='p2 m2 pt5 mt5'>
+    <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
         {activeLTG && activeObjective && <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> {'>'} <Link to='/project/ltg/objective/task'>{activeTask.taskName}</Link></h3>}
-        <section>
-            <h2 className='font-3'> 
+        <section className='font-3'>
+            <h2 className='font-1 s4'> 
                 {activeTask.taskName} : 
-                {`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}
+                <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
             </h2>
             Date: {`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} <br/>
             Time: {`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`}
-            <div>
+            <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
                 {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
                 <Settings_Task />
             </div>

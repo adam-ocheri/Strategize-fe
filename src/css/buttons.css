@@ -40,6 +40,13 @@
     /* border-radius: 25%; */
 }
 
+.btn-style-disabled{
+    border: 2.5px solid rgb(43, 60, 64);
+    color:  rgb(119, 124, 125);
+    background-color: transparent;
+    /* border-radius: 25%; */
+}
+
 .btn-style-1:hover{
     box-shadow: 0 0 5px 5px rgba(1, 200, 255, 0.2), 
     0 -5px 5px 0 rgba(1, 200, 255, 0.2), 

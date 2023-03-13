@@ -87,55 +87,55 @@ function Signup() {
       </div>
       <ScrollBoxParentContainer_LoginPage/>
       {/* <StretchBoxParentContainer_LoginPage/> */}
-      <StretchBoxParentContainer title={'Unleashing Your Potential'} className='b-color-white'>
-        
+
+      <StretchBoxParentContainer title={'Unleashing Your Potential'} className='b-color-white'>  
         <StretchBox >
           {/* <img src="b2.jpg" alt="img" height={'400px'} width={'400px'}/> */}
-          <div style={{minHeight: '19vh'}}>
-            <ChartLine />
+          <div >
+            <ChartLine style={{minHeight: '22vh'}} title={'Track Your Progress'}/>
           </div>
             <p className="font-3">
-              Purpose Is Destruction. <br/>
-              Destruction is purpose.
+              Stay on top of your goals with real-time progress tracking <br/>
+              Monitor your progress and take action to stay on track
             </p>
             <Button_S1 > Learn More </Button_S1>
         </StretchBox>
         <StretchBox >
           {/* <img src="b2.jpg" alt="img" height={'400px'} width={'400px'}/> */}
-          <div style={{minHeight: '19vh'}}>
-            <ChartBar />
+          <div >
+            <ChartBar style={{minHeight: '22vh'}} title={'Identify Patterns'}/>
           </div>
             <p className="font-3">
-              Purpose Is Destruction. <br/>
-              Destruction is purpose.
+              Discover trends and optimize your workflow with pattern recognition <br/>
+              Unlock hidden insights with powerful pattern identification tools
             </p>
             <Button_S1 > Learn More </Button_S1>
         </StretchBox>
         <StretchBox>
           {/* <img src="b3.jpg" alt="img" height={'400px'} width={'400px'}/> */}
-            <div style={{minHeight: '34vh'}}>
-            <ChartPie />
+            <div >
+              <ChartPie style={{minHeight: '24vh'}} title={'Gain Valuable Insights'} />
             </div>
             
             <p className="font-3">
-              Triumph in Power
+              Get actionable insights to boost your productivity and performance <br/>
+              Empower your decision-making with data-driven insights and analytics
             </p>
             <Button_S1 > Learn More </Button_S1>
         </StretchBox>
       </StretchBoxParentContainer>
-      <StretchBoxParentContainer title={'And Some Other Stuff'} className='b-color-dark-1 white'>
+      <StretchBoxParentContainer title={'Maximize Your Efficiency'} className='b-color-dark-1 white'>
         <StretchBox>
-          <img src="b3.jpg" alt="img" height={'400px'} width={'400px'}/>
+          <img src="sb5.jpg" alt="img" className="spread-images"/>
             <p className="font-3">
-              Triumph in Power
+              Stay Organized: Our tools help you stay organized and focused, so you can get more done in less time
             </p>
             <Button_S1 className='b-color-dark-2'> Learn More </Button_S1>
         </StretchBox>
         <StretchBox>
-          <img src="b2.jpg" alt="img" height={'400px'} width={'400px'}/>
+          <img src="sb6.jpg" alt="img" className="spread-images"/>
             <p className="font-3">
-              Purpose Is Destruction. <br/>
-              Destruction is purpose.
+              Optimize Performance: With performance tracking and analytics, you can identify ways to improve your workflow and maximize your productivity.
             </p>
             <Button_S1 className='b-color-dark-2'> Learn More </Button_S1>
         </StretchBox>
@@ -160,16 +160,16 @@ function Signup() {
       </div>
       
       {/*MIGRATE 2----------------------------------------------------------------------------------------------------*/}
-      <StretchBoxParentContainer className='white b-img-1'>
-        <h2 className="white s4 font-3"> Smelly Stuff Goes </h2>
+      <StretchBoxParentContainer className='white b-img-2'>
+        <h2 className="white s4 font-3"> Focus On The Important Things </h2>
         <StretchBox>
-          <p className="font-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur aspernatur odit ratione veritatis tempore quasi! 
-            Fugiat exercitationem animi reiciendis harum iusto saepe, magni voluptas perspiciatis consequuntur necessitatibus 
-            maiores quis pariatur.
+          <p className="font-3 s2">
+            Strategize is designed to help you prioritize and focus on the most important tasks and goals, so you can achieve your objectives efficiently 
+            and effectively, removing any "noise" and distractions. <br/>
+            With a range of features that enable detailed planning, tracking progress, and gaining valuable insights, Strategize 
+            empowers you to streamline your workflow and stay on track towards success.
           </p>
         </StretchBox>
-        <Button_S1> Learn More </Button_S1>
       </StretchBoxParentContainer>
       <MultiLinkBox_LoginPage className='p5 m5'/>
       <Footer_Homepage className='stretch-box-generic-1 footer-homepage'/>

@@ -75,6 +75,6 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         await dispatch(updateSubStation({ body, id: id, parentId: item.owningObjective, token: user.token }));
         await getAllSubstations();
     };
-    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }), _jsx("h3", { children: item.taskName }), _jsx("input", { type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
+    return (_jsxs("div", { className: 'dragger p3 m3 b-color-dark-2', children: [_jsx("h3", { children: item.taskName }), _jsx("input", { type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manage(e, item._id, item.owningObjective), children: "Manage" })] }));
 };
 export default DragItem;
