@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
+import { setActiveTask } from 'src/app/state_management/task/taskSlice';
 //Child sub-station
 import { createTask, getTask, updateTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
 function Objective({}) {
@@ -39,11 +40,18 @@ function Objective({}) {
         await dispatch(getTask({ id: id, parentId: activeObjective._id, token: user.token }));
         navigator('/project/ltg/objective/task');
     };
-    const manageSelectedTask_Remote = async (e, id, parentObjectiveId) => {
+    const manageSelectedTask_Remote = async (e, id, parentObjectiveId, { subTask }) => {
         console.log("trying to EDIT Task...........");
-        console.log('manageSelectedTask_Remote.....');
-        console.log(id);
-        await dispatch(getTask({ id: id, parentId: parentObjectiveId, token: user.token }));
+        console.log('manageSelectedTask_Remote!!!!!!.....');
+        console.log(subTask);
+        if (subTask !== null) {
+            console.log('SUBTASK is OK! :)');
+            await dispatch(setActiveTask({ item: subTask }));
+        }
+        else {
+            console.log('SUBTASK is SHIT!!!!!!! :(');
+            await dispatch(getTask({ id: id, parentId: parentObjectiveId, token: user.token }));
+        }
         navigator('/project/ltg/objective/task');
     };
     //

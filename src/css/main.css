@@ -248,6 +248,23 @@ body {
     width: 100%;
 }
 
+.task-iterations{
+    border: 1.2px solid white;
+    border-radius: 4px;
+    padding: 6px;
+    margin: 8px;
+    background-color: transparent;
+}
+.task-iterations:hover{
+    /* border: 1.2px solid aqua; */
+    background-color: #ffa600;
+    color: aqua;
+}
+.task-iteration-active{
+    border: 4.2px solid aqua;
+    color: #ffa600;
+}
+
 /*TODO Media Queries ---------------------------------------------------------------------------------------------------------------------- */
 
 @media (min-width: 1801px){

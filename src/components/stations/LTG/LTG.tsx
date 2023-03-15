@@ -8,7 +8,7 @@ import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 //Child sub-station
 import { getAllSubStations_LTG } from 'src/app/state_management/LTG/LTGSlice';
 import { createObjective, getObjective, deleteObjective, getAllObjectives, } from 'src/app/state_management/objective/objectiveSlice';
-import { updateTask, getTask } from 'src/app/state_management/task/taskSlice';
+import { updateTask, getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
 
 
 
@@ -49,13 +49,22 @@ function LTG({}) {
         navigator('/project/ltg/objective');
     }
 
-    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any) => {
-        console.log("trying to EDIT Objective...........")
-        console.log(id);
-        await dispatch(getTask({id: id, parentId: parentObjectiveId, token: user.token}));
+    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any, {subTask} : any) => {
+        console.log("trying to EDIT Task...........")
+        console.log('manageSelectedTask_Remote!!!!!!.....')
+        console.log(subTask);
+        if (subTask !== null){
+            console.log('SUBTASK is OK! :)');
+            await dispatch(setActiveTask({item: subTask}));
+        }
+        else{
+            console.log('SUBTASK is SHIT!!!!!!! :(');
+            await dispatch(getTask({id: id, parentId: parentObjectiveId, token: user.token}));
+        }
+        
         navigator('/project/ltg/objective/task');
     }
-    //
+
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
     const {activeProject} : any = useAppSelector((state) => state.project)
@@ -122,6 +131,7 @@ function LTG({}) {
                 dispatch={dispatch} 
                 user={user} 
                 manage={manageSelectedTask_Remote}
+                activeTask={activeTask}
             />
         </section>
     </div>

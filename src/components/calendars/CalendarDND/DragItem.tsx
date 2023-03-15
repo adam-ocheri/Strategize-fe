@@ -70,7 +70,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       return;
     }
 
-    await updateTimeForDate(item.date, t.target.value, item._id, item.owningObjective)
+    await updateTimeForDate(item.date, t.target.value, item._id, item.owningObjective, item)
     console.log('time is:')
     console.log(t.target.value);
     console.log('date is:')
@@ -80,18 +80,13 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   const addNewIteration = async () => {
     
     let historyArray : any[] = [];
+  
     if( item.isSubtask ){
       await dispatch(getTask({id: item.origin, parentId: item.owningObjective, token: user.token})).then((response) => {
         historyArray = [...response.payload.HISTORY_TaskIterations];
       });
     }
-    
-    // const initBody = item.isSubtask ? {} : {iteration: item.iteration + 1};
-    // await dispatch(updateSubStation({body : initBody, id: id, parentId: item.owningObjective, token: user.token}))
-
-    
-
-    
+  
     let newIteration = {};
 
     for (let field in item){
@@ -101,15 +96,16 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       // Exclude out the ID, date, and TaskIterations array of the original item from the copy
       if (field !== 'HISTORY_TaskIterations')
       {
-        // if (field === 'iteration'){
-        //   Object.defineProperty(newIteration, field, {value: item[field], writable: true, enumerable: true, configurable: true})
-        // }
         if (field === '_id'){
           if(!item.isSubtask){
-            Object.defineProperty(newIteration, 'origin', {value: item[field], writable: true, enumerable: true, configurable: true})
-            Object.defineProperty(newIteration, 'isSubtask', {value: true, writable: true, enumerable: true, configurable: true})
+            Object.defineProperty(newIteration, 'origin', {value: item[field], writable: true, enumerable: true, configurable: true});
+            Object.defineProperty(newIteration, 'isSubtask', {value: true, writable: true, enumerable: true, configurable: true});
           }
           Object.defineProperty(newIteration, field, {value: new mongoose.Types.ObjectId(), writable: true, enumerable: true, configurable: true})
+        }
+        else if (field === 'iteration'){
+          let value = item.isSubtask ? historyArray.length + 1 : item.HISTORY_TaskIterations.length + 1;
+          Object.defineProperty(newIteration, 'iteration', {value: value, writable: true, enumerable: true, configurable: true});
         }
         else if (field === 'date'){
           Object.defineProperty(newIteration, field, {value: '', writable: true, enumerable: true, configurable: true})
@@ -119,38 +115,50 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
         } 
       }
     }
+
+    const id = item.isSubtask ? item.origin : item._id;
     const newArray = item.isSubtask ? [...historyArray] : [...item.HISTORY_TaskIterations];
     const body = {HISTORY_TaskIterations: [...newArray, newIteration]};
-    const id = item.isSubtask ? item.origin : item._id;
-
+    
     await dispatch(updateSubStation({body, id: id, parentId: item.owningObjective, token: user.token}))
     await getAllSubstations();
   }
 
-  const setSelectedItemAsActiveTask = async () => {
-    setIsItemSelected(true)
-    if(item._id !== activeTask._id){
-      // setActiveTask(item);
-      dispatch(setActiveTask({item}));
-      ;
-      // await dispatch(getTask({id: item._id, parentId: item.owningObjective, token: user.token}));
-    }
-    
+  // const setSelectedItemAsActiveTask = async () => {
+  //   setIsItemSelected(true)
+  //   if(item._id !== activeTask._id){
+  //     dispatch(setActiveTask({item}));
+  //   }
+  // }
+
+  const manageItem = async (e : any) => {
+    // if (item.isSubtask){
+    //   manage(e, item.origin, item.owningObjective)
+    // }
+    // else{
+    //   manage(e, item._id, item.owningObjective)
+    // }
+    e.preventDefault();
+    const subTask = item.isSubtask ? item : null;
+    // if(item._id !== activeTask._id){
+    //   dispatch(setActiveTask({item}));
+    // }
+    await manage(e, item._id, item.owningObjective, {subTask});
   }
   return (
     // className={`dragger p3 m3 b-color-dark-2 ${isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : 'drag-drag'}`} 
     <div className={`dragger p3 m3 b-color-dark-2 ${item.date && isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : ''}`} 
-      onMouseOver={async ()=>{setIsItemHovered(true); await setSelectedItemAsActiveTask()}} 
+      onMouseOver={async ()=>{setIsItemHovered(true);}} 
       onMouseLeave={()=> {setIsItemHovered(false);}} 
       onMouseDown={() => {setIsLMBPressed(true); }}
       onMouseUp={() => setIsLMBPressed(false)}
-      onClick={()=> setSelectedItemAsActiveTask()}
+      //onClick={()=> setSelectedItemAsActiveTask()}
     >
-      {/* {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>} */}
+      {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
       <h3 >{item.taskName}</h3>
       
       <input className='time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}></input>
-      <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manage(e, item._id, item.owningObjective)}>Manage</a>
+      <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
       
     </div>
   )
