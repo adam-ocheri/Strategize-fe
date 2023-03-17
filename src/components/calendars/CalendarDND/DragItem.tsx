@@ -39,6 +39,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
 
   const [time, setTime] = useState(item.date.slice(16, 21));
   const [isItemHovered, setIsItemHovered] = useState(false);
+  const [itemBehaviorClass, setItemBehaviorClass] = useState('');
   const [isItemSelected, setIsItemSelected] = useState(false);
   const [isLMBPressed, setIsLMBPressed] = useState(false);
   useEffect(()=>{
@@ -49,16 +50,27 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     }
   },[])
 
-  // useEffect(() => {
-  //   console.log('______________________________________________________________________')
-  //   console.log('isDragging is')
-  //   console.log(isDragging)
-  //   console.log('isItemHovered is')
-  //   console.log(isItemHovered)
+  useEffect(() => {
+    console.log('______________________________________________________________________')
+    console.log('isDragging is')
+    console.log(isDragging)
+    console.log('isItemHovered is')
+    console.log(isItemHovered)
 
-  //   console.log('CONDITION:');
-  //   console.log(isItemHovered && !isDragging )
-  // }, [isDragging, isItemHovered])
+    console.log('CONDITION:');
+    console.log(isItemHovered && !isDragging )
+    if(isItemHovered && !isDragging){
+      setItemBehaviorClass('drag-hover');
+    }else{
+      setItemBehaviorClass('drag-allow');
+    }
+  }, [isDragging, isItemHovered])
+
+  useEffect(() => {
+    console.log('______________________________________________________________________')
+    console.log("itemBehaviorClass is:")
+    console.log(itemBehaviorClass);
+  }, [itemBehaviorClass])
 
   const updateTime : any = async (t : any) => {
     setTime(t.target.value);
@@ -94,7 +106,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       console.log(field + ': ');
       console.log(item[field]);
       // Exclude out the ID, date, and TaskIterations array of the original item from the copy
-      if (field !== 'HISTORY_TaskIterations')
+      if (field !== 'HISTORY_TaskIterations' && field !== 'description' && field !== 'notes')
       {
         if (field === '_id'){
           if(!item.isSubtask){
@@ -146,9 +158,9 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     await manage(e, item._id, item.owningObjective, {subTask});
   }
   return (
-    // className={`dragger p3 m3 b-color-dark-2 ${isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : 'drag-drag'}`} 
-    <div className={`dragger p3 m3 b-color-dark-2 ${item.date && isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : ''}`} 
-      onMouseOver={async ()=>{setIsItemHovered(true);}} 
+    <div className={`dragger p3 m3 b-color-dark-2 `} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
+      //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
+      onMouseOver={async ()=>{setIsItemHovered(true); dispatch(setActiveTask({item}))}} 
       onMouseLeave={()=> {setIsItemHovered(false);}} 
       onMouseDown={() => {setIsLMBPressed(true); }}
       onMouseUp={() => setIsLMBPressed(false)}

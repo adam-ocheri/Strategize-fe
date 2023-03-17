@@ -3,10 +3,10 @@ import { Droppable, Draggable, DraggableProvided ,DroppableProvided, DraggableSt
 import Dragger from './Dragger'
 import Calendar from 'react-calendar'
 
-export default function Dropper({items , droppableId , type, children, getAllSubstations, updateTime, manage, isDragging} : 
-  {items : any, droppableId : string, type: string, children? : ReactNode, getAllSubstations : any, updateTime : any, manage : any, isDragging : boolean}) {
+export default function Dropper({items , droppableId , type, children, getAllSubstations, updateTime, manage, isDragging, isDropDisabled=false} : 
+  {items : any, droppableId : string, type: string, children? : ReactNode, getAllSubstations : any, updateTime : any, manage : any, isDragging : boolean, isDropDisabled : boolean}) {
   return (
-    <Droppable droppableId={droppableId} type={type}>
+    <Droppable droppableId={droppableId} type={type} isDropDisabled={isDropDisabled}>
             {(provided : DroppableProvided, snapshot : any) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} {...provided.innerRef} className='normalize-content'>
                     {items.map((item : any, index : any | number) => (

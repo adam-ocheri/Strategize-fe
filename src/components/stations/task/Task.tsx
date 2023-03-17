@@ -43,12 +43,12 @@ function Task({}) {
         }
     };
 
-    const manageSelectedStation = async (e : any, id : any) => {
-        console.log("trying to EDIT Task...........")
-        console.log(id);
-        await dispatch(getTask({id: id, parentId: activeTask._id, token: user.token}));
-        navigator('/project/ltg/objective/task');
-    }
+    // const manageSelectedStation = async (e : any, id : any) => {
+    //     console.log("trying to EDIT Task...........")
+    //     console.log(id);
+    //     await dispatch(getTask({id: id, parentId: activeTask._id, token: user.token}));
+    //     navigator('/project/ltg/objective/task');
+    // }
     //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
@@ -90,7 +90,7 @@ function Task({}) {
                 getSuperStations();
             }
 
-            //setCurrentTaskIteration(activeTask.iteration);
+            // setCurrentTaskIteration(activeTask.iteration);
 
             
         }
@@ -158,9 +158,9 @@ function Task({}) {
         let newIteration = activeTask.iteration + direction;
         console.log('updating Iteration...')
         console.log(newIteration >= 0 && newIteration)
-        console.log(newIteration <= originTask.HISTORY_TaskIterations.length)
+        console.log(newIteration <= originTask?.HISTORY_TaskIterations?.length)
         console.log(originTask)
-        const isIterationInRange = newIteration >= 0 && newIteration <= originTask.HISTORY_TaskIterations.length;
+        const isIterationInRange = newIteration >= 0 && newIteration <= originTask?.HISTORY_TaskIterations?.length;
         isIterationInRange ? setCurrentTaskIteration(newIteration) : null;
     };
     
@@ -168,14 +168,14 @@ function Task({}) {
     <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
         {activeLTG && activeObjective && <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> {'>'} <Link to='/project/ltg/objective/task'>{activeTask.taskName}</Link></h3>}
         <section className='font-3'>
-            {originTask.HISTORY_TaskIterations.length > 0 && <div className='centered flex f-dir-col'>
+            {originTask?.HISTORY_TaskIterations?.length > 0 && <div className='centered flex f-dir-col'>
                 <div>
                     <Button_S2 onClick={() => onSubtaskIterationChange(-1)}>{'<'}</Button_S2> 
                     <span>Task Iteration</span> 
                     <Button_S2 onClick={() =>onSubtaskIterationChange(1)}>{'>'}</Button_S2>
                 </div>
                 {originTask && <div >
-                    <button className={`white task-iterations ${activeTask.iteration === 0 ? 'task-iteration-active':''}`}  onClick={()=>setCurrentTaskIteration(0)}>{'0'}</button>
+                    <button className={`red task-iterations ${activeTask.iteration === 0 ? 'task-iteration-active':''}`}  onClick={()=>setCurrentTaskIteration(0)}>{'O'}</button>
                     {originTask && originTask.HISTORY_TaskIterations.map((item : any) => (
                         <button 
                             className={`white task-iterations ${item.iteration === currentTaskIteration ? 'task-iteration-active':''}`} 
@@ -201,7 +201,7 @@ function Task({}) {
                     </div>}
                 <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
                     {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
-                    <Settings_Task />
+                    <Settings_Task originTask={originTask} currentTaskIteration={currentTaskIteration} />
                 </div>
             </article>
         </section>

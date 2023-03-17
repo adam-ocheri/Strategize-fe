@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { getObjective } from 'src/app/state_management/objective/objectiveSlice';
 import { getAllLTGs, getLTG } from 'src/app/state_management/LTG/LTGSlice';
 //Child sub-station
-import { createTask, getTask, getAllTasks, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { createTask, getAllTasks, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import Settings_Task from './Settings_Task';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 function Task({}) {
@@ -32,12 +32,12 @@ function Task({}) {
             dispatch(createTask({ taskName: newTaskName, parentId: activeTask._id, owner: user._id, token: user.token }));
         }
     };
-    const manageSelectedStation = async (e, id) => {
-        console.log("trying to EDIT Task...........");
-        console.log(id);
-        await dispatch(getTask({ id: id, parentId: activeTask._id, token: user.token }));
-        navigator('/project/ltg/objective/task');
-    };
+    // const manageSelectedStation = async (e : any, id : any) => {
+    //     console.log("trying to EDIT Task...........")
+    //     console.log(id);
+    //     await dispatch(getTask({id: id, parentId: activeTask._id, token: user.token}));
+    //     navigator('/project/ltg/objective/task');
+    // }
     //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
@@ -73,7 +73,7 @@ function Task({}) {
                 };
                 getSuperStations();
             }
-            //setCurrentTaskIteration(activeTask.iteration);
+            // setCurrentTaskIteration(activeTask.iteration);
         }
     }, []);
     useEffect(() => {
@@ -135,12 +135,12 @@ function Task({}) {
         let newIteration = activeTask.iteration + direction;
         console.log('updating Iteration...');
         console.log(newIteration >= 0 && newIteration);
-        console.log(newIteration <= originTask.HISTORY_TaskIterations.length);
+        console.log(newIteration <= originTask?.HISTORY_TaskIterations?.length);
         console.log(originTask);
-        const isIterationInRange = newIteration >= 0 && newIteration <= originTask.HISTORY_TaskIterations.length;
+        const isIterationInRange = newIteration >= 0 && newIteration <= originTask?.HISTORY_TaskIterations?.length;
         isIterationInRange ? setCurrentTaskIteration(newIteration) : null;
     };
-    return (_jsxs("div", { className: 'pt7 mt7 p3 m3 b-color-dark-2 white', children: [activeLTG && activeObjective && _jsxs("h3", { className: 'font-1 white', children: [" ", _jsx(Link, { to: '/project', children: activeProject.projectName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg', children: activeLTG.LTGName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg/objective', children: activeObjective.objectiveName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg/objective/task', children: activeTask.taskName })] }), _jsxs("section", { className: 'font-3', children: [originTask.HISTORY_TaskIterations.length > 0 && _jsxs("div", { className: 'centered flex f-dir-col', children: [_jsxs("div", { children: [_jsx(Button_S2, { onClick: () => onSubtaskIterationChange(-1), children: '<' }), _jsx("span", { children: "Task Iteration" }), _jsx(Button_S2, { onClick: () => onSubtaskIterationChange(1), children: '>' })] }), originTask && _jsxs("div", { children: [_jsx("button", { className: `white task-iterations ${activeTask.iteration === 0 ? 'task-iteration-active' : ''}`, onClick: () => setCurrentTaskIteration(0), children: '0' }), originTask && originTask.HISTORY_TaskIterations.map((item) => (_jsx("button", { className: `white task-iterations ${item.iteration === currentTaskIteration ? 'task-iteration-active' : ''}`, onClick: () => setCurrentTaskIteration(item.iteration), children: item.iteration }, item._id)))] })] }), _jsxs("h2", { className: 'font-1 s4', children: [activeTask.taskName, " :", _jsx("span", { className: 'font-5 s2 m3 orange', children: `${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}` })] }), _jsxs("article", { className: 'p3 m3', children: ["Date: ", _jsxs("span", { className: 's3 ml4', children: [`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`, " "] }), " ", _jsx("br", {}), "Time: ", _jsxs("span", { className: 's3 ml4', children: [`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`, " "] }), activeTask.description && _jsxs("div", { className: 'font-5 s2 p3 m3', children: ["Description: ", _jsx("span", { className: `s3 ml4`, children: activeTask.description })] }), _jsx("div", { className: 'p3 m3 border-top-w1 border-top-white border-top-solid', children: _jsx(Settings_Task, {}) })] })] })] }));
+    return (_jsxs("div", { className: 'pt7 mt7 p3 m3 b-color-dark-2 white', children: [activeLTG && activeObjective && _jsxs("h3", { className: 'font-1 white', children: [" ", _jsx(Link, { to: '/project', children: activeProject.projectName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg', children: activeLTG.LTGName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg/objective', children: activeObjective.objectiveName }), " ", '>', " ", _jsx(Link, { to: '/project/ltg/objective/task', children: activeTask.taskName })] }), _jsxs("section", { className: 'font-3', children: [originTask?.HISTORY_TaskIterations?.length > 0 && _jsxs("div", { className: 'centered flex f-dir-col', children: [_jsxs("div", { children: [_jsx(Button_S2, { onClick: () => onSubtaskIterationChange(-1), children: '<' }), _jsx("span", { children: "Task Iteration" }), _jsx(Button_S2, { onClick: () => onSubtaskIterationChange(1), children: '>' })] }), originTask && _jsxs("div", { children: [_jsx("button", { className: `red task-iterations ${activeTask.iteration === 0 ? 'task-iteration-active' : ''}`, onClick: () => setCurrentTaskIteration(0), children: 'O' }), originTask && originTask.HISTORY_TaskIterations.map((item) => (_jsx("button", { className: `white task-iterations ${item.iteration === currentTaskIteration ? 'task-iteration-active' : ''}`, onClick: () => setCurrentTaskIteration(item.iteration), children: item.iteration }, item._id)))] })] }), _jsxs("h2", { className: 'font-1 s4', children: [activeTask.taskName, " :", _jsx("span", { className: 'font-5 s2 m3 orange', children: `${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}` })] }), _jsxs("article", { className: 'p3 m3', children: ["Date: ", _jsxs("span", { className: 's3 ml4', children: [`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`, " "] }), " ", _jsx("br", {}), "Time: ", _jsxs("span", { className: 's3 ml4', children: [`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`, " "] }), activeTask.description && _jsxs("div", { className: 'font-5 s2 p3 m3', children: ["Description: ", _jsx("span", { className: `s3 ml4`, children: activeTask.description })] }), _jsx("div", { className: 'p3 m3 border-top-w1 border-top-white border-top-solid', children: _jsx(Settings_Task, { originTask: originTask, currentTaskIteration: currentTaskIteration }) })] })] })] }));
 }
 ;
 export default Task;

@@ -234,12 +234,29 @@ body {
 
 .drag-hover{
     position: absolute;
+    /* transform: translate(0px, -300px); */
     width:3vw;
-    z-index: 1;
+    z-index: 10000;
 }
-.drag-drag{
+.drag-allow{
+    position:fixed;
+    /* top: 0;
+    left: 0; */
+    z-index: 5001;
+}
+.drop-area{
+    /* min-height: 3vh; */
+    /* height: 100%; */
+    /* margin-top: 17px; */
+    /* background-color: #ffa600; */
+    /* position: relative; */
+   
+}
+.drag-selected{
     min-height: 15vh;
-    height: 17vh;
+    height: 21vh;
+    margin-top: 17px;
+    background-color: #ffa600;
 }
 
 .chart{

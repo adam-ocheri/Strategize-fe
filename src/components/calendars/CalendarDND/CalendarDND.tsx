@@ -211,6 +211,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         if (ctrlPressed){
             return;
         }
+        console.log('REsukt LOG is:')
         console.log(result);
         console.log(`result.draggableId is: `);
         console.log(result.draggableId);
@@ -442,7 +443,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         return (
             <Droppable droppableId={date.toString()} type='COL1'>
                 {(provided) => (
-                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'}`}
+                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'} drop-area`}
                         {...provided.droppableProps} 
                         ref={provided.innerRef} 
                         {...provided.innerRef}
@@ -456,7 +457,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                             .sort((a : any, b : any) => a.date.slice(19, 21) - b.date.slice(19, 21))
                             .map(
                                 (task : any, index : any) => (
-                                    <div key={task._id} className={`${activeTask && activeTask.date? activeTask.date.slice(0, 15) === task.date.slice(0, 15) ? 'drag-drag' : '' : ''}`}>
+                                    <div key={task._id} className={`${activeTask && activeTask.date? activeTask._id === task._id ? 'drag-selected' : '' : ''}`}>
                                         <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging}/>
                                     </div>
                             
@@ -503,7 +504,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 />
                 {items && <ListGrid>
                     <h3 className='white font-2 p2 m2'>Pending Tasks:</h3>
-                    <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage} isDragging={isDragging}/>
+                    <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage} isDragging={isDragging} isDropDisabled={true}/>
                 </ListGrid>}
             </DragDropContext>    
         </div>

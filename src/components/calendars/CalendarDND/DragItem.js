@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import mongoose from 'mongoose';
-import { getTask } from 'src/app/state_management/task/taskSlice';
+import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
 const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className, isDragging }) => {
     // const style = {
     //   ...provided.draggableProps.style,
@@ -14,6 +14,7 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
     const { activeTask } = useAppSelector((state) => state.task);
     const [time, setTime] = useState(item.date.slice(16, 21));
     const [isItemHovered, setIsItemHovered] = useState(false);
+    const [itemBehaviorClass, setItemBehaviorClass] = useState('');
     const [isItemSelected, setIsItemSelected] = useState(false);
     const [isLMBPressed, setIsLMBPressed] = useState(false);
     useEffect(() => {
@@ -23,15 +24,26 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
             // console.log(time);
         }
     }, []);
-    // useEffect(() => {
-    //   console.log('______________________________________________________________________')
-    //   console.log('isDragging is')
-    //   console.log(isDragging)
-    //   console.log('isItemHovered is')
-    //   console.log(isItemHovered)
-    //   console.log('CONDITION:');
-    //   console.log(isItemHovered && !isDragging )
-    // }, [isDragging, isItemHovered])
+    useEffect(() => {
+        console.log('______________________________________________________________________');
+        console.log('isDragging is');
+        console.log(isDragging);
+        console.log('isItemHovered is');
+        console.log(isItemHovered);
+        console.log('CONDITION:');
+        console.log(isItemHovered && !isDragging);
+        if (isItemHovered && !isDragging) {
+            setItemBehaviorClass('drag-hover');
+        }
+        else {
+            setItemBehaviorClass('drag-allow');
+        }
+    }, [isDragging, isItemHovered]);
+    useEffect(() => {
+        console.log('______________________________________________________________________');
+        console.log("itemBehaviorClass is:");
+        console.log(itemBehaviorClass);
+    }, [itemBehaviorClass]);
     const updateTime = async (t) => {
         setTime(t.target.value);
         console.log('trying to update time...');
@@ -60,7 +72,7 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
             console.log(field + ': ');
             console.log(item[field]);
             // Exclude out the ID, date, and TaskIterations array of the original item from the copy
-            if (field !== 'HISTORY_TaskIterations') {
+            if (field !== 'HISTORY_TaskIterations' && field !== 'description' && field !== 'notes') {
                 if (field === '_id') {
                     if (!item.isSubtask) {
                         Object.defineProperty(newIteration, 'origin', { value: item[field], writable: true, enumerable: true, configurable: true });
@@ -106,8 +118,8 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         // }
         await manage(e, item._id, item.owningObjective, { subTask });
     };
-    return (
-    // className={`dragger p3 m3 b-color-dark-2 ${isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : 'drag-drag'}`} 
-    _jsxs("div", { className: `dragger p3 m3 b-color-dark-2 ${item.date && isItemHovered && !isLMBPressed && !isDragging ? 'drag-hover' : ''}`, onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }), _jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }));
+    return (_jsxs("div", { className: `dragger p3 m3 b-color-dark-2 `, 
+        //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
+        onMouseOver: async () => { setIsItemHovered(true); dispatch(setActiveTask({ item })); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }), _jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }));
 };
 export default DragItem;
