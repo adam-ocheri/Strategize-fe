@@ -158,9 +158,9 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     await manage(e, item._id, item.owningObjective, {subTask});
   }
   return (
-    <div className={`dragger p3 m3 b-color-dark-2 `} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
+    <div className={`dragger p3 m3 b-color-dark-2`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
       //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
-      onMouseOver={async ()=>{setIsItemHovered(true); dispatch(setActiveTask({item}))}} 
+      onMouseOver={async ()=>{setIsItemHovered(true);}} 
       onMouseLeave={()=> {setIsItemHovered(false);}} 
       onMouseDown={() => {setIsLMBPressed(true); }}
       onMouseUp={() => setIsLMBPressed(false)}

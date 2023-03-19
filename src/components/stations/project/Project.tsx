@@ -4,6 +4,7 @@ import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { createLTG, getLTG, getAllLTGs, updateLTG, deleteLTG } from 'src/app/state_management/LTG/LTGSlice';
 import { getProject, updateProject, deleteProject, reset__project, getAllSubstations_Project } from 'src/app/state_management/project/projectSlice';
 import { updateTask, getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import { RootState } from 'src/app/store';
 import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
@@ -74,10 +75,11 @@ function Project({}) {
             navigator("/");
         }
         else {
-            const getData = async () => {
+            const initData = async () => {
+                await dispatch(setCurrentStationContext({newContext: 'project'}));
                 await dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}));
             }
-            getData();
+            initData();
         }
     }, [])
 
@@ -130,6 +132,7 @@ function Project({}) {
                 dispatch={dispatch} 
                 user={user} 
                 manage={manageSelectedTask_Remote}
+                activeTask={activeTask}
             />
         </section>
     </div>

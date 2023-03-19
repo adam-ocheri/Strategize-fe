@@ -20,7 +20,8 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
+    message: '',
+    stationContext: ''
 };
 //async reducers
 export const register = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
@@ -50,6 +51,16 @@ export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) =
 export const logout = createAsyncThunk('auth/logout', async (stuff, thunkAPI) => {
     try {
         return await logoutUser();
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+export const setCurrentStationContext = createAsyncThunk('auth/setStationContext', async ({ newContext }, thunkAPI) => {
+    try {
+        return newContext;
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -114,6 +125,22 @@ export const authSlice = createSlice({
             state.user = null;
         })
             .addCase(logout.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
+            //Logout CASES
+            .addCase(setCurrentStationContext.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(setCurrentStationContext.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.stationContext = action.payload;
+        })
+            .addCase(setCurrentStationContext.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

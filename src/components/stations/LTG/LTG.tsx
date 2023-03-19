@@ -9,6 +9,7 @@ import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { getAllSubStations_LTG } from 'src/app/state_management/LTG/LTGSlice';
 import { createObjective, getObjective, deleteObjective, getAllObjectives, } from 'src/app/state_management/objective/objectiveSlice';
 import { updateTask, getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 
 
 
@@ -79,7 +80,11 @@ function LTG({}) {
             navigator("/");
         }
         else {
-            dispatch(getAllObjectives({parentId: activeLTG._id, token: user.token}));
+            const initData = async()=> {
+                await dispatch(setCurrentStationContext({newContext: 'ltg'}));
+                await dispatch(getAllObjectives({parentId: activeLTG._id, token: user.token}));
+            }
+            initData();
         }
     }, [])
 

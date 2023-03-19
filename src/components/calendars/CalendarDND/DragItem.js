@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import mongoose from 'mongoose';
-import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { getTask } from 'src/app/state_management/task/taskSlice';
 const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className, isDragging }) => {
     // const style = {
     //   ...provided.draggableProps.style,
@@ -118,8 +118,8 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         // }
         await manage(e, item._id, item.owningObjective, { subTask });
     };
-    return (_jsxs("div", { className: `dragger p3 m3 b-color-dark-2 `, 
+    return (_jsxs("div", { className: `dragger p3 m3 b-color-dark-2`, 
         //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
-        onMouseOver: async () => { setIsItemHovered(true); dispatch(setActiveTask({ item })); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }), _jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }));
+        onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }), _jsx("h3", { children: item.taskName }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }));
 };
 export default DragItem;

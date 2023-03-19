@@ -234,15 +234,17 @@ body {
 
 .drag-hover{
     position: absolute;
-    /* transform: translate(0px, -300px); */
+    transform: translate(0px, -2vh);
+    min-height: 20vh;
     width:3vw;
+    margin-top: 17px;
     z-index: 10000;
 }
 .drag-allow{
-    position:fixed;
+    position:relative;
     /* top: 0;
     left: 0; */
-    z-index: 5001;
+    /* z-index: 5001; */
 }
 .drop-area{
     /* min-height: 3vh; */
@@ -253,9 +255,9 @@ body {
    
 }
 .drag-selected{
-    min-height: 15vh;
-    height: 21vh;
-    margin-top: 17px;
+    min-height: 20vh;
+    /* height: 20vh; */
+    margin-top: 27px;
     background-color: #ffa600;
 }
 

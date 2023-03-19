@@ -8,6 +8,7 @@ import { reset__Task, setActiveTask } from 'src/app/state_management/task/taskSl
 
 //Child sub-station
 import { createTask, getTask, updateTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
+import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 
 
 
@@ -83,7 +84,10 @@ function Objective({}) {
         }
         else {
             // reset__Task();
-            const getData = async () => await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+            const getData = async () => {
+                await dispatch(setCurrentStationContext({newContext: 'objective'}));
+                await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+            }
             getData();
         }
     }, [])

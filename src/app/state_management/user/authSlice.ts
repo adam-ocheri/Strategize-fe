@@ -9,6 +9,7 @@ export interface User {
     isSuccess: boolean;
     isLoading: boolean;
     message: string;
+    stationContext: string;
 }
 
 /*
@@ -32,7 +33,8 @@ const initialState : User = {
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
+    message: '',
+    stationContext: ''
 }
 
 //async reducers
@@ -65,6 +67,17 @@ export const login = createAsyncThunk('auth/login', async(userData : any, thunkA
 export const logout = createAsyncThunk('auth/logout', async(stuff, thunkAPI) => {
     try {
         return await logoutUser();
+    } catch (error : any) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+
+        return thunkAPI.rejectWithValue(message);
+    }
+} )
+
+export const setCurrentStationContext = createAsyncThunk('auth/setStationContext', async({newContext}:any, thunkAPI) => {
+    try {
+        return newContext;
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -130,6 +143,22 @@ export const authSlice  = createSlice({
                 state.user = null;
             })
             .addCase(logout.rejected, (state, action : any ) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+            })
+            //Logout CASES
+            .addCase(setCurrentStationContext.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(setCurrentStationContext.fulfilled, (state : any, action : any) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.stationContext = action.payload;
+            })
+            .addCase(setCurrentStationContext.rejected, (state, action : any ) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

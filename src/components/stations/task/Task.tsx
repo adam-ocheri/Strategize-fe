@@ -9,6 +9,7 @@ import { getAllLTGs, getLTG } from 'src/app/state_management/LTG/LTGSlice';
 import { createTask, getTask, deleteTask, getAllTasks, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import Settings_Task from './Settings_Task';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
+import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 
 
 
@@ -67,6 +68,10 @@ function Task({}) {
             navigator("/project/ltg/objective");
         }
         else {
+            const initData = async() => {
+                await dispatch(setCurrentStationContext({newContext: 'task'}));
+            }
+            initData();
 
             if (!activeObjective.objectiveName){
                 const getSuperStations = async () => {
