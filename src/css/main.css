@@ -260,6 +260,12 @@ body {
     margin-top: 27px;
     background-color: #ffa600;
 }
+.drag-selected-dragging{
+    /* min-height: 20vh; */
+    /* height: 20vh; */
+    /* margin-top: 27px; */
+    background-color: #ffa600;
+}
 
 .chart{
     /* max-width: fit-content; */

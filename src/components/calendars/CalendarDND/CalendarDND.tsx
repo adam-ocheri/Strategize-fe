@@ -457,7 +457,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                             .sort((a : any, b : any) => a.date.slice(19, 21) - b.date.slice(19, 21))
                             .map(
                                 (task : any, index : any) => (
-                                    <div key={task._id} className={`${activeTask && activeTask.date? activeTask._id === task._id ? 'drag-selected' : '' : ''}`}>
+                                    <div key={task._id} className={`${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : activeTask._id === task._id ?? 'drag-selected-dragging' : ''}`}>
                                         <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging}/>
                                     </div>
                             
@@ -498,12 +498,13 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
                 <Calendar 
                     navigationLabel={updateNavigation} 
-                    value={date} tileContent={tileContent} 
+                    value={date} 
+                    tileContent={tileContent} 
                     tileClassName={tileClassName} 
                     className={'calendar-container'}
                 />
                 {items && <ListGrid>
-                    <h3 className='white font-2 p2 m2'>Pending Tasks:</h3>
+                    <h3 className='white font-2 p2 m2'> Pending Tasks: </h3>
                     <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage} isDragging={isDragging} isDropDisabled={true}/>
                 </ListGrid>}
             </DragDropContext>    
