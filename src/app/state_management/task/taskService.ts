@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const API_URL = 'https://strategize-be.vercel.app/api/tasks/';
-const API_URL = process.env.NODE_ENV === 'production' ? 'https://strategize-be.vercel.app/api/tasks/' : 'http://localhost:4000/api/project/ltgs/objectives/tasks/';
+const API_URL = process.env.NODE_ENV === 'production' ? 'https://strategize-be.vercel.app/api/project/ltgs/objectives/tasks/' : 'http://localhost:4000/api/project/ltgs/objectives/tasks/';
 
 //! ROUTE: api/project/ltgs/objectives/tasks -----------------------------------------------------------------------------------------------------------------------
 
