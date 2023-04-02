@@ -28,9 +28,14 @@ function Objective({}) {
             throw new Error("Please enter all fields!");
         }
         else {
-            console.log("trying to login...");
+            console.log("trying to create new task...");
             console.log(formData);
-            await dispatch(createTask({ taskName: newTaskName, parentId: activeObjective._id, owner: user._id, token: user.token }));
+            const heritage = {
+                project: { id: activeProject._id, name: activeProject.projectName },
+                ltg: { id: activeLTG._id, name: activeLTG.LTGName },
+                objective: { id: activeObjective._id, name: activeObjective.objectiveName }
+            };
+            await dispatch(createTask({ taskName: newTaskName, heritage, parentId: activeObjective._id, owner: user._id, token: user.token }));
             setCreatingNewTask(false);
         }
     };

@@ -5,7 +5,7 @@ const API_URL = process.env.NODE_ENV === 'production' ? 'https://strategize-be.v
 
 //! ROUTE: api/project/ltgs/objectives/tasks -----------------------------------------------------------------------------------------------------------------------
 
-export const create = async ({taskName, parentId, owner, token} : any) => {
+export const create = async ({taskName, heritage, parentId, owner, token} : any) => {
     (console.log('trying to create task...'));
     console.log(taskName);
     console.log(owner);
@@ -16,7 +16,7 @@ export const create = async ({taskName, parentId, owner, token} : any) => {
         }
     };
 
-    const response = await axios.post(API_URL + `?owner=${owner}&owningObjective=${parentId}`, {taskName: taskName, date: ''}, authConfig);
+    const response = await axios.post(API_URL + `?owner=${owner}&owningObjective=${parentId}`, {taskName: taskName, heritage, date: ''}, authConfig);
     console.log(response.data);
 
     return response.data;

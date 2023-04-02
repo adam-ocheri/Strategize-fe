@@ -12,10 +12,10 @@ import Settings_Objective from "./components/stations/objective/Settings_Objecti
 import Task from "./components/stations/task/Task";
 import Settings_Task from "./components/stations/task/Settings_Task";
 import Navbar from "./components/layout/navbar/Navbar";
-//import DND_Container from "./components/drag_n_drop/test2/DND_Container";
-import DND from "./components/drag_n_drop/test_3.0/dnd";
+import AI_Assistant from "./components/AI/AI_Assist/AI_Assistant";
+import UserProfile from "./pages/Signup/Profile/UserProfile";
 function App() {
-    return (_jsx("div", { children: _jsxs(BrowserRouter, { children: [_jsx(Navbar, {}), _jsxs(Routes, { children: [_jsx(Route, { path: '/', element: _jsx(Home, {}) }), _jsx(Route, { path: '/test', element: _jsx(DND, {}) }), _jsx(Route, { path: '/register', element: _jsx(Signup, {}) }), _jsx(Route, { path: '/login', element: _jsx(Login, {}) }), _jsx(Route, { path: "/project", element: _jsx(Project, {}) }), _jsx(Route, { path: "/project/settings", element: _jsx(Settings_Project, {}) }), _jsx(Route, { path: "/project/ltg", element: _jsx(LTG, {}) }), _jsx(Route, { path: "/project/ltg/settings", element: _jsx(Settings_LTG, {}) }), _jsx(Route, { path: "/project/ltg/objective", element: _jsx(Objective, {}) }), _jsx(Route, { path: "/project/ltg/objective/settings", element: _jsx(Settings_Objective, {}) }), _jsx(Route, { path: "/project/ltg/objective/task", element: _jsx(Task, {}) }), _jsx(Route, { path: "/project/ltg/objective/task/settings", element: _jsx(Settings_Task, {}) })] })] }) }));
+    return (_jsx("div", { children: _jsxs(BrowserRouter, { children: [_jsx(Navbar, {}), _jsxs(Routes, { children: [_jsx(Route, { path: '/', element: _jsx(Home, {}) }), _jsx(Route, { path: '/profile', element: _jsx(UserProfile, {}) }), _jsx(Route, { path: '/assistant', element: _jsx(AI_Assistant, {}) }), _jsx(Route, { path: '/register', element: _jsx(Signup, {}) }), _jsx(Route, { path: '/login', element: _jsx(Login, {}) }), _jsx(Route, { path: "/project", element: _jsx(Project, {}) }), _jsx(Route, { path: "/project/settings", element: _jsx(Settings_Project, {}) }), _jsx(Route, { path: "/project/ltg", element: _jsx(LTG, {}) }), _jsx(Route, { path: "/project/ltg/settings", element: _jsx(Settings_LTG, {}) }), _jsx(Route, { path: "/project/ltg/objective", element: _jsx(Objective, {}) }), _jsx(Route, { path: "/project/ltg/objective/settings", element: _jsx(Settings_Objective, {}) }), _jsx(Route, { path: "/project/ltg/objective/task", element: _jsx(Task, {}) }), _jsx(Route, { path: "/project/ltg/objective/task/settings", element: _jsx(Settings_Task, {}) })] })] }) }));
 }
 document.body.classList.add('gradient-background');
 export default App;

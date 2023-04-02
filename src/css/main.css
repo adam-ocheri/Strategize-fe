@@ -77,6 +77,7 @@ body {
     border-radius: 5px;
     border-width: 1px;
     background-color: rgb(66, 113, 164);
+    /* min-height: fit-content; */
     /* min-width: 205px; */
 }
 .tile-outer:hover{
@@ -97,6 +98,16 @@ body {
 .tile-inner-outdate{
     border-radius: 5px;
     border-width: 1px;
+}
+.tile-inner-drag{
+    /* height: min-content; */
+    /* min-height: 20vh; */
+    /* height: 20vh; */
+    /* background-color: #ffa600; */
+}
+.tile-inner-scaler{
+    min-height: 20vh;
+    /* background-color: #ffa600; */
 }
 
 .calendar-container{
@@ -234,14 +245,18 @@ body {
 
 .drag-hover{
     position: absolute;
-    transform: translate(0px, -2vh);
-    min-height: 20vh;
-    width:3vw;
-    margin-top: 17px;
-    z-index: 10000;
+    transform: translate(0px, 0vh);
+    /* min-height: 20vh; */
+    /* width:3vw; */
+    max-width: 10vw;
+    /* margin-top: 27px; */
+    /* z-index: 10000; */
+    background-color: #ffa600;
+    padding: 0;
+    margin: 0;
 }
 .drag-allow{
-    position:relative;
+    /* position: relative; */
     /* top: 0;
     left: 0; */
     /* z-index: 5001; */
@@ -255,9 +270,9 @@ body {
    
 }
 .drag-selected{
-    min-height: 20vh;
+    /* min-height: 20vh; */
     /* height: 20vh; */
-    margin-top: 27px;
+    /* margin-top: 27px; */
     background-color: #ffa600;
 }
 .drag-selected-dragging{
@@ -265,6 +280,13 @@ body {
     /* height: 20vh; */
     /* margin-top: 27px; */
     background-color: #ffa600;
+}
+.drop-scaler{
+    /* height: 20vh; */
+    /* min-height: auto; */
+}
+.dragger-scaler{
+    /* height: 20vh; */
 }
 
 .chart{

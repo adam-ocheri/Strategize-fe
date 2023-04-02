@@ -34,7 +34,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   //   fontSize: 18,
   // };
   const dispatch = useAppDispatch();
-  const {user} : any = useAppSelector((state) => state.auth);
+  const {user, stationContext} : any = useAppSelector((state) => state.auth);
   const {activeTask} : any = useAppSelector((state) => state.task);
 
   const [time, setTime] = useState(item.date.slice(16, 21));
@@ -155,10 +155,10 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     // if(item._id !== activeTask._id){
     //   dispatch(setActiveTask({item}));
     // }
-    await manage(e, item._id, item.owningObjective, {subTask});
+    await manage(e, item._id, item.owningObjective, item, {subTask});
   }
   return (
-    <div className={`dragger p3 m3 b-color-dark-2`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
+    <div className={`dragger p3 b-color-dark-2`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
       //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
       onMouseOver={async ()=>{setIsItemHovered(true);}} 
       onMouseLeave={()=> {setIsItemHovered(false);}} 
@@ -168,6 +168,19 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     >
       {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
       <h3 >{item.taskName}</h3>
+      {stationContext !== 'task' &&
+      <div className='jt-left' >
+        {stationContext === 'profile' && 
+          <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
+        } <br/> 
+        {stationContext !== 'ltg' && stationContext !== 'objective' && 
+          <span className='font-4 red' style={{fontSize: '6pt'}}>{item.heritage.ltg.name}</span> 
+        } <br/>
+        {stationContext !== 'objective' && 
+          <span className='font-4 orange' style={{fontSize: '6pt'}}>{item.heritage.objective.name}</span>
+        } <br/> 
+      </div>
+      }
       
       <input className='time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}></input>
       <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>

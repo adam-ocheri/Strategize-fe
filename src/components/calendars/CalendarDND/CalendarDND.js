@@ -342,12 +342,12 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         if (view == 'year' || view == 'decade') {
             return _jsx("div", { className: 'p1 m1 tile-inner' });
         }
-        return (_jsx(Droppable, { droppableId: date.toString(), type: 'COL1', children: (provided) => (_jsxs("div", { className: `p1 m1 ${bBelongsToMonth ? 'tile-inner' : 'tile-inner-outdate'} drop-area`, ...provided.droppableProps, ref: provided.innerRef, ...provided.innerRef, children: [tasks.filter((item) => item.date?.slice(0, 15)
+        return (_jsx(Droppable, { droppableId: date.toString(), type: 'COL1', children: (provided) => (_jsxs("div", { className: `p1 m1 ${bBelongsToMonth ? 'tile-inner' : 'tile-inner-outdate'} ${(activeTask && activeTask.date) ? ((isDragging && activeTask.date.slice(0, 15) === date.toString().slice(0, 15)) ? 'tile-inner-drag' : !isDragging && activeTask.date.slice(0, 15) === date.toString().slice(0, 15) ? 'tile-inner-scaler' : '') : ''} drop-area`, ...provided.droppableProps, ref: provided.innerRef, ...provided.innerRef, children: [tasks.filter((item) => item.date?.slice(0, 15)
                         ===
                             provided.droppableProps['data-rbd-droppable-id'].slice(0, 15))
                         .sort((a, b) => a.date.slice(15, 18) - b.date.slice(15, 18))
                         .sort((a, b) => a.date.slice(19, 21) - b.date.slice(19, 21))
-                        .map((task, index) => (_jsx("div", { className: `${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : activeTask._id === task._id ?? 'drag-selected-dragging' : ''}`, children: _jsx(Dragger, { item: task, index: index, getAllSubstations: getAllSubstations, updateSubStation: updateSubStation, updateTimeForDate: updateTime, manage: manage, droppableProvided: provided, isDragging: isDragging }) }, task._id))), provided.placeholder] })) }));
+                        .map((task, index) => (_jsx("div", { className: `drop-scaler ${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : (isDragging && activeTask._id === task._id) ? 'drag-selected-dragging' : '' : ''}`, children: _jsx(Dragger, { item: task, index: index, getAllSubstations: getAllSubstations, updateSubStation: updateSubStation, updateTimeForDate: updateTime, manage: manage, droppableProvided: provided, isDragging: isDragging }) }, task._id))), provided.placeholder] })) }));
     };
     //Day Tile className callback function
     const tileClassName = ({ activeStartDate, date, view }) => {

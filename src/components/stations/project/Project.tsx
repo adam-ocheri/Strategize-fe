@@ -45,7 +45,7 @@ function Project({}) {
         navigator('/project/ltg');
     }
     
-    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any, {subTask} : any) => {
+    const manageSelectedTask_Remote = async (e : any, id : any, parentObjectiveId : any, _item : any, {subTask} : any) => {
         console.log("trying to EDIT Task...........")
         console.log('manageSelectedTask_Remote!!!!!!.....')
         console.log(subTask);

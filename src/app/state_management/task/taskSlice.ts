@@ -23,11 +23,11 @@ const initialState : Task = {
 //*Async Reducers -----------------------------------------------------------------------------------------------------------------------------------------------------
 //! ROUTE: api/project/Tasks -----------------------------------------------------------------------------------------------------------------------
 
-export const createTask = createAsyncThunk('task/create',  async({taskName, parentId, owner, token} : any, thunkAPI) => {
+export const createTask = createAsyncThunk('task/create',  async({taskName, heritage, parentId, owner, token} : any, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({taskName});
-        return await create({taskName, parentId, owner, token});
+        return await create({taskName, heritage, parentId, owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();

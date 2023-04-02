@@ -443,7 +443,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         return (
             <Droppable droppableId={date.toString()} type='COL1'>
                 {(provided) => (
-                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'} drop-area`}
+                    <div className={`p1 m1 ${bBelongsToMonth? 'tile-inner' : 'tile-inner-outdate'} ${(activeTask && activeTask.date) ? ((isDragging && activeTask.date.slice(0,15) === date.toString().slice(0, 15)) ? 'tile-inner-drag' : !isDragging && activeTask.date.slice(0,15) === date.toString().slice(0, 15) ? 'tile-inner-scaler' : '') : ''} drop-area`}
                         {...provided.droppableProps} 
                         ref={provided.innerRef} 
                         {...provided.innerRef}
@@ -457,7 +457,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                             .sort((a : any, b : any) => a.date.slice(19, 21) - b.date.slice(19, 21))
                             .map(
                                 (task : any, index : any) => (
-                                    <div key={task._id} className={`${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : activeTask._id === task._id ?? 'drag-selected-dragging' : ''}`}>
+                                    <div key={task._id} className={`drop-scaler ${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : (isDragging && activeTask._id === task._id) ? 'drag-selected-dragging' : '': ''}`}>
                                         <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging}/>
                                     </div>
                             

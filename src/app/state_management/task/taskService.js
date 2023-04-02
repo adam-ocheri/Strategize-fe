@@ -2,7 +2,7 @@ import axios from "axios";
 //const API_URL = 'https://strategize-be.vercel.app/api/tasks/';
 const API_URL = process.env.NODE_ENV === 'production' ? 'https://strategize-be.vercel.app/api/tasks/' : 'http://localhost:4000/api/project/ltgs/objectives/tasks/';
 //! ROUTE: api/project/ltgs/objectives/tasks -----------------------------------------------------------------------------------------------------------------------
-export const create = async ({ taskName, parentId, owner, token }) => {
+export const create = async ({ taskName, heritage, parentId, owner, token }) => {
     (console.log('trying to create task...'));
     console.log(taskName);
     console.log(owner);
@@ -12,7 +12,7 @@ export const create = async ({ taskName, parentId, owner, token }) => {
             authorization: `Bearer ${token}`
         }
     };
-    const response = await axios.post(API_URL + `?owner=${owner}&owningObjective=${parentId}`, { taskName: taskName, date: '' }, authConfig);
+    const response = await axios.post(API_URL + `?owner=${owner}&owningObjective=${parentId}`, { taskName: taskName, heritage, date: '' }, authConfig);
     console.log(response.data);
     return response.data;
 };

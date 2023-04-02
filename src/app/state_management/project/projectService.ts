@@ -103,3 +103,18 @@ export const getAllSubstations = async ({id, owner, token} : any) => {
     
     return response.data;
 }
+
+export const getAllUserProjectsAndTasks = async ({owner, token} : any) => {
+    (console.log('trying to get ALL TASKS from this PROJECT...'));
+    console.log(token);
+    const authConfig = {
+        headers: {
+            authorization: `Bearer ${token}` 
+        }
+    };
+
+    const response = await axios.get(API_URL + 'alltasks' + `?owner=${owner}`, authConfig);
+    console.log(response.data);
+    
+    return response.data;
+}

@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
-import {create, update, getAll, getOne, deleteProjectById, getAllSubstations} from './projectService.js'
+import {create, update, getAll, getOne, deleteProjectById, getAllSubstations, getAllUserProjectsAndTasks} from './projectService.js'
 
 import mongoose from 'mongoose';
 
 export interface Project {
     data: [];
     subData: [];
+    allUserTasks: [];
     isError: boolean;
     isSuccess: boolean;
     isLoading: boolean;
@@ -16,6 +17,7 @@ export interface Project {
 const initialState : Project = {
     data: [],
     subData: [],
+    allUserTasks: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -39,7 +41,7 @@ export const createProject = createAsyncThunk('project/create',  async({projectN
     }
 })
 
-export const getAllProjects = createAsyncThunk('project/getOne',  async({owner, token} : any, thunkAPI) => {
+export const getAllProjects = createAsyncThunk('project/getAll',  async({owner, token} : any, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({owner});
@@ -67,7 +69,7 @@ export const updateProject = createAsyncThunk('project/update',  async({body, id
     }
 })
 
-export const getProject = createAsyncThunk('project/getAll',  async({id, token} : any, thunkAPI) => {
+export const getProject = createAsyncThunk('project/getOne',  async({id, token} : any, thunkAPI) => {
     try {
         console.log("Slicing...");
         console.log({id});
@@ -98,6 +100,19 @@ export const getAllSubstations_Project = createAsyncThunk('project/getAllTasks',
         console.log("Slicing...");
         console.log({id});
         return await getAllSubstations({id, owner, token});
+    } catch (error : any) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const getAllProjectsAndSubstations = createAsyncThunk('project/getAllUserTasks',  async({owner, token} : any, thunkAPI) => {
+    try {
+        console.log("Slicing...");
+        console.log({owner});
+        return await getAllUserProjectsAndTasks({owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -210,6 +225,21 @@ export const projectSlice = createSlice({
                 state.subData = action.payload;
             })
             .addCase(getAllSubstations_Project.rejected, (state : any, action: any) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+            })
+            // getAllProjectsAndSubstations CASES
+            .addCase(getAllProjectsAndSubstations.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAllProjectsAndSubstations.fulfilled, (state : any, action : any) => {
+                state.isSuccess = true;
+                state.isLoading = false;
+                state.allUserTasks = action.payload;
+            })
+            .addCase(getAllProjectsAndSubstations.rejected, (state : any, action: any) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
