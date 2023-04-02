@@ -1,6 +1,6 @@
 import axios from "axios";
 //const API_URL = 'https://strategize-be.vercel.app/api/Objectives/';
-const API_URL = process.env.NODE_ENV === 'production' ? 'https://strategize-be.vercel.app/api/Objectives/' : 'http://localhost:4000/api/project/ltgs/objectives/';
+const API_URL = process.env.NODE_ENV === 'production' ? 'https://strategize-be.vercel.app/api/project/ltgs/objectives/' : 'http://localhost:4000/api/project/ltgs/objectives/';
 //! ROUTE: api/project/ltgs/objectives -----------------------------------------------------------------------------------------------------------------------
 export const create = async ({ objectiveName, parentId, owner, token }) => {
     (console.log('trying to create Objective...'));
