@@ -20,8 +20,8 @@ export default function Navbar() {
       <img src='s-logo.png' alt='logo' height='70px' width='75px' className='logo-img'/>
       {/* <h2 className='font-9 s4 white flex j-center m1'>S</h2> */}
       <ul className='item-list flex j-center'>
-        <li><a className='anchor1 font-8'>Projects</a></li>
-        <li><a className='anchor1 font-8'>Settings</a></li>
+        <li onClick={() => navigator('/')}><a className='anchor1 font-8'>Projects</a></li>
+        <li onClick={() => navigator('/profile')}><a className='anchor1 font-8'>Workspace</a></li> {/**TODO Change to 'workspace' */}
         <li onClick={() => navigator('/assistant')}><a className='anchor1 font-8'>Assistant</a></li>
         <li>
           <a className='anchor1 font-8' onClick={toggleDropdown}>Profile</a>

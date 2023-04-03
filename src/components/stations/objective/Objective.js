@@ -46,7 +46,7 @@ function Objective({}) {
         await dispatch(getTask({ id: id, parentId: activeObjective._id, token: user.token }));
         navigator('/project/ltg/objective/task');
     };
-    const manageSelectedTask_Remote = async (e, id, parentObjectiveId, { subTask }) => {
+    const manageSelectedTask_Remote = async (e, id, parentObjectiveId, _item, { subTask }) => {
         console.log("trying to EDIT Task...........");
         console.log('manageSelectedTask_Remote!!!!!!.....');
         console.log(subTask);

@@ -11,12 +11,15 @@ import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
 export default function UserProfile() {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const { user, stationContext } = useAppSelector((state) => state.auth);
-    const { activeProject, allUserTasks } = useAppSelector((state) => state.project);
-    const { activeLTG } = useAppSelector((state) => state.ltg);
-    const { activeObjective } = useAppSelector((state) => state.objective);
-    const { activeTask } = useAppSelector((state) => state.task);
+    const { user, stationContext, isLoading: Loading_User } = useAppSelector((state) => state.auth);
+    const { activeProject, allUserTasks, isLoading: Loading_Project } = useAppSelector((state) => state.project);
+    const { activeLTG, isLoading: Loading_LTG } = useAppSelector((state) => state.ltg);
+    const { activeObjective, isLoading: Loading_Objective } = useAppSelector((state) => state.objective);
+    const { activeTask, isLoading: Loading_Task } = useAppSelector((state) => state.task);
     useEffect(() => {
+        if (!user) {
+            navigator('/');
+        }
         const initData = async () => {
             await dispatch(setCurrentStationContext({ newContext: 'profile' }));
             await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token }));
@@ -45,5 +48,8 @@ export default function UserProfile() {
         }
         navigator('/project/ltg/objective/task');
     };
+    if (Loading_User || Loading_Project || Loading_LTG || Loading_Objective) {
+        return (_jsx("div", { className: 'p7 m7', children: _jsx("p", { className: ' p7 m7', children: "Loading Data..." }) }));
+    }
     return (_jsx("div", { children: _jsx(CalendarDND, { data: allUserTasks, getAllSubstations: async () => { await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask }) }));
 }

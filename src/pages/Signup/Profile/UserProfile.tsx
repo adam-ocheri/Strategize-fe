@@ -12,13 +12,16 @@ export default function UserProfile() {
 
   const navigator = useNavigate();
   const dispatch = useAppDispatch();
-  const {user, stationContext} : any = useAppSelector((state) => state.auth);
-  const {activeProject, allUserTasks} : any = useAppSelector((state)=> state.project);
-  const {activeLTG} : any = useAppSelector((state)=> state.ltg);
-  const {activeObjective} : any = useAppSelector((state)=> state.objective);
-  const {activeTask} : any = useAppSelector((state)=> state.task);
+  const {user, stationContext, isLoading : Loading_User} : any = useAppSelector((state) => state.auth);
+  const {activeProject, allUserTasks, isLoading : Loading_Project} : any = useAppSelector((state)=> state.project);
+  const {activeLTG, isLoading : Loading_LTG} : any = useAppSelector((state)=> state.ltg);
+  const {activeObjective, isLoading : Loading_Objective} : any = useAppSelector((state)=> state.objective);
+  const {activeTask, isLoading : Loading_Task} : any = useAppSelector((state)=> state.task);
 
   useEffect(() => {
+    if (!user){
+      navigator('/')
+    }
       const initData = async () => {
           await dispatch(setCurrentStationContext({newContext: 'profile'}));
           await dispatch(getAllProjectsAndSubstations({owner: user._id, token: user.token}));
@@ -52,6 +55,14 @@ export default function UserProfile() {
     }
     
     navigator('/project/ltg/objective/task');
+  }
+
+  if (Loading_User || Loading_Project || Loading_LTG || Loading_Objective){
+    return (<div className='p7 m7'>
+      <p className=' p7 m7'>
+        Loading Data...
+      </p>
+    </div>);
   }
   return (
     <div>

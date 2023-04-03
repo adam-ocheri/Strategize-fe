@@ -120,10 +120,12 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
     };
     return (_jsxs("div", { className: `dragger p3 b-color-dark-2`, 
         //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
-        onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }), _jsx("h3", { children: item.taskName }), stationContext !== 'task' &&
-                _jsxs("div", { className: 'jt-left', children: [stationContext === 'profile' &&
+        onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [isItemHovered &&
+                _jsx("div", { children: item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }) }), _jsx("h3", { children: item.taskName }), stationContext !== 'task' &&
+                _jsxs("div", { className: 'jt-left mb5', children: [stationContext === 'profile' &&
                             _jsx("span", { className: 'font-4 teal', style: { fontSize: '10pt' }, children: item.heritage.project.name }), " ", _jsx("br", {}), stationContext !== 'ltg' && stationContext !== 'objective' &&
                             _jsx("span", { className: 'font-4 red', style: { fontSize: '6pt' }, children: item.heritage.ltg.name }), " ", _jsx("br", {}), stationContext !== 'objective' &&
-                            _jsx("span", { className: 'font-4 orange', style: { fontSize: '6pt' }, children: item.heritage.objective.name }), " ", _jsx("br", {})] }), _jsx("input", { className: 'time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 m1 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }));
+                            _jsx("span", { className: 'font-4 orange', style: { fontSize: '6pt' }, children: item.heritage.objective.name }), " ", _jsx("br", {})] }), isItemHovered &&
+                _jsxs("div", { className: '', children: [_jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t) }), _jsx("a", { className: 'p1 mb5 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] })] }));
 };
 export default DragItem;

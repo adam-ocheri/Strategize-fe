@@ -44,6 +44,16 @@ body {
     width: 100%;
 }
 
+.login-container{
+    /* width: fit-content; */
+    /* flex: content; */
+    max-width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-items: center;
+}
+
 .b-color-dark-1{
     background-color: rgb(15, 6, 53);
 }

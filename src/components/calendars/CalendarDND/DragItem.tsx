@@ -166,10 +166,14 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       onMouseUp={() => setIsLMBPressed(false)}
       //onClick={()=> setSelectedItemAsActiveTask()}
     >
-      {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
-      <h3 >{item.taskName}</h3>
+      {isItemHovered && 
+      <div>
+        {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
+      </div>}
+      
+      <h3>{item.taskName}</h3>
       {stationContext !== 'task' &&
-      <div className='jt-left' >
+      <div className='jt-left mb5' >
         {stationContext === 'profile' && 
           <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
         } <br/> 
@@ -182,8 +186,12 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       </div>
       }
       
-      <input className='time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}></input>
-      <a className='p1 m1 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
+      {isItemHovered && 
+      <div className=''>
+        <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t)}/>
+        <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
+      </div>
+      }
       
     </div>
   )
