@@ -3,6 +3,8 @@ import axios, { AxiosResponse } from "axios";
 import { Configuration, OpenAIApi, ChatCompletionResponseMessage, CreateChatCompletionRequest, CreateChatCompletionResponse } from "openai"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { ReadLine } from "readline"
+import createPrompt from "./StreamHandler";
+import { OpenAIStream, OpenAIStreamPayload } from "./OpenAIStream";
 
 export interface messageBase{
     role: string;
@@ -22,6 +24,23 @@ function Message({role, content} : messageBase) {
 }
 
 export default function AI_Assistant() {
+
+
+    // const [event, setEvent] = useState(new EventSource('http://localhost:4000/stream'));
+
+    // useEffect(() => {
+    //     event.addEventListener('message', message => {
+    //         //console.log('Got STREAM', message);
+    //     });
+    // }, [])
+
+    // useEffect(()=>{
+    //     console.log('Event Event Event!')
+    //     console.log(event)
+    // }, [event])
+            
+
+    //----------------------------------------------
     const [currentMessage, setCurrentMessage] = useState({
         role: 'user',
         content: ''
@@ -31,7 +50,7 @@ export default function AI_Assistant() {
     
 
     const openAI : OpenAIApi = new OpenAIApi(new Configuration({
-        apiKey: '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' //process.env.OPENAI_API_KEY
+        apiKey: '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' //process.env.OPENAI_API_KEY
     }))
 
     //get user input
@@ -39,13 +58,16 @@ export default function AI_Assistant() {
         setCurrentMessage({...currentMessage, content: e.target.value})
         console.log(e.target.value);
     }
+    
 
     //process user request
     const sendPrompt = async (e : FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         let updatedConversation : any[] = [...chatHistory, currentMessage];
+        //createPrompt({req : {body: JSON.stringify(updatedConversation) }})
+        //const req : Request = JSON.stringify(updatedConversation);
+        
         setChatHistory([...chatHistory, currentMessage]);
-        //setChatHistory((...prev : any[]) =>[...prev, currentMessage]);
         setCurrentMessage({...currentMessage, content: ''});
         await postPrompt([...updatedConversation]);
         
@@ -53,22 +75,55 @@ export default function AI_Assistant() {
 
     //Post user request and get Assistant's response
     async function postPrompt(updatedConversation : any[]){
+        console.log('Trying to send prompt.... : at - async function postPrompt')
         try {
-            // const response = await openAI.createChatCompletion({
-            //     model: 'gpt-3.5-turbo',
-            //     messages: updatedConversation
-            // })
+            
+            // const config = {
+            //     headers: {
+            //         cacheControl: 'no-cache',
+            //         contentType: 'text/event-stream',
+            //         connection: 'keep-alive',
+            //         responseType: 'stream'
+            //     }
+            // };
             
             const response  = await openAI.createChatCompletion({
                 model: 'gpt-3.5-turbo',
                 messages: updatedConversation,
                 stream: true,
             }, {responseType: 'stream'});
-            
-            
-            
-            const item : number = response.data.choices.length;
-            const assistantResponseMessage : ChatCompletionResponseMessage | undefined  = response.data.choices[item -1].message;
+
+
+            console.log(response);
+
+            const tokens = JSON.stringify(response.data).split(`\n\ndata: `);
+
+            // for (let chunk in response){
+            //     console.log(' Printing Chunks of the Stream...');
+            //     console.log(chunk)
+            // }
+
+            // const payload: OpenAIStreamPayload = {
+            //     model: "gpt-3.5-turbo",
+            //     messages: updatedConversation,
+            //     temperature: 0.9,
+            //     presence_penalty: 0.6,
+            //     max_tokens: 100,
+            //     stream: true,
+            // };
+
+            // const stream = await OpenAIStream(payload);
+            // console.log('CreatePrompt Executed! Stream: ');
+           
+            // const subStream = (await stream.getReader().read()).value;
+            // console.log(subStream)
+            // //return new Response(stream);
+
+
+            // createPrompt([...updatedConversation]);
+
+            //const item : number = response.data.choices.length;
+            const assistantResponseMessage : ChatCompletionResponseMessage | undefined | any  = 0//response.data.choices[0].message;
             console.log('assistantResponseMessage is:', assistantResponseMessage);
             updatedConversation.push({...assistantResponseMessage});
             console.log('updatedConversation is:', updatedConversation)
