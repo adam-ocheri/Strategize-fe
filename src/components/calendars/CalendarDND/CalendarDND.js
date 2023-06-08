@@ -6,7 +6,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Dropper from './Dropper';
 import Dragger from './Dragger';
 import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
-import { updateTask_ProfileView, updateTask_ProjectView } from 'src/app/state_management/project/projectSlice';
+import { updateTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 export const clone = (data) => {
     return JSON.parse(JSON.stringify(data));
 };
@@ -133,17 +133,20 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         //await getAllSubstations();
     };
     const refreshStationData = async (updatedTask) => {
-        console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
-        switch (currentContext) {
-            case 'profile':
-                console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask);
-                return await dispatch(updateTask_ProfileView({ task: updatedTask }));
-            case 'project':
-                return await dispatch(updateTask_ProjectView(updatedTask));
-            case 'ltg':
-            case 'objective':
-            case 'task':
-        }
+        console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask);
+        return await dispatch(updateTask_ProfileView({ task: updatedTask }));
+        // console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
+        // const context = 'profile'
+        // switch (currentContext){
+        //     case 'profile':
+        //         console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask)
+        //         return await dispatch(updateTask_ProfileView({task: updatedTask}));
+        //     case 'project':
+        //         return await dispatch(updateTask_ProjectView({task: updatedTask}));
+        //     case 'ltg':
+        //     case 'objective':
+        //     case 'task':
+        // }
     };
     const onDragStart = (result) => {
         setIsDragging(true);
@@ -235,10 +238,10 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                     return item._id !== subTask._id;
                 });
                 newIterationsArray.splice(insertIndex, 0, copy);
-                await dispatch(updateSubStation({ body: { HISTORY_TaskIterations: newIterationsArray }, id: subTask.origin, parentId: subTask.owningObjective, token: user.token }));
+                const response = await dispatch(updateSubStation({ body: { HISTORY_TaskIterations: newIterationsArray }, id: subTask.origin, parentId: subTask.owningObjective, token: user.token }));
                 await dispatch(setActiveTask({ item: subTask }));
                 //--- Refresh currently active station's task view
-                await refreshStationData(subTask);
+                await refreshStationData(response.payload); //.HISTORY_TaskIterations[insertIndex]);
                 //await getAllSubstations();
             };
             updateSubtask();
@@ -255,11 +258,11 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                 }
             });
             const body = { date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15) };
-            Task = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
+            const response = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
             setTasks((prev) => newTasks);
             await dispatch(setActiveTask({ item: Task }));
             //--- Refresh currently active station's task view
-            await refreshStationData(Task);
+            await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             //await getAllSubstations();
             return;
@@ -267,12 +270,12 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         if (!movingInCalendar && !subTask) {
             let [selectedItem] = newItems.splice(result.source.index, 1);
             const body = { date: result.destination.droppableId };
-            Task = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
+            const response = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
             setTasks((prev) => [...prev, Task]);
             setItems(newItems);
             await dispatch(setActiveTask({ item: Task }));
             //--- Refresh currently active station's task view
-            await refreshStationData(Task);
+            await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             //await getAllSubstations();
         }

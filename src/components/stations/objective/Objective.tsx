@@ -9,6 +9,7 @@ import { reset__Task, setActiveTask } from 'src/app/state_management/task/taskSl
 //Child sub-station
 import { createTask, getTask, updateTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
+import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
 
 
 
@@ -78,7 +79,7 @@ function Objective({}) {
     //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const {activeProject} : any = useAppSelector((state) => state.project)
+    const {activeProject, allUserTasks} : any = useAppSelector((state) => state.project)
     const {activeLTG} : any = useAppSelector((state) => state.ltg)
     const {activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {data, activeTask, isLoading} : any = useAppSelector((state : RootState) => state.task);
@@ -93,7 +94,8 @@ function Objective({}) {
             // reset__Task();
             const getData = async () => {
                 await dispatch(setCurrentStationContext({newContext: 'objective'}));
-                await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+                const response = await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}));
+                setTaskData(response.payload);
             }
             getData();
         }
@@ -102,6 +104,14 @@ function Objective({}) {
     useEffect(() => {
         setFormData({newTaskName: ''});
     } , [creatingNewTask])
+
+    const [taskData, setTaskData] = useState([]);
+
+    useEffect(()=> {
+
+        refreshStation('objective', activeObjective, allUserTasks, setTaskData);
+
+    }, [allUserTasks])
     
     return (
     <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
@@ -119,7 +129,7 @@ function Objective({}) {
             <h3 className='s3 font-4'> Tasks </h3>
             {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
                 <CalendarDND 
-                    data={data} 
+                    data={taskData} 
                     getAllSubstations={async () => {await dispatch(getAllTasks({parentId: activeObjective._id, token: user.token}))}} 
                     updateSubStation={updateTask} 
                     dispatch={dispatch} 

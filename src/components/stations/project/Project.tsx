@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { createLTG, getLTG, getAllLTGs, updateLTG, deleteLTG } from 'src/app/state_management/LTG/LTGSlice';
 import { getProject, updateProject, deleteProject, reset__project, getAllSubstations_Project } from 'src/app/state_management/project/projectSlice';
@@ -61,14 +62,16 @@ function Project({}) {
         navigator('/project/ltg/objective/task');
     }
 
-    //
+    // Data
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const {activeProject, subData} : any = useAppSelector((state) => state.project)
+    const {activeProject, subData, allUserTasks} : any = useAppSelector((state) => state.project)
     const {user, stationContext} : any = useAppSelector((state : RootState) => state.auth);
     const {data, activeLTG} : any = useAppSelector((state : RootState) => state.ltg);
     const {activeTask, isLoading} : any = useAppSelector((state) => state.task)
+    
 
+    // Init
     useEffect(() => {
         if (!activeProject.projectName)
         {
@@ -83,16 +86,26 @@ function Project({}) {
         }
     }, [])
 
+    // Post Init
     useEffect(() => {
         if (activeProject._id){
             const getSubData = async () => {
                 console.log('TRYING TO SEE USER ID.....');
                 console.log(user._id)
-                await dispatch(getAllSubstations_Project({id: activeProject._id, owner: user._id, token: user.token}))
+                const response = await dispatch(getAllSubstations_Project({id: activeProject._id, owner: user._id, token: user.token}));
+                setTaskData(response.payload);
             }
             getSubData();
         }
     }, [activeProject])
+
+    const [taskData, setTaskData] = useState([]);
+
+    useEffect(()=> {
+
+        refreshStation('project', activeProject, allUserTasks, setTaskData);
+
+    }, [allUserTasks])
     
     return (
     <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
@@ -126,14 +139,14 @@ function Project({}) {
         </section>
         <section>
         <CalendarDND 
-                data={subData} 
+                data={taskData} 
                 getAllSubstations={() => {dispatch(getAllSubstations_Project({id: activeProject._id, owner: user._id, token: user.token}))}} 
                 updateSubStation={updateTask} 
                 dispatch={dispatch} 
                 user={user} 
                 manage={manageSelectedTask_Remote}
                 activeTask={activeTask}
-                currentContext={stationContext}
+                currentContext={'project'}
             />
         </section>
     </div>

@@ -93,9 +93,3 @@ export const getAllUserProjectsAndTasks = async ({ owner, token }) => {
     console.log(response.data);
     return response.data;
 };
-export const updateTask_AllProjects = async ({ task }) => {
-    return await task;
-};
-export const updateTask_Project = async ({ task }) => {
-    return task;
-};

@@ -10,6 +10,7 @@ import { getAllSubStations_LTG } from 'src/app/state_management/LTG/LTGSlice';
 import { createObjective, getObjective, deleteObjective, getAllObjectives, } from 'src/app/state_management/objective/objectiveSlice';
 import { updateTask, getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
+import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
 
 
 
@@ -68,7 +69,7 @@ function LTG({}) {
 
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const {activeProject} : any = useAppSelector((state) => state.project)
+    const {activeProject, allUserTasks} : any = useAppSelector((state) => state.project)
     const {activeLTG, subData, isLoading} : any = useAppSelector((state : RootState) => state.ltg);
     const {data, activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {activeTask} : any = useAppSelector((state : RootState) => state.task);
@@ -91,11 +92,20 @@ function LTG({}) {
     useEffect(() => {
         const getStuff = async() => {
             if (data){
-                await dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))
+                const response = await dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}));
+                setTaskData(response.payload);
             }
         }
         getStuff();
     }, [data])
+
+    const [taskData, setTaskData] = useState([]);
+
+    useEffect(()=> {
+
+        refreshStation('ltg', activeLTG, allUserTasks, setTaskData);
+
+    }, [allUserTasks])
     
     return (
     <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
@@ -130,7 +140,7 @@ function LTG({}) {
         </section>
         <section>
             <CalendarDND 
-                data={subData} 
+                data={taskData} 
                 getAllSubstations={() => {dispatch(getAllSubStations_LTG({id: activeLTG._id, owningProject: activeLTG.owningProject, owner: user._id, token: user.token}))}} 
                 updateSubStation={updateTask} 
                 dispatch={dispatch} 

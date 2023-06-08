@@ -206,22 +206,26 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
     }
 
     const refreshStationData = async (updatedTask : any) => {
-        console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
-        switch (currentContext){
-            case 'profile':
-                console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask)
-                return await dispatch(updateTask_ProfileView({task: updatedTask}));
-            case 'project':
 
-                return await dispatch(updateTask_ProjectView(updatedTask));
+        console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask)
+        return await dispatch(updateTask_ProfileView({task: updatedTask}));
 
-            case 'ltg':
+        // console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
+        // const context = 'profile'
+        // switch (currentContext){
+        //     case 'profile':
+        //         console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask)
+        //         return await dispatch(updateTask_ProfileView({task: updatedTask}));
+        //     case 'project':
+        //         return await dispatch(updateTask_ProjectView({task: updatedTask}));
+        //     case 'ltg':
 
-            case 'objective':
+        //     case 'objective':
 
-            case 'task':
+        //     case 'task':
 
-        }
+        // }
+
     }
 
     const onDragStart : OnDragStartResponder | undefined = (result : DragStart) => {
@@ -315,7 +319,6 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 setTasks(newTasks);
             }
             
-
             const updateSubtask = async () => {
                 let insertIndex = 0;
                 const newIterationsArray = Task.HISTORY_TaskIterations.filter((item : any, index : number) => {
@@ -326,10 +329,10 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                     return item._id !== subTask._id;
                 });
                 newIterationsArray.splice(insertIndex, 0, copy);
-                await dispatch(updateSubStation({body: {HISTORY_TaskIterations: newIterationsArray}, id: subTask.origin, parentId: subTask.owningObjective, token: user.token}));
+                const response = await dispatch(updateSubStation({body: {HISTORY_TaskIterations: newIterationsArray}, id: subTask.origin, parentId: subTask.owningObjective, token: user.token}));
                 await dispatch(setActiveTask({item: subTask}))
                 //--- Refresh currently active station's task view
-                await refreshStationData(subTask);
+                await refreshStationData(response.payload);//.HISTORY_TaskIterations[insertIndex]);
                 //await getAllSubstations();
             }
             updateSubtask();
@@ -349,11 +352,11 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             });
 
             const body = {date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15)}
-            Task = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
+            const response = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             setTasks((prev : any) : any => newTasks);
             await dispatch(setActiveTask({item: Task}))
             //--- Refresh currently active station's task view
-            await refreshStationData(Task);
+            await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             //await getAllSubstations();
 
@@ -364,12 +367,12 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             let [selectedItem] : any = newItems.splice(result.source.index, 1);
             
             const body = {date: result.destination.droppableId};
-            Task = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
+            const response = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             setTasks((prev : any) : any => [...prev, Task]);
             setItems(newItems);
             await dispatch(setActiveTask({item: Task}))
             //--- Refresh currently active station's task view
-            await refreshStationData(Task);
+            await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             //await getAllSubstations();
             

@@ -287,7 +287,6 @@ export const projectSlice = createSlice({
                     }
                     return item;
                 })
-                //state.allUserTasks = action.payload;
             })
             .addCase(updateTask_ProfileView.rejected, (state : any, action: any) => {
                 state.isLoading = false;
@@ -309,7 +308,6 @@ export const projectSlice = createSlice({
                     }
                     return item;
                 })
-                //state.allUserTasks = action.payload;
             })
             .addCase(updateTask_ProjectView.rejected, (state : any, action: any) => {
                 state.isLoading = false;

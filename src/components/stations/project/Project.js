@@ -1,6 +1,7 @@
 import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { createLTG, getLTG, getAllLTGs, deleteLTG } from 'src/app/state_management/LTG/LTGSlice';
 import { getAllSubstations_Project } from 'src/app/state_management/project/projectSlice';
@@ -51,13 +52,14 @@ function Project({}) {
         }
         navigator('/project/ltg/objective/task');
     };
-    //
+    // Data
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const { activeProject, subData } = useAppSelector((state) => state.project);
+    const { activeProject, subData, allUserTasks } = useAppSelector((state) => state.project);
     const { user, stationContext } = useAppSelector((state) => state.auth);
     const { data, activeLTG } = useAppSelector((state) => state.ltg);
     const { activeTask, isLoading } = useAppSelector((state) => state.task);
+    // Init
     useEffect(() => {
         if (!activeProject.projectName) {
             navigator("/");
@@ -70,17 +72,23 @@ function Project({}) {
             initData();
         }
     }, []);
+    // Post Init
     useEffect(() => {
         if (activeProject._id) {
             const getSubData = async () => {
                 console.log('TRYING TO SEE USER ID.....');
                 console.log(user._id);
-                await dispatch(getAllSubstations_Project({ id: activeProject._id, owner: user._id, token: user.token }));
+                const response = await dispatch(getAllSubstations_Project({ id: activeProject._id, owner: user._id, token: user.token }));
+                setTaskData(response.payload);
             };
             getSubData();
         }
     }, [activeProject]);
-    return (_jsxs("div", { className: 'pt7 mt7 p3 m3 b-color-dark-2 white', children: [_jsxs("section", { children: [_jsxs("h2", { className: 'font-1 s4', children: [activeProject.projectName, " :", _jsxs("span", { className: 'font-5 s2 m3 orange', children: [`${activeProject.stationTypeName ? activeProject.stationTypeName : activeProject.stationType ? activeProject.stationType : 'Project'}`, " "] })] }), _jsx("div", { children: _jsx(Button_S2, { onClick: (e) => { navigator('/project/settings'); }, children: "Settings" }) })] }), _jsxs("section", { className: 'p3 m3 border-top-w1 border-top-white border-top-solid', children: [_jsx("h3", { className: 's3 font-4', children: " Long Term Goals " }), data && _jsx("div", { className: 'p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid', children: data.map((LTG) => (_jsxs("div", { className: 'p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white', children: ["Long Term Goal: ", _jsx("span", { className: 'font-2 s2', children: LTG.LTGName }), _jsxs("p", { children: [_jsx(Button_S2, { onClick: (e) => { manageSelectedStation(e, LTG._id); }, children: " Manage " }), _jsx(Button_S2, { onClick: () => { dispatch(deleteLTG({ id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token })); }, children: "Delete" })] })] }, LTG._id))) })] }), _jsx("section", { className: 'p3 m3', children: _jsxs("form", { onSubmit: (e) => onFormSubmitted(e), children: [_jsx("input", { className: "form-input", type: "text", placeholder: "LTG Name", id: "newLTGName", name: "newLTGName", value: newLTGName, onChange: (e) => { onFormUpdated(e); } }), _jsx(Button_S2, { type: 'submit', children: "Add New" })] }) }), _jsx("section", { children: _jsx(CalendarDND, { data: subData, getAllSubstations: () => { dispatch(getAllSubstations_Project({ id: activeProject._id, owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask, currentContext: stationContext }) })] }));
+    const [taskData, setTaskData] = useState([]);
+    useEffect(() => {
+        refreshStation('project', activeProject, allUserTasks, setTaskData);
+    }, [allUserTasks]);
+    return (_jsxs("div", { className: 'pt7 mt7 p3 m3 b-color-dark-2 white', children: [_jsxs("section", { children: [_jsxs("h2", { className: 'font-1 s4', children: [activeProject.projectName, " :", _jsxs("span", { className: 'font-5 s2 m3 orange', children: [`${activeProject.stationTypeName ? activeProject.stationTypeName : activeProject.stationType ? activeProject.stationType : 'Project'}`, " "] })] }), _jsx("div", { children: _jsx(Button_S2, { onClick: (e) => { navigator('/project/settings'); }, children: "Settings" }) })] }), _jsxs("section", { className: 'p3 m3 border-top-w1 border-top-white border-top-solid', children: [_jsx("h3", { className: 's3 font-4', children: " Long Term Goals " }), data && _jsx("div", { className: 'p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid', children: data.map((LTG) => (_jsxs("div", { className: 'p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white', children: ["Long Term Goal: ", _jsx("span", { className: 'font-2 s2', children: LTG.LTGName }), _jsxs("p", { children: [_jsx(Button_S2, { onClick: (e) => { manageSelectedStation(e, LTG._id); }, children: " Manage " }), _jsx(Button_S2, { onClick: () => { dispatch(deleteLTG({ id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token })); }, children: "Delete" })] })] }, LTG._id))) })] }), _jsx("section", { className: 'p3 m3', children: _jsxs("form", { onSubmit: (e) => onFormSubmitted(e), children: [_jsx("input", { className: "form-input", type: "text", placeholder: "LTG Name", id: "newLTGName", name: "newLTGName", value: newLTGName, onChange: (e) => { onFormUpdated(e); } }), _jsx(Button_S2, { type: 'submit', children: "Add New" })] }) }), _jsx("section", { children: _jsx(CalendarDND, { data: taskData, getAllSubstations: () => { dispatch(getAllSubstations_Project({ id: activeProject._id, owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask, currentContext: 'project' }) })] }));
 }
 ;
 export default Project;
