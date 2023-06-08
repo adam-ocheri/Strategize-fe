@@ -10,6 +10,7 @@ import { reset__Task, setActiveTask } from 'src/app/state_management/task/taskSl
 import { createTask, getTask, updateTask, deleteTask, getAllTasks } from 'src/app/state_management/task/taskSlice';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
+import { deleteTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 
 
 
@@ -48,8 +49,9 @@ function Objective({}) {
             objective: {id: activeObjective._id, name: activeObjective.objectiveName}
           }
 
-          await dispatch(createTask({taskName: newTaskName, heritage, parentId: activeObjective._id, owner: user._id, token: user.token}))
-          setCreatingNewTask(false)
+          const response = await dispatch(createTask({taskName: newTaskName, heritage, parentId: activeObjective._id, owner: user._id, token: user.token}))
+          setTaskData((prev) : any => ([...prev, response.payload]))
+          setCreatingNewTask(false);
         }
     };
 
@@ -112,6 +114,11 @@ function Objective({}) {
         refreshStation('objective', activeObjective, allUserTasks, setTaskData);
 
     }, [allUserTasks])
+
+    async function deleteSingleTask(Task : any){
+        const response = await dispatch(deleteTask({id: Task._id, parentId: activeObjective._id, owner: user._id, token: user.token}));
+        dispatch(deleteTask_ProfileView({task: response.payload}));
+    }
     
     return (
     <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
@@ -163,7 +170,7 @@ function Objective({}) {
                         <h4 className='font-5'>Task: <span className='font-2 s2'> {Task.taskName} </span></h4>
                         <span>
                             <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Task._id)}}> Manage </Button_S2>
-                            <Button_S2 onClick={() => {dispatch(deleteTask({id: Task._id, parentId: activeObjective._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
+                            <Button_S2 onClick={() => {deleteSingleTask(Task)}}>Delete</Button_S2>
                         </span>
                     </div>))}
                 </article>

@@ -72,7 +72,7 @@ export const getOne = async ({id, parentId, token} : any) => {
 }
 
 export const deleteById = async ({id, parentId, owner, token} : any) => {
-    (console.log('trying to delete all tasks...'));
+    (console.log('trying to delete task...'));
     console.log(token);
     const authConfig = {
         headers: {

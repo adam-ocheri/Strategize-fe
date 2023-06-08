@@ -271,9 +271,9 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
             let [selectedItem] = newItems.splice(result.source.index, 1);
             const body = { date: result.destination.droppableId };
             const response = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
-            setTasks((prev) => [...prev, Task]);
+            setTasks((prev) => [...prev, response.payload]);
             setItems(newItems);
-            await dispatch(setActiveTask({ item: Task }));
+            await dispatch(setActiveTask({ item: response.payload }));
             //--- Refresh currently active station's task view
             await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))

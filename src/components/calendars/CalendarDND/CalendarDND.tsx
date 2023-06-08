@@ -10,7 +10,7 @@ import Dropper from './Dropper';
 import Dragger from './Dragger';
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 import { getTask, reset__Task, setActiveTask } from 'src/app/state_management/task/taskSlice';
-import { updateTask_ProfileView, updateTask_ProjectView } from 'src/app/state_management/project/projectSlice';
+import { updateTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 
 
 interface DataElement {
@@ -309,6 +309,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             }
 
             copy.date = result.destination.droppableId;
+
             if(movingInCalendar){
                 // setItems(modifiedList);
                 newTasks = [...tasks, copy];
@@ -368,9 +369,9 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             
             const body = {date: result.destination.droppableId};
             const response = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-            setTasks((prev : any) : any => [...prev, Task]);
+            setTasks((prev : any) : any => [...prev, response.payload]);
             setItems(newItems);
-            await dispatch(setActiveTask({item: Task}))
+            await dispatch(setActiveTask({item: response.payload}))
             //--- Refresh currently active station's task view
             await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))

@@ -108,7 +108,7 @@ export const updateTask_ProfileView = createAsyncThunk('project/updateTask_Profi
         return thunkAPI.rejectWithValue(message);
     }
 });
-export const updateTask_ProjectView = createAsyncThunk('project/updateTask_ProjectContext', async ({ task }, thunkAPI) => {
+export const deleteTask_ProfileView = createAsyncThunk('project/updateTask_ProjectContext', async ({ task }, thunkAPI) => {
     try {
         return task;
     }
@@ -249,15 +249,20 @@ export const projectSlice = createSlice({
             .addCase(updateTask_ProfileView.fulfilled, (state, action) => {
             console.log('BUILDER LOG! updateTask_ProfileView =-> allUserTasks');
             console.log('state.allUserTasks: ', state.allUserTasks);
+            let newlyCreatedTask = true;
             state.isSuccess = true;
             state.isLoading = false;
             state.allUserTasks = state.allUserTasks.map((item) => {
                 console.log('item: ', item);
                 if (item._id === action.payload._id) {
+                    newlyCreatedTask = false;
                     return action.payload;
                 }
                 return item;
             });
+            if (newlyCreatedTask) {
+                state.allUserTasks = [...state.allUserTasks, action.payload];
+            }
         })
             .addCase(updateTask_ProfileView.rejected, (state, action) => {
             state.isLoading = false;
@@ -266,20 +271,22 @@ export const projectSlice = createSlice({
             state.message = action.payload;
         })
             // updateTask_ProjectView CASES
-            .addCase(updateTask_ProjectView.pending, (state) => {
+            .addCase(deleteTask_ProfileView.pending, (state) => {
             state.isLoading = true;
         })
-            .addCase(updateTask_ProjectView.fulfilled, (state, action) => {
+            .addCase(deleteTask_ProfileView.fulfilled, (state, action) => {
             state.isSuccess = true;
             state.isLoading = false;
-            state.subData = state.subData.map((item) => {
-                if (item._id === action.payload._id) {
-                    return action.payload;
-                }
-                return item;
-            });
+            // state.allUserTasks = state.allUserTasks.map((item : any) => {
+            //     if(item._id === action.payload._id)
+            //     {
+            //         return; //action.payload;
+            //     }
+            //     return item;
+            // })
+            state.allUserTasks = state.allUserTasks.filter((item) => item._id !== action.payload._id);
         })
-            .addCase(updateTask_ProjectView.rejected, (state, action) => {
+            .addCase(deleteTask_ProfileView.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
