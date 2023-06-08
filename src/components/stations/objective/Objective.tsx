@@ -82,7 +82,7 @@ function Objective({}) {
     const {activeLTG} : any = useAppSelector((state) => state.ltg)
     const {activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {data, activeTask, isLoading} : any = useAppSelector((state : RootState) => state.task);
-    const {user} : any = useAppSelector((state : RootState) => state.auth);
+    const {user, stationContext} : any = useAppSelector((state : RootState) => state.auth);
 
     useEffect(() => {
         if (!activeObjective.objectiveName)
@@ -126,6 +126,7 @@ function Objective({}) {
                     user={user} 
                     manage={manageSelectedTask_Remote}
                     activeTask={activeTask}
+                    currentContext={stationContext}
                 />
                 <article>
                     <div className='flex f-dir-col jt-center j-even border-white border-w2 border-solid border-r3 b-color-dark-1 white p7 m7'>

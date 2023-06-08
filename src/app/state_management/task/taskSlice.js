@@ -37,7 +37,7 @@ export const getAllTasks = createAsyncThunk('task/getAll', async ({ parentId, to
 //! ROUTE: api/project/Tasks/Task -----------------------------------------------------------------------------------------------------------------
 export const updateTask = createAsyncThunk('task/update', async ({ body, id, parentId, token }, thunkAPI) => {
     try {
-        console.log("Slicing...");
+        console.log("Slicing... Updating Task");
         console.log({ body });
         return await update({ body, id, parentId, token });
     }

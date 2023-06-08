@@ -72,7 +72,7 @@ function LTG({}) {
     const {activeLTG, subData, isLoading} : any = useAppSelector((state : RootState) => state.ltg);
     const {data, activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {activeTask} : any = useAppSelector((state : RootState) => state.task);
-    const {user} : any = useAppSelector((state : RootState) => state.auth);
+    const {user, stationContext} : any = useAppSelector((state : RootState) => state.auth);
 
     useEffect(() => {
         if (!activeLTG.LTGName)
@@ -137,6 +137,7 @@ function LTG({}) {
                 user={user} 
                 manage={manageSelectedTask_Remote}
                 activeTask={activeTask}
+                currentContext={stationContext}
             />
         </section>
     </div>

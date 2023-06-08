@@ -65,7 +65,7 @@ function Project({}) {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
     const {activeProject, subData} : any = useAppSelector((state) => state.project)
-    const {user} : any = useAppSelector((state : RootState) => state.auth);
+    const {user, stationContext} : any = useAppSelector((state : RootState) => state.auth);
     const {data, activeLTG} : any = useAppSelector((state : RootState) => state.ltg);
     const {activeTask, isLoading} : any = useAppSelector((state) => state.task)
 
@@ -133,6 +133,7 @@ function Project({}) {
                 user={user} 
                 manage={manageSelectedTask_Remote}
                 activeTask={activeTask}
+                currentContext={stationContext}
             />
         </section>
     </div>

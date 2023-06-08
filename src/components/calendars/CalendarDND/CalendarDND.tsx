@@ -10,6 +10,7 @@ import Dropper from './Dropper';
 import Dragger from './Dragger';
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 import { getTask, reset__Task, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { updateTask_ProfileView, updateTask_ProjectView } from 'src/app/state_management/project/projectSlice';
 
 
 interface DataElement {
@@ -65,7 +66,7 @@ const ListGrid = styled.div`
   border: 3px solid white;
 `;
 
-const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch, user, manage, activeTask} : any)  =>{
+const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch, user, currentContext, manage, activeTask} : any)  =>{
     
     const [date, setDate] : any = useState(new Date());
     const [currentlyViewedMonth, setCurrentlyViewedMonth] = useState('');
@@ -77,16 +78,15 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
     //Handle INIT and UPDATEd data
     useEffect(() => {
         if(data.length >= 1){
+
             const mutableData : any = Array.from(data);
             const newTasks : any[] = [];
             const newItems : any[] = [];
             for(let i = 0; i < mutableData.length; ++i){
+                // check if task has date
                 const hasDate = () => {if (mutableData[i].date !== '') return true;}
-                console.log('LOOPING... Checking If DATE is valid...')
-                console.log('current doc has date?:')
-                console.log(hasDate());
-                console.log('current doc is:');
-                console.log(mutableData[i]);
+
+                // push task to designated lists
                 if(hasDate()){
                     newTasks.push(mutableData[i]);
                 }
@@ -101,8 +101,6 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 const subItems = [];
 
                 for (let task of newTasks){
-                    console.log('trying to loop over tasks for SUBTASKS......');
-                    console.log(task)
                     for (let subtask of task.HISTORY_TaskIterations){
                         console.log(subtask)
                         if(subtask.date !== ''){
@@ -163,7 +161,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         };
     }, []);
 
-
+    // Update Task Time
     const updateTime = async (date : any, time : any, id : any, parentId : any, item : any) => {
 
         let body = {};
@@ -190,15 +188,40 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             updatedSubtask.date = newDateAndTime;
             newArray.splice(sIndex, 0, updatedSubtask);
             body = {HISTORY_TaskIterations: newArray};
-            await dispatch(updateSubStation({body, id: item.origin, parentId: parentId, token: user.token}))
+            const response = await dispatch(updateSubStation({body, id: item.origin, parentId: parentId, token: user.token}));
+            await refreshStationData(response.payload);
         }
         else{
             body = {date: date.slice(0, 16) + time + date.slice(21)};
-            await dispatch(updateSubStation({body, id: id, parentId: parentId, token: user.token}))
+            await dispatch(updateSubStation({body, id: id, parentId: parentId, token: user.token})).then(async (res : any)=> {
+                console.log('UPDATE TIME RESPONSE Incoming: ', res, body)
+                await refreshStationData(res.payload)
+            })
+            // console.log('UPDATE TIME RESPONSE Incoming: ', response, body)
+            // await refreshStationData(response.payload)
         }
         
         
-        await getAllSubstations();
+        //await getAllSubstations();
+    }
+
+    const refreshStationData = async (updatedTask : any) => {
+        console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
+        switch (currentContext){
+            case 'profile':
+                console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask)
+                return await dispatch(updateTask_ProfileView({task: updatedTask}));
+            case 'project':
+
+                return await dispatch(updateTask_ProjectView(updatedTask));
+
+            case 'ltg':
+
+            case 'objective':
+
+            case 'task':
+
+        }
     }
 
     const onDragStart : OnDragStartResponder | undefined = (result : DragStart) => {
@@ -224,7 +247,8 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         }
 
         //Init Data
-        let updateComplete = false; 
+        let updateComplete = false;
+        let updatedTask: any; 
         let Task : any;
         let subTask : any = null;
         let isSubtask: boolean = false ;
@@ -304,7 +328,9 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 newIterationsArray.splice(insertIndex, 0, copy);
                 await dispatch(updateSubStation({body: {HISTORY_TaskIterations: newIterationsArray}, id: subTask.origin, parentId: subTask.owningObjective, token: user.token}));
                 await dispatch(setActiveTask({item: subTask}))
-                await getAllSubstations();
+                //--- Refresh currently active station's task view
+                await refreshStationData(subTask);
+                //await getAllSubstations();
             }
             updateSubtask();
             return;
@@ -323,110 +349,33 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             });
 
             const body = {date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15)}
-            await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
+            Task = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             setTasks((prev : any) : any => newTasks);
-            await dispatch(setActiveTask({item: selectedItem}))
+            await dispatch(setActiveTask({item: Task}))
+            //--- Refresh currently active station's task view
+            await refreshStationData(Task);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-            await getAllSubstations();
+            //await getAllSubstations();
 
             return;
         }
 
         if (!movingInCalendar && !subTask){
             let [selectedItem] : any = newItems.splice(result.source.index, 1);
-
+            
             const body = {date: result.destination.droppableId};
-            await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-            setTasks((prev : any) : any => [...prev, selectedItem]);
+            Task = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
+            setTasks((prev : any) : any => [...prev, Task]);
             setItems(newItems);
-            await dispatch(setActiveTask({item: selectedItem}))
+            await dispatch(setActiveTask({item: Task}))
+            //--- Refresh currently active station's task view
+            await refreshStationData(Task);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-            await getAllSubstations();
+            //await getAllSubstations();
             
         }
-        // TODO SUBTASK adding to calendar - LEGACY START - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        /*
-            console.log('Checking for subtasks.....');
-            console.log(items);
-            for (let task of tasks){ 
-                if (updateComplete) return;
-                const newItems : any[] = Array.from(items);
-                for (let subtask of task.HISTORY_TaskIterations){
-                    if (updateComplete) return;
-
-                    if (result.draggableId === subtask._id){
-                        console.log('MOVING SUBTASK!');
-                        const [selectedItem] : any = newItems.filter((item : any, index : number) => {
-                            if (item._id === subtask._id){
-                                return newItems.splice(index, 1);
-                            }
-                            else return item._id === subtask._id;
-                        });
-
-                        if(selectedItem){
-                            updateComplete = true;
-                            setItems(newItems);
-                            let copy : any = {};
-                            for (let field in selectedItem){
-                                Object.defineProperty(copy, field, {value: selectedItem[field], writable: true, enumerable: true, configurable: true })
-                            }
-                            console.log("COPY IS:")
-                            console.log(copy);
-                            copy.date = result.destination.droppableId;
-                            const newTasks = [...tasks, copy];
-                            setTasks(newTasks);
-
-                            const updateSubtask = async () => {
-                                let insertIndex = 0;
-                                const newIterationsArray = task.HISTORY_TaskIterations.filter((item : any, index : number) => {
-                                    if (item._id === subtask._id){
-                                        insertIndex = index;
-                                        return;
-                                    }
-                                    return item._id !== subtask._id;
-                                });
-                                newIterationsArray.splice(insertIndex, 0, copy);
-                                console.log('newIterationsArray is::::::::::::::::::::::::::::::::');
-                                console.log(newIterationsArray)
-                                await dispatch(updateSubStation({body: {HISTORY_TaskIterations: newIterationsArray}, id: task._id, parentId: task.owningObjective, token: user.token}));
-                                await getAllSubstations();
-                            }
-                            updateSubtask();
-                            return;
-                        }
-                    }
-                }
-            }
-            if (updateComplete) return;     
-            const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            let movingInCalendar = false;
-            for (let day of week){
-                if(result.source.droppableId.startsWith(day)){
-                    movingInCalendar = true;
-
-                    const newTasks = tasks;
-                    const [selectedItem] : any = newTasks.filter((item : any, index : any) => {
-                        if(item.date.slice(0, 15) === result.source.droppableId.slice(0, 15))
-                        {
-                            return newTasks.splice(index, 1);
-                        }
-                        else{
-                            return item.date.slice(0, 15) === result.source.droppableId.slice(0, 15);
-                        }
-                    });
-
-                    const body = {date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15)}
-                    await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-                    setTasks((prev : any) : any => newTasks);
-                    await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-                    await getAllSubstations();
-
-                    return;
-                }
-            }
-        */
-        // TODO SUBTASK adding to calendar - LEGACY END - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
         
+
     }
     
 

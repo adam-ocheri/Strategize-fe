@@ -97,6 +97,27 @@ export const getAllProjectsAndSubstations = createAsyncThunk('project/getAllUser
         return thunkAPI.rejectWithValue(message);
     }
 });
+// Fake Async Reducers
+export const updateTask_ProfileView = createAsyncThunk('project/updateTask_ProfileContext', async ({ task }, thunkAPI) => {
+    try {
+        return task;
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+export const updateTask_ProjectView = createAsyncThunk('project/updateTask_ProjectContext', async ({ task }, thunkAPI) => {
+    try {
+        return task;
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
 //*Slice Setup -----------------------------------------------------------------------------------------------------------------------------------------------------
 export const projectSlice = createSlice({
     name: 'project',
@@ -210,11 +231,57 @@ export const projectSlice = createSlice({
             state.isLoading = true;
         })
             .addCase(getAllProjectsAndSubstations.fulfilled, (state, action) => {
+            console.log('BUILDER LOG! getAllProjectsAndSubstations =-> allUserTasks');
             state.isSuccess = true;
             state.isLoading = false;
             state.allUserTasks = action.payload;
         })
             .addCase(getAllProjectsAndSubstations.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
+            // updateTask_ProfileView CASES
+            .addCase(updateTask_ProfileView.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(updateTask_ProfileView.fulfilled, (state, action) => {
+            console.log('BUILDER LOG! updateTask_ProfileView =-> allUserTasks');
+            console.log('state.allUserTasks: ', state.allUserTasks);
+            state.isSuccess = true;
+            state.isLoading = false;
+            state.allUserTasks = state.allUserTasks.map((item) => {
+                console.log('item: ', item);
+                if (item._id === action.payload._id) {
+                    return action.payload;
+                }
+                return item;
+            });
+            //state.allUserTasks = action.payload;
+        })
+            .addCase(updateTask_ProfileView.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.payload;
+        })
+            // updateTask_ProjectView CASES
+            .addCase(updateTask_ProjectView.pending, (state) => {
+            state.isLoading = true;
+        })
+            .addCase(updateTask_ProjectView.fulfilled, (state, action) => {
+            state.isSuccess = true;
+            state.isLoading = false;
+            state.subData = state.subData.map((item) => {
+                if (item._id === action.payload._id) {
+                    return action.payload;
+                }
+                return item;
+            });
+            //state.allUserTasks = action.payload;
+        })
+            .addCase(updateTask_ProjectView.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

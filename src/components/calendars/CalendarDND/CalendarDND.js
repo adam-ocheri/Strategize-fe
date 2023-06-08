@@ -6,6 +6,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Dropper from './Dropper';
 import Dragger from './Dragger';
 import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { updateTask_ProfileView, updateTask_ProjectView } from 'src/app/state_management/project/projectSlice';
 export const clone = (data) => {
     return JSON.parse(JSON.stringify(data));
 };
@@ -16,7 +17,7 @@ const ListGrid = styled.div `
   background-color: rgb(20, 8, 23);
   border: 3px solid white;
 `;
-const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user, manage, activeTask }) => {
+const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user, currentContext, manage, activeTask }) => {
     const [date, setDate] = useState(new Date());
     const [currentlyViewedMonth, setCurrentlyViewedMonth] = useState('');
     const [items, setItems] = useState(); //backend unmodified tasks
@@ -30,13 +31,10 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
             const newTasks = [];
             const newItems = [];
             for (let i = 0; i < mutableData.length; ++i) {
+                // check if task has date
                 const hasDate = () => { if (mutableData[i].date !== '')
                     return true; };
-                console.log('LOOPING... Checking If DATE is valid...');
-                console.log('current doc has date?:');
-                console.log(hasDate());
-                console.log('current doc is:');
-                console.log(mutableData[i]);
+                // push task to designated lists
                 if (hasDate()) {
                     newTasks.push(mutableData[i]);
                 }
@@ -49,8 +47,6 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                 const subTasks = [];
                 const subItems = [];
                 for (let task of newTasks) {
-                    console.log('trying to loop over tasks for SUBTASKS......');
-                    console.log(task);
                     for (let subtask of task.HISTORY_TaskIterations) {
                         console.log(subtask);
                         if (subtask.date !== '') {
@@ -101,6 +97,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
             document.removeEventListener('keyup', handleKeyUp);
         };
     }, []);
+    // Update Task Time
     const updateTime = async (date, time, id, parentId, item) => {
         let body = {};
         if (item.isSubtask) {
@@ -121,13 +118,32 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
             updatedSubtask.date = newDateAndTime;
             newArray.splice(sIndex, 0, updatedSubtask);
             body = { HISTORY_TaskIterations: newArray };
-            await dispatch(updateSubStation({ body, id: item.origin, parentId: parentId, token: user.token }));
+            const response = await dispatch(updateSubStation({ body, id: item.origin, parentId: parentId, token: user.token }));
+            await refreshStationData(response.payload);
         }
         else {
             body = { date: date.slice(0, 16) + time + date.slice(21) };
-            await dispatch(updateSubStation({ body, id: id, parentId: parentId, token: user.token }));
+            await dispatch(updateSubStation({ body, id: id, parentId: parentId, token: user.token })).then(async (res) => {
+                console.log('UPDATE TIME RESPONSE Incoming: ', res, body);
+                await refreshStationData(res.payload);
+            });
+            // console.log('UPDATE TIME RESPONSE Incoming: ', response, body)
+            // await refreshStationData(response.payload)
         }
-        await getAllSubstations();
+        //await getAllSubstations();
+    };
+    const refreshStationData = async (updatedTask) => {
+        console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
+        switch (currentContext) {
+            case 'profile':
+                console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask);
+                return await dispatch(updateTask_ProfileView({ task: updatedTask }));
+            case 'project':
+                return await dispatch(updateTask_ProjectView(updatedTask));
+            case 'ltg':
+            case 'objective':
+            case 'task':
+        }
     };
     const onDragStart = (result) => {
         setIsDragging(true);
@@ -149,6 +165,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         }
         //Init Data
         let updateComplete = false;
+        let updatedTask;
         let Task;
         let subTask = null;
         let isSubtask = false;
@@ -220,7 +237,9 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                 newIterationsArray.splice(insertIndex, 0, copy);
                 await dispatch(updateSubStation({ body: { HISTORY_TaskIterations: newIterationsArray }, id: subTask.origin, parentId: subTask.owningObjective, token: user.token }));
                 await dispatch(setActiveTask({ item: subTask }));
-                await getAllSubstations();
+                //--- Refresh currently active station's task view
+                await refreshStationData(subTask);
+                //await getAllSubstations();
             };
             updateSubtask();
             return;
@@ -236,105 +255,27 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                 }
             });
             const body = { date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15) };
-            await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
+            Task = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
             setTasks((prev) => newTasks);
-            await dispatch(setActiveTask({ item: selectedItem }));
+            await dispatch(setActiveTask({ item: Task }));
+            //--- Refresh currently active station's task view
+            await refreshStationData(Task);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-            await getAllSubstations();
+            //await getAllSubstations();
             return;
         }
         if (!movingInCalendar && !subTask) {
             let [selectedItem] = newItems.splice(result.source.index, 1);
             const body = { date: result.destination.droppableId };
-            await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
-            setTasks((prev) => [...prev, selectedItem]);
+            Task = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
+            setTasks((prev) => [...prev, Task]);
             setItems(newItems);
-            await dispatch(setActiveTask({ item: selectedItem }));
+            await dispatch(setActiveTask({ item: Task }));
+            //--- Refresh currently active station's task view
+            await refreshStationData(Task);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-            await getAllSubstations();
+            //await getAllSubstations();
         }
-        // TODO SUBTASK adding to calendar - LEGACY START - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        /*
-            console.log('Checking for subtasks.....');
-            console.log(items);
-            for (let task of tasks){
-                if (updateComplete) return;
-                const newItems : any[] = Array.from(items);
-                for (let subtask of task.HISTORY_TaskIterations){
-                    if (updateComplete) return;
-
-                    if (result.draggableId === subtask._id){
-                        console.log('MOVING SUBTASK!');
-                        const [selectedItem] : any = newItems.filter((item : any, index : number) => {
-                            if (item._id === subtask._id){
-                                return newItems.splice(index, 1);
-                            }
-                            else return item._id === subtask._id;
-                        });
-
-                        if(selectedItem){
-                            updateComplete = true;
-                            setItems(newItems);
-                            let copy : any = {};
-                            for (let field in selectedItem){
-                                Object.defineProperty(copy, field, {value: selectedItem[field], writable: true, enumerable: true, configurable: true })
-                            }
-                            console.log("COPY IS:")
-                            console.log(copy);
-                            copy.date = result.destination.droppableId;
-                            const newTasks = [...tasks, copy];
-                            setTasks(newTasks);
-
-                            const updateSubtask = async () => {
-                                let insertIndex = 0;
-                                const newIterationsArray = task.HISTORY_TaskIterations.filter((item : any, index : number) => {
-                                    if (item._id === subtask._id){
-                                        insertIndex = index;
-                                        return;
-                                    }
-                                    return item._id !== subtask._id;
-                                });
-                                newIterationsArray.splice(insertIndex, 0, copy);
-                                console.log('newIterationsArray is::::::::::::::::::::::::::::::::');
-                                console.log(newIterationsArray)
-                                await dispatch(updateSubStation({body: {HISTORY_TaskIterations: newIterationsArray}, id: task._id, parentId: task.owningObjective, token: user.token}));
-                                await getAllSubstations();
-                            }
-                            updateSubtask();
-                            return;
-                        }
-                    }
-                }
-            }
-            if (updateComplete) return;
-            const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            let movingInCalendar = false;
-            for (let day of week){
-                if(result.source.droppableId.startsWith(day)){
-                    movingInCalendar = true;
-
-                    const newTasks = tasks;
-                    const [selectedItem] : any = newTasks.filter((item : any, index : any) => {
-                        if(item.date.slice(0, 15) === result.source.droppableId.slice(0, 15))
-                        {
-                            return newTasks.splice(index, 1);
-                        }
-                        else{
-                            return item.date.slice(0, 15) === result.source.droppableId.slice(0, 15);
-                        }
-                    });
-
-                    const body = {date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15)}
-                    await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-                    setTasks((prev : any) : any => newTasks);
-                    await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
-                    await getAllSubstations();
-
-                    return;
-                }
-            }
-        */
-        // TODO SUBTASK adding to calendar - LEGACY END - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     };
     //Day TileContent JSX function
     const tileContent = ({ view, date }) => {

@@ -16,6 +16,28 @@ export default function UserProfile() {
     const { activeLTG, isLoading: Loading_LTG } = useAppSelector((state) => state.ltg);
     const { activeObjective, isLoading: Loading_Objective } = useAppSelector((state) => state.objective);
     const { activeTask, isLoading: Loading_Task } = useAppSelector((state) => state.task);
+    const intervalUpdate = () => {
+        const currentTime = new Date();
+        console.log("TIME IS: ", currentTime.toString().slice(0, 21));
+        console.log(" COME ON!!! ");
+        console.log('allUserTasks, ', allUserTasks);
+        // for (let task in allUserTasks){
+        //   //console.log('IN-2 TASK LOOP...')
+        //   console.log(" Looping over Task, ", task);
+        //   console.log(allUserTasks[task].date.slice(0, 21) , "|", currentTime.toString().slice(0, 21));
+        //   if (allUserTasks[task].date.slice(0, 21) == currentTime.toString().slice(0, 21))
+        //   {
+        //     console.log("Should now play audio")
+        //   }
+        // }
+        console.log(allUserTasks);
+        const [nr] = allUserTasks.filter((task) => task.date.toString().slice(0, 21) == currentTime.toString().slice(0, 21));
+        console.log("NR is:", nr);
+        if (nr) {
+            const notification = new Audio('/notify.wav');
+            notification.play();
+        }
+    };
     useEffect(() => {
         if (!user) {
             navigator('/');
@@ -27,7 +49,12 @@ export default function UserProfile() {
         initData();
     }, []);
     useEffect(() => {
+        console.log('allUserTasks UPDATED!');
         console.log(allUserTasks);
+        const timer = setInterval(intervalUpdate, 10000);
+        return () => {
+            clearInterval(timer);
+        };
     }, [allUserTasks]);
     useEffect(() => {
         console.log('stationContext Changed:');
@@ -48,8 +75,12 @@ export default function UserProfile() {
         }
         navigator('/project/ltg/objective/task');
     };
-    if (Loading_User || Loading_Project || Loading_LTG || Loading_Objective) {
-        return (_jsx("div", { className: 'p7 m7', children: _jsx("p", { className: ' p7 m7', children: "Loading Data..." }) }));
-    }
-    return (_jsx("div", { children: _jsx(CalendarDND, { data: allUserTasks, getAllSubstations: async () => { await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask }) }));
+    // if (Loading_User || Loading_Project || Loading_LTG || Loading_Objective){
+    //   return (<div className='p7 m7'>
+    //     <p className=' p7 m7'>
+    //       Loading Data...
+    //     </p>
+    //   </div>);
+    // }
+    return (_jsx("div", { children: _jsx(CalendarDND, { data: allUserTasks, getAllSubstations: async () => { await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask, currentContext: 'profile' }) }));
 }

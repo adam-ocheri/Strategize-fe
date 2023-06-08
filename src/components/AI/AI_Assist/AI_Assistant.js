@@ -54,13 +54,63 @@ export default function AI_Assistant() {
             //         responseType: 'stream'
             //     }
             // };
-            const response = await openAI.createChatCompletion({
-                model: 'gpt-3.5-turbo',
-                messages: updatedConversation,
-                stream: true,
-            }, { responseType: 'stream' });
-            console.log(response);
-            const tokens = JSON.stringify(response.data).split(`\n\ndata: `);
+            // const response  = await openAI.createChatCompletion({
+            //     model: 'gpt-3.5-turbo',
+            //     messages: updatedConversation,
+            //     stream: true,
+            // }, {responseType: 'stream'});
+            // console.log(response);
+            // const tokens = JSON.stringify(response.data).split(`\n\ndata: `);
+            const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer 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`,
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: updatedConversation,
+                    stream: true
+                }),
+            });
+            console.log('response: ', response);
+            const clonedResponse = response.clone();
+            //const data = await response.json();
+            //resultText = data.choices[0].message.content;
+            const reader = clonedResponse.body?.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let resultText = "";
+            let accumulatedChunk = "";
+            while (true) {
+                const { done, value } = await reader?.read();
+                if (done) {
+                    break;
+                }
+                console.log('streamed value:', value);
+                // Massage and parse the chunk of data
+                const chunk = decoder.decode(value);
+                accumulatedChunk += chunk;
+                console.log('accumulatedChunk ', accumulatedChunk);
+                const lines = accumulatedChunk.split("\\n");
+                console.log('lines ', lines);
+                const parsedLines = lines
+                    .map((line) => line.replace(/^data: /, "").trim()) // Remove the "data: " prefix
+                    .filter((line) => line !== "" && line !== "[DONE]") // Remove empty lines and "[DONE]"
+                    .map((line) => JSON.parse(line)); // Parse the JSON string
+                for (const parsedLine of parsedLines) {
+                    console.log('parsedLine', parsedLine);
+                    const { choices } = parsedLine;
+                    const { delta } = choices[0];
+                    const { content } = delta;
+                    // Update the UI with the new content
+                    if (content) {
+                        console.log('STREAMING:', content);
+                        resultText += content;
+                    }
+                }
+                const lastLine = lines[lines.length - 1];
+                accumulatedChunk = lastLine.endsWith("\\n") ? lastLine : "";
+            }
             // for (let chunk in response){
             //     console.log(' Printing Chunks of the Stream...');
             //     console.log(chunk)

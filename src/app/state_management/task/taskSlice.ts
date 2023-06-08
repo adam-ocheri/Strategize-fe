@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
 import {create, update, getAll, getOne, deleteById} from './taskService.js'
 
-
 export interface Task {
     data: [];
     isError: boolean;
@@ -52,7 +51,7 @@ export const getAllTasks = createAsyncThunk('task/getAll',  async({parentId, tok
 
 export const updateTask = createAsyncThunk('task/update',  async({body, id, parentId, token} : any, thunkAPI) => {
     try {
-        console.log("Slicing...");
+        console.log("Slicing... Updating Task");
         console.log({body});
         return await update({body, id, parentId, token});
     } catch (error : any) {
@@ -166,6 +165,8 @@ export const TaskSlice = createSlice({
             .addCase(updateTask.fulfilled, (state : any, action : any) => {
                 state.isSuccess = true;
                 state.isLoading = false;
+
+                
                 state.data = state.data.map((item : any) => {
                     if(item._id === action.payload._id)
                     {
