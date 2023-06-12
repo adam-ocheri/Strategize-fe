@@ -47,13 +47,15 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                 const subTasks = [];
                 const subItems = [];
                 for (let task of newTasks) {
-                    for (let subtask of task.HISTORY_TaskIterations) {
-                        console.log(subtask);
-                        if (subtask.date !== '') {
-                            subTasks.push(subtask);
-                        }
-                        else {
-                            subItems.push(subtask);
+                    if (task?.HISTORY_TaskIterations?.length > 0) {
+                        for (let subtask of task.HISTORY_TaskIterations) {
+                            console.log('WTF is going on here?', subtask);
+                            if (subtask.date !== '') {
+                                subTasks.push(subtask);
+                            }
+                            else {
+                                subItems.push(subtask);
+                            }
                         }
                     }
                 }
@@ -98,7 +100,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         };
     }, []);
     // Update Task Time
-    const updateTime = async (date, time, id, parentId, item) => {
+    const updateTime = async (date, time, id, parentId, item, type) => {
         let body = {};
         if (item.isSubtask) {
             //TODO Subtask update - update algorithm needs refactoring and generalization
@@ -115,14 +117,15 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
             });
             const newDateAndTime = date.slice(0, 16) + time + date.slice(21);
             let updatedSubtask = { ...item };
-            updatedSubtask.date = newDateAndTime;
+            type === "start" ? updatedSubtask.date : updatedSubtask.endTime = newDateAndTime;
             newArray.splice(sIndex, 0, updatedSubtask);
             body = { HISTORY_TaskIterations: newArray };
             const response = await dispatch(updateSubStation({ body, id: item.origin, parentId: parentId, token: user.token }));
             await refreshStationData(response.payload);
         }
         else {
-            body = { date: date.slice(0, 16) + time + date.slice(21) };
+            const newTime = date.slice(0, 16) + time + date.slice(21);
+            body = type === "start" ? { date: newTime } : { endTime: newTime };
             await dispatch(updateSubStation({ body, id: id, parentId: parentId, token: user.token })).then(async (res) => {
                 console.log('UPDATE TIME RESPONSE Incoming: ', res, body);
                 await refreshStationData(res.payload);
@@ -135,18 +138,6 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
     const refreshStationData = async (updatedTask) => {
         console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask);
         return await dispatch(updateTask_ProfileView({ task: updatedTask }));
-        // console.log('Trying to refresh station data..................... Current Context Is: ', currentContext);
-        // const context = 'profile'
-        // switch (currentContext){
-        //     case 'profile':
-        //         console.log('Triggered profile view task update!!! | Updated Task is: ', updatedTask)
-        //         return await dispatch(updateTask_ProfileView({task: updatedTask}));
-        //     case 'project':
-        //         return await dispatch(updateTask_ProjectView({task: updatedTask}));
-        //     case 'ltg':
-        //     case 'objective':
-        //     case 'task':
-        // }
     };
     const onDragStart = (result) => {
         setIsDragging(true);
@@ -219,6 +210,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                 Object.defineProperty(copy, field, { value: subTask[field], writable: true, enumerable: true, configurable: true });
             }
             copy.date = result.destination.droppableId;
+            copy.endTime = result.destination.droppableId;
             if (movingInCalendar) {
                 // setItems(modifiedList);
                 newTasks = [...tasks, copy];
@@ -257,7 +249,10 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                     return item.date.slice(0, 15) === result.source.droppableId.slice(0, 15);
                 }
             });
-            const body = { date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15) };
+            const body = {
+                date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15),
+                endTime: result.destination.droppableId.slice(0, 15) + selectedItem.endTime.slice(15)
+            };
             const response = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
             setTasks((prev) => newTasks);
             await dispatch(setActiveTask({ item: Task }));
@@ -269,7 +264,10 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         }
         if (!movingInCalendar && !subTask) {
             let [selectedItem] = newItems.splice(result.source.index, 1);
-            const body = { date: result.destination.droppableId };
+            const body = {
+                date: result.destination.droppableId,
+                endTime: result.destination.droppableId
+            };
             const response = await dispatch(updateSubStation({ body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token }));
             setTasks((prev) => [...prev, response.payload]);
             setItems(newItems);

@@ -13,8 +13,6 @@ import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils
 import { deleteTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 
 
-
-
 function Objective({}) {
     const [formData, setFormData] = useState({
         newTaskName: '',

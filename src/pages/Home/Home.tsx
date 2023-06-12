@@ -91,7 +91,7 @@ function Home() {
               <strong className='font-6'>Email : </strong> {user.email}
               </p>
               <p>
-                <Button_S2 onClick={onLogoutClicked}>Logout</Button_S2>
+                <Button_S2 onClick={onLogoutClicked}> Logout </Button_S2>
               </p>
               
             </div>
