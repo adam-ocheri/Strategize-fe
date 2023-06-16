@@ -1,4 +1,5 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Spinner } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
@@ -8,6 +9,7 @@ import { getAllProjectsAndSubstations, getProject } from 'src/app/state_manageme
 import { getTask, setActiveTask, updateTask } from 'src/app/state_management/task/taskSlice';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
+//! Should add ability to archive completed stations!
 export default function UserProfile() {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
@@ -82,5 +84,5 @@ export default function UserProfile() {
     //     </p>
     //   </div>);
     // }
-    return (_jsx("div", { children: _jsx(CalendarDND, { data: allUserTasks, getAllSubstations: async () => { await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask, currentContext: 'profile' }) }));
+    return (_jsxs("div", { children: [_jsx("div", { className: 'flex j-center p4 m4', children: _jsxs("div", { className: 'flex f-dir-row j-even f-basis-5 p4 m4', children: [Loading_Project && _jsx("h2", { className: 's3 font-6', children: "Refreshing Projects Data . . ." }), _jsx(Spinner, { size: "xl", color: 'aqua', hidden: !Loading_Project, className: 'pt7 mt7' })] }) }), _jsx(CalendarDND, { data: allUserTasks, getAllSubstations: async () => { await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token })); }, updateSubStation: updateTask, dispatch: dispatch, user: user, manage: manageSelectedTask_Remote, activeTask: activeTask, currentContext: 'profile' })] }));
 }

@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { DraggableProvided, DraggableStateSnapshot, DroppableProvided, Position } from 'react-beautiful-dnd'
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { Badge, Stack } from '@chakra-ui/react';
 
 
 
@@ -49,7 +50,58 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       // console.log('time is:')
       // console.log(time);
     }
-  },[])
+    reportBadgesStatus();
+  },[item])
+
+  const [activeBadges, setActiveBadges] = useState({
+    fresh: false,
+    inProgress: false,
+    success: false, 
+    overdue: false
+  })
+  const {fresh, inProgress, success, overdue} = activeBadges;
+
+  const reportBadgesStatus = () => {
+    const currentDate = new Date();
+    console.log('hello Time!!!');
+    const createdAt = item.createdAt.toString();
+    const year = createdAt.slice(0, 4);
+    const month = createdAt.slice(5, 7);
+    const day = createdAt.slice(8, 10);
+    const formatted = `${month.length > 1 && month[0] == 0 ? month[1] : month }/${day.length > 1 && day[0] == 0 ?  day[1] : day }/${year}`;
+    console.log(formatted.toLocaleLowerCase(), currentDate.toLocaleDateString())
+
+    const initDate = formatted.toString();
+    const presentDate = currentDate.toLocaleDateString().toString();
+    const isNew : boolean = initDate == presentDate;
+
+    if (isNew){
+      setActiveBadges((prev : any) => ({...prev, fresh: true}))
+    }
+    else if (item.date !== '' && item.date.length > 10 && !isNew){
+      
+      const taskDueDate = new Date(item.date);
+
+      
+      if(taskDueDate < currentDate && !item.goalAchieved){
+        const taskDueTime = new Date(item.endTime)
+        
+        if (taskDueDate < currentDate && taskDueTime > currentDate && item.endTime !== ''){
+          console.log('CHECKING IF TASK TIME IS OVERDUE OR IN PROGRESS...');
+      console.log(taskDueTime, currentDate)
+      console.log('taskDueTime > currentDate',taskDueTime > currentDate)
+          setActiveBadges((prev : any) => ({...prev, inProgress: true, overdue: false}))
+        } else{
+          setActiveBadges((prev : any) => ({...prev, overdue: true, inProgress: false}))
+        }
+      }
+    }
+
+    if (item.goalAchieved){
+      setActiveBadges((prev : any) => ({...prev, success: true}))
+    }
+    
+  };
 
   useEffect(() => {
     console.log('______________________________________________________________________')
@@ -86,6 +138,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     await updateTimeForDate(item.date, t.target.value, item._id, item.owningObjective, item, type)
     console.log(`Newly set ${type} time is:`)
     console.log(t.target.value);
+    reportBadgesStatus();
   }
 
   const addNewIteration = async () => {
@@ -132,7 +185,8 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     const body = {HISTORY_TaskIterations: [...newArray, newIteration]};
     
     await dispatch(updateSubStation({body, id: id, parentId: item.owningObjective, token: user.token}))
-    await getAllSubstations();
+    await getAllSubstations(); //! MUST FIX to dynamic
+    reportBadgesStatus();
   }
 
   // const setSelectedItemAsActiveTask = async () => {
@@ -170,6 +224,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
         {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
       </div>}
       
+      
       <h3>{item.taskName}</h3>
       {stationContext !== 'task' &&
       <div className='jt-left mb5' >
@@ -192,7 +247,12 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
         <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
       </div>
       }
-      
+      <Stack direction='row' >
+        {inProgress && <Badge colorScheme='orange'>In Progress</Badge>}
+        {success && <Badge colorScheme='green'>Success</Badge>}
+        {overdue && <Badge colorScheme='red'>Overdue</Badge>}
+        {fresh && <Badge colorScheme='purple'>New</Badge>}
+      </Stack>
     </div>
   )
 }

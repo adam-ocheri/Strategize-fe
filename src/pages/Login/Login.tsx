@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "src/app/store";
 import { login, reset, User } from "src/app/state_management/user/authSlice";
 import ButtonForm from "src/components/elements/buttons/ButtonForm/ButtonForm";
+import { Spinner } from '@chakra-ui/react'
 
 function Login() {
 
@@ -61,9 +62,12 @@ function Login() {
                   name="email" value={email} onChange={(e) => {onFormUpdated(e)}}/>
               <input className="form-input" type="password" placeholder="Password" id="password" 
                   name="password" value={password} onChange={(e) => {onFormUpdated(e)}}/>
-              <ButtonForm additionalStyles='white s2' type='submit' text='Login'/>
+              <ButtonForm additionalStyles='white s2' type='submit' text='Login' disabled={isLoading}/>
+              
           </form>
+          <Spinner size={"xl"} color="aqua" hidden={!isLoading}/>
         </section>
+        
             
       </div>
     </div>

@@ -17,7 +17,8 @@ import DND from "./components/drag_n_drop/test_3.0/dnd";
 import AI_Assistant from "./components/AI/AI_Assist/AI_Assistant";
 import UserProfile from "./pages/Signup/Profile/UserProfile";
 import Notifications from "./features/notifications/Notifications";
-
+import { ChakraProvider } from '@chakra-ui/react'
+import HomeUI from "./pages/home-styled/HomeUI";
 
 
 function App() {
@@ -25,24 +26,26 @@ function App() {
     <div>
       
       <BrowserRouter>
-        <Notifications/>
-        <Navbar/>
-        <Routes>
-          <Route path='/' element={<Home/>} />
-          <Route path='/profile' element={<UserProfile/>} />
-          <Route path='/assistant' element={<AI_Assistant/>} />
-          {/* <Route path='/test' element={<DND/>} /> */}
-          <Route path='/register' element={<Signup />} />
-          <Route path='/login' element={<Login/>} />
-          <Route path="/project" element={<Project/>} />
-          <Route path="/project/settings" element={<Settings_Project/>} />
-          <Route path="/project/ltg" element={<LTG/>} />
-          <Route path="/project/ltg/settings" element={<Settings_LTG/>} />
-          <Route path="/project/ltg/objective" element={<Objective/>} />
-          <Route path="/project/ltg/objective/settings" element={<Settings_Objective/>} />
-          <Route path="/project/ltg/objective/task" element={<Task/>} />
-          <Route path="/project/ltg/objective/task/settings" element={<Settings_Task/>} />
-        </Routes>
+        <ChakraProvider>
+          <Notifications/>
+          <Navbar/>
+          <Routes>
+            <Route path='/' element={<HomeUI/>} />
+            <Route path='/profile' element={<UserProfile/>} />
+            <Route path='/assistant' element={<AI_Assistant/>} />
+            {/* <Route path='/test' element={<DND/>} /> */}
+            <Route path='/register' element={<Signup />} />
+            <Route path='/login' element={<Login/>} />
+            <Route path="/project" element={<Project/>} />
+            <Route path="/project/settings" element={<Settings_Project/>} />
+            <Route path="/project/ltg" element={<LTG/>} />
+            <Route path="/project/ltg/settings" element={<Settings_LTG/>} />
+            <Route path="/project/ltg/objective" element={<Objective/>} />
+            <Route path="/project/ltg/objective/settings" element={<Settings_Objective/>} />
+            <Route path="/project/ltg/objective/task" element={<Task/>} />
+            <Route path="/project/ltg/objective/task/settings" element={<Settings_Task/>} />
+          </Routes>
+        </ChakraProvider>
       </BrowserRouter>
     </div>
   );

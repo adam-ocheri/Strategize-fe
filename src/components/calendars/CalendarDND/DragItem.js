@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import mongoose from 'mongoose';
 import { getTask } from 'src/app/state_management/task/taskSlice';
+import { Badge, Stack } from '@chakra-ui/react';
 const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className, isDragging }) => {
     // const style = {
     //   ...provided.draggableProps.style,
@@ -24,7 +25,49 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
             // console.log('time is:')
             // console.log(time);
         }
-    }, []);
+        reportBadgesStatus();
+    }, [item]);
+    const [activeBadges, setActiveBadges] = useState({
+        fresh: false,
+        inProgress: false,
+        success: false,
+        overdue: false
+    });
+    const { fresh, inProgress, success, overdue } = activeBadges;
+    const reportBadgesStatus = () => {
+        const currentDate = new Date();
+        console.log('hello Time!!!');
+        const createdAt = item.createdAt.toString();
+        const year = createdAt.slice(0, 4);
+        const month = createdAt.slice(5, 7);
+        const day = createdAt.slice(8, 10);
+        const formatted = `${month.length > 1 && month[0] == 0 ? month[1] : month}/${day.length > 1 && day[0] == 0 ? day[1] : day}/${year}`;
+        console.log(formatted.toLocaleLowerCase(), currentDate.toLocaleDateString());
+        const initDate = formatted.toString();
+        const presentDate = currentDate.toLocaleDateString().toString();
+        const isNew = initDate == presentDate;
+        if (isNew) {
+            setActiveBadges((prev) => ({ ...prev, fresh: true }));
+        }
+        else if (item.date !== '' && item.date.length > 10 && !isNew) {
+            const taskDueDate = new Date(item.date);
+            if (taskDueDate < currentDate && !item.goalAchieved) {
+                const taskDueTime = new Date(item.endTime);
+                if (taskDueDate < currentDate && taskDueTime > currentDate && item.endTime !== '') {
+                    console.log('CHECKING IF TASK TIME IS OVERDUE OR IN PROGRESS...');
+                    console.log(taskDueTime, currentDate);
+                    console.log('taskDueTime > currentDate', taskDueTime > currentDate);
+                    setActiveBadges((prev) => ({ ...prev, inProgress: true, overdue: false }));
+                }
+                else {
+                    setActiveBadges((prev) => ({ ...prev, overdue: true, inProgress: false }));
+                }
+            }
+        }
+        if (item.goalAchieved) {
+            setActiveBadges((prev) => ({ ...prev, success: true }));
+        }
+    };
     useEffect(() => {
         console.log('______________________________________________________________________');
         console.log('isDragging is');
@@ -57,6 +100,7 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         await updateTimeForDate(item.date, t.target.value, item._id, item.owningObjective, item, type);
         console.log(`Newly set ${type} time is:`);
         console.log(t.target.value);
+        reportBadgesStatus();
     };
     const addNewIteration = async () => {
         let historyArray = [];
@@ -95,7 +139,8 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         const newArray = item.isSubtask ? [...historyArray] : [...item.HISTORY_TaskIterations];
         const body = { HISTORY_TaskIterations: [...newArray, newIteration] };
         await dispatch(updateSubStation({ body, id: id, parentId: item.owningObjective, token: user.token }));
-        await getAllSubstations();
+        await getAllSubstations(); //! MUST FIX to dynamic
+        reportBadgesStatus();
     };
     // const setSelectedItemAsActiveTask = async () => {
     //   setIsItemSelected(true)
@@ -125,6 +170,6 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
                             _jsx("span", { className: 'font-4 teal', style: { fontSize: '10pt' }, children: item.heritage.project.name }), " ", _jsx("br", {}), stationContext !== 'ltg' && stationContext !== 'objective' &&
                             _jsx("span", { className: 'font-4 red', style: { fontSize: '6pt' }, children: item.heritage.ltg.name }), " ", _jsx("br", {}), stationContext !== 'objective' &&
                             _jsx("span", { className: 'font-4 orange', style: { fontSize: '6pt' }, children: item.heritage.objective.name }), " ", _jsx("br", {})] }), isItemHovered &&
-                _jsxs("div", { className: '', children: [_jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t, "start") }), _jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: endTime, onChange: (t) => updateTime(t, "end") }), _jsx("a", { className: 'p1 mb5 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] })] }));
+                _jsxs("div", { className: '', children: [_jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t, "start") }), _jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: endTime, onChange: (t) => updateTime(t, "end") }), _jsx("a", { className: 'p1 mb5 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }), _jsxs(Stack, { direction: 'row', children: [inProgress && _jsx(Badge, { colorScheme: 'orange', children: "In Progress" }), success && _jsx(Badge, { colorScheme: 'green', children: "Success" }), overdue && _jsx(Badge, { colorScheme: 'red', children: "Overdue" }), fresh && _jsx(Badge, { colorScheme: 'purple', children: "New" })] })] }));
 };
 export default DragItem;

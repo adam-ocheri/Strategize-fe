@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import ButtonForm from '../../buttons/ButtonForm/ButtonForm';
+import { Spinner } from '@chakra-ui/react'
 
-
-export default function LoginForm({formData, onFormUpdated, onFormSubmitted} : any) {
+export default function LoginForm({formData, onFormUpdated, onFormSubmitted, isLoading} : any) {
 
     const [formValid, setFormValid] = useState(false);
 
@@ -61,8 +61,11 @@ export default function LoginForm({formData, onFormUpdated, onFormSubmitted} : a
                     name="confirmPassword" value={confirmPassword} onChange={(e) => {onFormUpdated(e)}}/>
               </label>
               <div className="p2 m2">
-                <ButtonForm additionalStyles='font-1 s2' text={'Signup'} disabled={!formValid}/>
+                <ButtonForm additionalStyles='font-1 s2' text={'Signup'} disabled={!formValid || isLoading}/>
                 <h4 className='s0 white font-1'>Already a user? <Link to='/login' style={{color: '#22aaff'}}>Sign In</Link></h4>
+              </div>
+              <div className="p2 m2">
+                <Spinner size={"xl"} color="aqua" hidden={!isLoading}/>
               </div>
     </form>  
   )

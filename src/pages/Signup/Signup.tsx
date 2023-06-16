@@ -13,9 +13,6 @@ import Footer_Homepage from "src/components/layout/footer_homepage/Footer_Homepa
 import ChartPie from "src/components/charts/ChartPie/ChartPie";
 import ChartBar from "src/components/charts/ChartBar/ChartBar";
 import ChartLine from "src/components/charts/ChartLine/ChartLine";
-import CalendarBase from "src/components/calendars/CalendarBase/CalendarBase";
-import DND from "src/components/drag_n_drop/test/dnd";
-import DND_Container from "src/components/drag_n_drop/test2/DND_Container";
 
 
 function Signup() {
@@ -67,11 +64,11 @@ function Signup() {
     }
   }
 
-  if (isLoading){
-    return <div>
-      LOADING........
-    </div>
-  }
+  // if (isLoading){
+  //   return <div>
+  //     LOADING........
+  //   </div>
+  // }
     
   return (
     <main>
@@ -80,7 +77,7 @@ function Signup() {
         <section className="PE-top-border-circles p6 m6">
           <div className="flex f-dir-col jt-center j-center">
             <h2 className="font-2 s3">Join Us</h2>
-            <LoginForm formData={formData} onFormUpdated={onFormUpdated} onFormSubmitted={onFormSubmitted} />
+            <LoginForm formData={formData} onFormUpdated={onFormUpdated} onFormSubmitted={onFormSubmitted} isLoading={isLoading}/>
           </div>
           
         </section>
