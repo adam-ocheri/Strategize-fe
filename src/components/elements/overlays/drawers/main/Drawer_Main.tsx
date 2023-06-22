@@ -26,6 +26,9 @@ export default function Drawer_Main({visible, changeVisibility, user} : {visible
         changeVisibility();
         onClose();
     }
+    if (!user?.name){
+      return(<div></div>)
+    }
     return (
       <>
         {/* <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>

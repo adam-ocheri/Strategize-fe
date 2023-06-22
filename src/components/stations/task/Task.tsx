@@ -170,7 +170,7 @@ function Task({}) {
     };
     
     return (
-    <div className='pt3 mt3 p3 m3 b-color-dark-2 white border-left-w1 border-left-white border-left-solid border-right-w1 border-right-white border-right-solid border-bottom-w1 border-bottom-white border-bottom-solid'>
+    <div className='pt3 mt3 m3 b-color-dark-2 white border-left-w1 border-left-white border-left-solid border-right-w1 border-right-white border-right-solid border-bottom-w1 border-bottom-white border-bottom-solid'>
         {activeLTG && activeObjective && 
         <h3 className='font-1 white station-nav-link-container b-color-dark-1'> 
             <div className='p4 m4 '>
@@ -180,50 +180,51 @@ function Task({}) {
                 <Link to='/project/ltg/objective/task' className='station-nav-link'>{activeTask.taskName}</Link>
             </div>
         </h3>}
-        <div className='pb1 mb5 border-top-w0 border-top-white border-top-solid'></div>
-        
-        <section className='font-3'>
-            {originTask?.HISTORY_TaskIterations?.length > 0 && <div className='centered flex f-dir-col'>
-                <div>
-                    <Button_S2 onClick={() => onSubtaskIterationChange(-1)}>{'<'}</Button_S2> 
-                    <span>Task Iteration</span> 
-                    <Button_S2 onClick={() =>onSubtaskIterationChange(1)}>{'>'}</Button_S2>
-                </div>
-                {originTask && <div >
-                    <button className={`red task-iterations ${activeTask.iteration === 0 ? 'task-iteration-active':''}`}  onClick={()=>setCurrentTaskIteration(0)}>{'O'}</button>
-                    {originTask && originTask.HISTORY_TaskIterations.map((item : any) => (
-                        <button 
-                            className={`white task-iterations ${item.iteration === currentTaskIteration ? 'task-iteration-active':''}`} 
-                            key={item._id} 
-                            onClick={()=>setCurrentTaskIteration(item.iteration)}
-                        >
-                                {item.iteration}
-                        </button>
-                    ))} 
-                </div>}
-            </div>} 
-            <h2 className='font-1 s4'> 
-                {activeTask.taskName} : 
-                <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
-            </h2>
-            <div className='p2 m2'>
-                    <span className='s1 orange'> Date:</span>  <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
-                    <span className='s1 orange'>Time:</span> <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>
-                </div>
-            <div className='p2 m2 border-top-w1 border-top-white border-top-solid'></div>
-            <article className='p2 m2'>
-                
-                {activeTask.description && <div className='font-5 s2 p3 m3'>
-                <span className='s1 orange'> Description: </span> <span className={`s2 ml4`}>
-                        {activeTask.description}
-                        </span>
+        <div className='pb1 mb5 border-top-w1 border-top-white border-top-solid'></div>
+        <div className=' p3 m3'>
+            <section className='font-3'>
+                {originTask?.HISTORY_TaskIterations?.length > 0 && <div className='centered flex f-dir-col'>
+                    <div>
+                        <Button_S2 onClick={() => onSubtaskIterationChange(-1)}>{'<'}</Button_S2> 
+                        <span>Task Iteration</span> 
+                        <Button_S2 onClick={() =>onSubtaskIterationChange(1)}>{'>'}</Button_S2>
+                    </div>
+                    {originTask && <div >
+                        <button className={`red task-iterations ${activeTask.iteration === 0 ? 'task-iteration-active':''}`}  onClick={()=>setCurrentTaskIteration(0)}>{'O'}</button>
+                        {originTask && originTask.HISTORY_TaskIterations.map((item : any) => (
+                            <button 
+                                className={`white task-iterations ${item.iteration === currentTaskIteration ? 'task-iteration-active':''}`} 
+                                key={item._id} 
+                                onClick={()=>setCurrentTaskIteration(item.iteration)}
+                            >
+                                    {item.iteration}
+                            </button>
+                        ))} 
                     </div>}
-                <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid'>
-                    {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
-                    <Settings_Task originTask={originTask} currentTaskIteration={currentTaskIteration} />
-                </div>
-            </article>
-        </section>
+                </div>} 
+                <h2 className='font-1 s4'> 
+                    {activeTask.taskName} : 
+                    <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
+                </h2>
+                <div className='p2 m2'>
+                        <span className='s1 orange'> Date:</span>  <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
+                        <span className='s1 orange'>Time:</span> <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>
+                    </div>
+                <div className='p2 m2 border-top-w0 border-top-white border-top-solid'></div>
+                <article className='p2 m2'>
+                    
+                    {activeTask.description && <div className='font-5 s2 p3 m3'>
+                    <span className='s1 orange'> Description: </span> <span className={`s2 ml4`}>
+                            {activeTask.description}
+                            </span>
+                        </div>}
+                    <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid'>
+                        {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
+                        <Settings_Task originTask={originTask} currentTaskIteration={currentTaskIteration} />
+                    </div>
+                </article>
+            </section>
+        </div>
     </div>
     )
 };
