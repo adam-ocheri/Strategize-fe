@@ -20,7 +20,7 @@ body {
 }
 
 .gradient-background {
-    background: linear-gradient(to bottom, #9997ae, #383848, #595b66);
+    background: linear-gradient(to bottom, #232328, #15151d, #03050b);
     /*Added at `App.tsx` : document.body.classList.add('gradient-background');*/
 }
 
@@ -54,11 +54,15 @@ body {
     justify-items: center;
 }
 
+.b-color-dark-0{
+    background-color: rgb(1, 0, 5);
+}
+
 .b-color-dark-1{
-    background-color: rgb(15, 6, 53);
+    background-color: #110628;
 }
 .b-color-dark-2{
-    background-color: rgb(20, 8, 71);
+    background-color: rgb(6, 2, 28);
 }
 .b-color-dark-3{
     background-color: rgb(56, 46, 100);
@@ -78,7 +82,7 @@ body {
 .tile-outer{
     border-radius: 3px;
     border-width: 2px;
-    background-color: rgb(15, 6, 53);
+    background-color: rgb(11, 0, 27);
     border-color: aliceblue;
     /* align-content: center;
     align-items: center; */
@@ -121,11 +125,13 @@ body {
 }
 
 .calendar-container{
-    background-color: rgb(18, 32, 44);
+    background-color: rgba(50, 0, 250, 0.163);
     font-family: 'Josefin Sans', sans-serif; 
     text-align: center;
     padding: 1%;
-    margin: 1%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    /* margin: 1%; */
     color: aqua;
 }
 .calendar-container .react-calendar__navigation {
@@ -136,8 +142,8 @@ body {
     padding: 1%;
 }
 .calendar-container .react-calendar__navigation button {
-    background-color: #27016d;
-    color: aqua;
+    background-color: #0018ed;
+    color: rgb(228, 244, 244);
     border-radius: 13px;
     padding: 1%;
     margin: 0.3%;
@@ -145,7 +151,7 @@ body {
     font-family: 'Righteous', cursive; 
 }
 .calendar-container .react-calendar__navigation button:hover {
-    background-color: #3900a3;
+    background-color: #5e78f9;
     color: rgb(234, 255, 0);
     border-radius: 13px;
     padding: 1%;
@@ -266,6 +272,7 @@ body {
     margin: 0;
 }
 .drag-allow{
+    background-color: rgb(31, 54, 79)
     /* position: relative; */
     /* top: 0;
     left: 0; */

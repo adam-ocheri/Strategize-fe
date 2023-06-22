@@ -168,6 +168,28 @@
     border-top-color: #171b22;
 }  
 
+/* Radii --------------------- */
+.border-top-r1{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.border-top-r2{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.border-top-r3{
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+.border-top-r4{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.border-top-r5{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
 /** Bottom -------------------------------------------------*/
 
 /* Styles --------------------- */
@@ -243,6 +265,28 @@
 .border-bottom-dark{
     border-bottom-color: #171b22;
 }   
+
+/* Radii --------------------- */
+.border-bottom-r1{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.border-bottom-r2{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.border-bottom-r3{
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.border-bottom-r4{
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.border-bottom-r5{
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
 
 
 /** Left -------------------------------------------------*/

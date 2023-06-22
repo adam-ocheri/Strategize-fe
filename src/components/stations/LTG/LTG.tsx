@@ -108,7 +108,7 @@ function LTG({}) {
     }, [allUserTasks])
     
     return (
-    <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
+    <div className='pt7 mt7 p3 m3 b-color-dark-2 white' style={{borderLeft: '2px solid white', borderRight: '2px solid white', borderBottom: '2px solid white'}}>
         <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link></h3>
         <section>
             <h2 className='font-1 s4'> 

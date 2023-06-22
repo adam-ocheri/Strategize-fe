@@ -170,8 +170,18 @@ function Task({}) {
     };
     
     return (
-    <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
-        {activeLTG && activeObjective && <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> {'>'} <Link to='/project/ltg/objective/task'>{activeTask.taskName}</Link></h3>}
+    <div className='pt3 mt3 p3 m3 b-color-dark-2 white border-left-w1 border-left-white border-left-solid border-right-w1 border-right-white border-right-solid border-bottom-w1 border-bottom-white border-bottom-solid'>
+        {activeLTG && activeObjective && 
+        <h3 className='font-1 white station-nav-link-container b-color-dark-1'> 
+            <div className='p4 m4 '>
+                <Link to='/project' className='station-nav-link'>{activeProject.projectName}</Link> {'>'} 
+                <Link to='/project/ltg' className='station-nav-link'>{activeLTG.LTGName}</Link> {'>'} 
+                <Link to='/project/ltg/objective' className='station-nav-link'>{activeObjective.objectiveName}</Link> {'>'} 
+                <Link to='/project/ltg/objective/task' className='station-nav-link'>{activeTask.taskName}</Link>
+            </div>
+        </h3>}
+        <div className='pb1 mb5 border-top-w0 border-top-white border-top-solid'></div>
+        
         <section className='font-3'>
             {originTask?.HISTORY_TaskIterations?.length > 0 && <div className='centered flex f-dir-col'>
                 <div>
@@ -196,15 +206,19 @@ function Task({}) {
                 {activeTask.taskName} : 
                 <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
             </h2>
-            <article className='p3 m3'>
-                Date: <span className='s3 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
-                Time: <span className='s3 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>
+            <div className='p2 m2'>
+                    <span className='s1 orange'> Date:</span>  <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
+                    <span className='s1 orange'>Time:</span> <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>
+                </div>
+            <div className='p2 m2 border-top-w1 border-top-white border-top-solid'></div>
+            <article className='p2 m2'>
+                
                 {activeTask.description && <div className='font-5 s2 p3 m3'>
-                    Description: <span className={`s3 ml4`}>
+                <span className='s1 orange'> Description: </span> <span className={`s2 ml4`}>
                         {activeTask.description}
                         </span>
                     </div>}
-                <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
+                <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid'>
                     {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
                     <Settings_Task originTask={originTask} currentTaskIteration={currentTaskIteration} />
                 </div>

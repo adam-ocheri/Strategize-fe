@@ -3,15 +3,21 @@ import { getProject, updateProject, deleteProject } from 'src/app/state_manageme
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useEffect, useState } from 'react';
+import { Button, Card, Input, Select } from '@chakra-ui/react';
 function Settings_Project() {
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const { activeProject } = useAppSelector((state) => state.project);
     const { user } = useAppSelector((state) => state.auth);
+    const { activeProject } = useAppSelector((state) => state.project);
+    const { data } = useAppSelector((state) => state.ltg);
     useEffect(() => {
         if (!activeProject.projectName) {
             navigator('/');
         }
+        // const getData = async () => {
+        //     await dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}))
+        // }
+        // getData();
     }, [activeProject]);
     const [deletePrompt, setDeletePrompt] = useState(false);
     const [savePrevented, setSavePrevented] = useState(true);
@@ -32,6 +38,8 @@ function Settings_Project() {
     };
     const onFormSubmitted = async (e) => {
         e.preventDefault();
+        if (savePrevented)
+            return;
         let body = {};
         for (let field in formData) {
             const val = Object.getOwnPropertyDescriptor(formData, field)?.value;
@@ -57,7 +65,9 @@ function Settings_Project() {
         await dispatch(deleteProject({ id: activeProject._id, owner: user._id, token: user.token }));
         navigator('/');
     };
-    return (_jsxs("div", { children: [_jsx("h2", { children: "Project Settings" }), _jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, children: [_jsxs("div", { children: ["Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: activeProject.projectName, id: "projectName", name: "projectName", value: projectName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs("div", { children: ["Station Type Name: ", _jsx("br", {}), _jsx("input", { className: "form-input", type: "text", placeholder: "Project", id: "stationTypeName", name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsx("button", { type: 'submit', disabled: savePrevented, children: "Save" })] }), deletePrompt ? _jsxs("div", { children: ["This will delete the project and all of it's sub-stations! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx("button", { onClick: () => onDeleteProject(), children: "Delete" }), _jsx("button", { onClick: () => setDeletePrompt(false), children: "Cancel" })] })
-                : _jsx("div", { children: _jsx("button", { onClick: () => setDeletePrompt(true), children: "DELETE" }) })] }));
+    //'whiteAlpha.50'
+    return (_jsx("div", { style: { marginTop: '100px', height: '84.95vh' }, children: _jsxs("section", { className: 'b-color-dark-2 p5 flex f-dir-col border-top-w1 border-top-white border-top-solid border-bottom-w1 border-bottom-white border-bottom-solid', style: { height: '100%', width: '100%', marginTop: '100px' }, children: [_jsxs(Card, { padding: '8', background: '#1a0638', children: [_jsxs("h2", { className: 'font-1 s4 white', children: [activeProject.projectName, " :", _jsx("span", { className: 'font-5 s2 m3 orange', children: 'Project Settings' })] }), _jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, children: [_jsxs(Card, { margin: '10', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between', children: _jsx("h3", { className: 'm1 s2 font-3 white', children: "Project Name" }) }), _jsx(Input, { className: "font-3", type: "text", placeholder: activeProject.projectName, id: "projectName", background: 'AppWorkspace', color: 'black', name: "projectName", value: projectName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs(Card, { margin: '10', padding: '2', background: '#110628', children: [_jsx("h3", { className: 'm1 s2 font-3 white', children: "Station Type Name" }), _jsx(Input, { className: "font-3", type: "text", placeholder: "Project", id: "stationTypeName", background: 'AppWorkspace', color: 'black', name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsx(Button, { type: 'submit', _hover: !savePrevented ? { background: '#acffff' } : { background: '#004444', cursor: 'auto' }, disabled: savePrevented, minWidth: '110px', margin: '10', bgColor: !savePrevented ? '#21ffff' : '#004444', children: "Save" })] }), _jsx("div", { className: 'p3 m3 border-top-w0 border-top-white border-top-solid' }), _jsx("div", { children: _jsxs(Card, { margin: '10', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between', children: _jsx("h3", { className: 'm1 s2 font-3 white', children: "Child Stations" }) }), data && _jsxs(Select, { placeholder: 'Long Term Goals', background: '#ffffff', children: [_jsx("hr", {}), data.map((LTG) => (_jsx("option", { value: LTG.LTGName, children: LTG.LTGName }, LTG._id)))] })] }) })] }), deletePrompt ?
+                    _jsxs("div", { className: 'p3 m3 border-top-w1 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2', children: ["This will delete the project and all of it's sub-stations! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx(Button, { colorScheme: 'red', onClick: () => onDeleteProject(), minWidth: '110px', margin: '3', children: "Delete" }), _jsx(Button, { onClick: () => setDeletePrompt(false), minWidth: '110px', margin: '3', children: "Cancel" })] })
+                    : _jsx("div", { className: 'p3 m3 border-top-w1 border-top-white border-top-solid', children: _jsx(Button, { colorScheme: 'red', onClick: () => setDeletePrompt(true), minWidth: '110px', margin: '3', children: "DELETE" }) })] }) }));
 }
 export default Settings_Project;

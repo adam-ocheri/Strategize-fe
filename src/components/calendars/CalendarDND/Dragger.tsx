@@ -15,7 +15,7 @@ export default function Dragger({item, index, getAllSubstations, updateTimeForDa
             ref={provided.innerRef} 
             {...provided?.draggableProps} 
             {...provided?.dragHandleProps}
-            className={`${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}`}
+            className={`${item.date && isItemHovered && !isDragging ? 'drag-hover' : !isDragging && activeTask._id === item._id && item.date ? 'drag-selected' : 'drag-allow'}`}
             onMouseOver={()=>{setIsItemHovered(true); dispatch(setActiveTask({item}))}}
             onMouseLeave={()=>setIsItemHovered(false)}    
           >       

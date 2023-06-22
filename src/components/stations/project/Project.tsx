@@ -108,7 +108,7 @@ function Project({}) {
     }, [allUserTasks])
     
     return (
-    <div className='pt7 mt7 p3 m3 b-color-dark-2 white'>
+    <div className='pt7 mt7 p3 m3 b-color-dark-2 white' style={{borderLeft: '2px solid white', borderRight: '2px solid white', borderBottom: '2px solid white'}}>
         <section>
             <h2 className='font-1 s4'> 
                 {activeProject.projectName} :     

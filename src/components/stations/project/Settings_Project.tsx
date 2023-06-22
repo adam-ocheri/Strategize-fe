@@ -3,19 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { RootState } from 'src/app/store';
 import { useEffect, useState } from 'react';
+import { Button, Card, Input, Select, SelectField } from '@chakra-ui/react';
+import { getAllLTGs } from 'src/app/state_management/LTG/LTGSlice';
 
  function Settings_Project() {
 
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
-    const {activeProject} : any = useAppSelector((state) => state.project)
     const {user} : any = useAppSelector((state : RootState) => state.auth);
+    const {activeProject} : any = useAppSelector((state) => state.project)
+    const {data} : any = useAppSelector((state : RootState) => state.ltg);
 
     useEffect(() => {
         if(!activeProject.projectName)
         {
             navigator('/');
         }
+        // const getData = async () => {
+        //     await dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}))
+        // }
+        // getData();
     }, [activeProject])
 
     const [deletePrompt, setDeletePrompt] = useState(false);
@@ -41,8 +48,9 @@ import { useEffect, useState } from 'react';
     
     const onFormSubmitted = async (e: Event | any) => {
         e.preventDefault();
+        if (savePrevented) return;
+        
         let body : Object = {};
-
         for  (let field in formData)
         {
             const val = Object.getOwnPropertyDescriptor(formData, field)?.value;
@@ -74,33 +82,75 @@ import { useEffect, useState } from 'react';
         await dispatch(deleteProject({id: activeProject._id, owner: user._id, token: user.token}));
         navigator('/')
     }
-
+    //'whiteAlpha.50'
   return (
-    <div>
-        <h2>Project Settings</h2>
-        <form onSubmit={(e) => {onFormSubmitted(e)}}>
-            
-            <div>
-                Name: <br/> 
-                <input className="form-input" type="text" placeholder={activeProject.projectName} id="projectName" 
-                    name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
-            </div>
-            <div>
-                Station Type Name: <br/>
-                <input className="form-input" type="text" placeholder="Project" id="stationTypeName" 
-                    name="stationTypeName" value={stationTypeName} onChange={(e) => {onFormUpdated(e)}}/>
-            </div>
-            <button type='submit' disabled={savePrevented}>Save</button>
-        </form>
-        {deletePrompt ? <div>
-            This will delete the project and all of it's sub-stations! <br/>
-            Are you sure? <br/>
-            <button onClick={() => onDeleteProject()}>Delete</button>
-            <button onClick={() => setDeletePrompt(false)}>Cancel</button>
+    <div style={{marginTop: '100px', height: '84.95vh'}}>
+        <section className='b-color-dark-2 p5 flex f-dir-col border-top-w1 border-top-white border-top-solid border-bottom-w1 border-bottom-white border-bottom-solid' 
+            style={{height:'100%', width: '100%', marginTop: '100px'}}
+        >
+            <Card padding={'8'} background={'#1a0638'}>
+                {/* <h1>
+                    <span className='font-2 orange s3'>{' | '}</span>  
+                    <span className='font-3 s3 white'>{activeProject.projectName}</span> 
+                    <span className='font-2 orange s3'>{' | '} <h2 className='font-1 s2 orange m1 ml2'>Project Settings</h2></span>  
+                </h1> */}
+                <h2 className='font-1 s4 white'> 
+                    {activeProject.projectName} :     
+                    <span className='font-5 s2 m3 orange'>{'Project Settings'}</span>
+                </h2>
+                <form onSubmit={(e) => {onFormSubmitted(e)}}>  
+                    <Card margin={'10'} padding={'2'} background={'#110628'}>
+                        <div className='flex f-dir-row j-between'>
+                            <h3 className='m1 s2 font-3 white'>Project Name</h3>
+                        </div>
+                        <Input className="font-3" type="text" placeholder={activeProject.projectName} id="projectName"  background={'AppWorkspace'} color={'black'}
+                            name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
+                    </Card>
+                    <Card margin={'10'} padding={'2'} background={'#110628'}>
+                        <h3 className='m1 s2 font-3 white'>Station Type Name</h3>
+                        <Input className="font-3" type="text" placeholder="Project" id="stationTypeName" background={'AppWorkspace'} color={'black'}
+                            name="stationTypeName" value={stationTypeName} onChange={(e) => {onFormUpdated(e)}}/>
+                    </Card>
+                    <Button type='submit' _hover={!savePrevented ? {background: '#acffff'} : {background: '#004444', cursor: 'auto'}} 
+                        disabled={savePrevented} 
+                        minWidth={'110px'} 
+                        margin={'10'} 
+                        bgColor={!savePrevented ? '#21ffff' : '#004444'}
+                    >
+                        Save
+                    </Button>
+                </form>
+                <div className='p3 m3 border-top-w0 border-top-white border-top-solid'></div>
+                <div>
+                    <Card margin={'10'} padding={'2'} background={'#110628'}>
+                        <div className='flex f-dir-row j-between'>
+                            <h3 className='m1 s2 font-3 white'>Child Stations</h3>
+                        </div>
+                        {data && <Select placeholder='Long Term Goals' background={'#ffffff'}>
+                        {/* <span></span> */}
+                        <hr/>
+                        {data.map((LTG : any) : any => (
+                            <option key={LTG._id} value={LTG.LTGName}>
+                                {LTG.LTGName}
+                            </option>)
+                        )}
+                        </Select>}
+                    </Card>
+                    
+                </div>
+            </Card>
+            {deletePrompt ? 
+            <div className='p3 m3 border-top-w1 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2'>
+                This will delete the project and all of it's sub-stations! <br/>
+                Are you sure? <br/>
+                <Button colorScheme='red' onClick={() => onDeleteProject()} minWidth={'110px'} margin={'3'}>Delete</Button>
+                <Button onClick={() => setDeletePrompt(false)} minWidth={'110px'} margin={'3'}>Cancel</Button>
             </div> 
-            : <div>
-                <button onClick={() => setDeletePrompt(true)}>DELETE</button>
+            : <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
+                <Button colorScheme='red' onClick={() => setDeletePrompt(true)} minWidth={'110px'} margin={'3'}>DELETE</Button>
             </div>}
+        </section>
+        
     </div>
   )
 }

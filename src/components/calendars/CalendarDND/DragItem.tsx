@@ -211,7 +211,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     await manage(e, item._id, item.owningObjective, item, {subTask});
   }
   return (
-    <div className={`dragger p3 b-color-dark-2`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
+    <div className={`dragger p3 b-color-dark-4`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
       //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
       onMouseOver={async ()=>{setIsItemHovered(true);}} 
       onMouseLeave={()=> {setIsItemHovered(false);}} 
@@ -232,10 +232,10 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
           <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
         } <br/> 
         {stationContext !== 'ltg' && stationContext !== 'objective' && 
-          <span className='font-4 red' style={{fontSize: '6pt'}}>{item.heritage.ltg.name}</span> 
+          <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
         } <br/>
         {stationContext !== 'objective' && 
-          <span className='font-4 orange' style={{fontSize: '6pt'}}>{item.heritage.objective.name}</span>
+          <span className='font-4 teal ml3' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
         } <br/> 
       </div>
       }

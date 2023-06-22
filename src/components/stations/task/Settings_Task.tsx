@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { RootState } from 'src/app/store';
 import { useEffect, useState } from 'react';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
+import { Button, Card, Input } from '@chakra-ui/react';
 
  function Settings_Task({originTask, currentTaskIteration} : any) {
 
@@ -180,36 +181,64 @@ import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
     }
 
   return (
-    <div>
-        <h2>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType}`} Settings</h2>
-        <form onSubmit={(e) => {onFormSubmitted(e)}}>
+    <div >
+        <form onSubmit={(e) => {onFormSubmitted(e)}} className='b-color-dark-3 p5'>
+            <h2 className='orange font-3 s3'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType}`} Settings</h2>
             
-            {!activeTask.isSubtask && <div>
-                Name: <br/> 
-                <input className="form-input" type="text" placeholder={activeTask.taskName} id="taskName" 
+            {!activeTask.isSubtask && <Card marginTop={'2'} marginBottom={'2'} marginLeft={'6'} padding={'2'} background={'#110628'}>
+                
+                <div className='flex f-dir-row j-between p1'>
+                    <h3 className='mt1 mb1 font-3 white'>Name</h3>
+                </div>
+                <Input className="sform-input font-3" type="text" placeholder={activeTask.taskName} id="taskName" background={'AppWorkspace'} color={'black'}
                     name="taskName" value={taskName} onChange={(e) => {onFormUpdated(e)}}/>
-            </div>}
-            {!activeTask.isSubtask && <div>
-                Station Type Name: <br/>
-                <input className="form-input" type="text" placeholder={activeTask.stationTypeName} id="stationTypeName" 
+            </Card>}
+            {!activeTask.isSubtask && <Card marginTop={'2'} marginBottom={'2'} marginLeft={'6'} padding={'2'} background={'#110628'}>
+                
+                <div className='flex f-dir-row j-between p1'>
+                    <h3 className='mt1 mb1 font-3 white'>Station Type Name</h3>
+                </div>
+                <Input className="sform-input font-3" type="text" placeholder={activeTask.stationTypeName} id="stationTypeName" background={'AppWorkspace'} color={'black'}
                     name="stationTypeName" value={stationTypeName} onChange={(e) => {onFormUpdated(e)}}/>
-            </div>}
-            <div>
-                Description: <br/>
-                <input className="form-input" type="text" placeholder={activeTask.description} id="Description" 
+            </Card>}
+            <Card marginTop={'2'} marginBottom={'2'} marginLeft={'6'} padding={'2'} background={'#110628'}>
+                <div className='flex f-dir-row j-between p1'>
+                    <h3 className='mt1 mb1 font-3 white'>Description</h3>
+                </div>
+                <Input className="sform-input font-3" type="text" placeholder={activeTask.description} id="Description"  background={'AppWorkspace'} color={'black'}
                     name="description" value={description} onChange={(e) => {onFormUpdated(e)}}/>
-            </div>
-            <Button_S2 type='submit' disabled={savePrevented}>Save</Button_S2>
+            </Card>
+            {/* <Button_S2 type='submit' disabled={savePrevented}>Save</Button_S2> */}
+            <Button type='submit' _hover={!savePrevented ? {background: '#acffff'} : {background: '#004444', cursor: 'auto'}} 
+                disabled={savePrevented} 
+                minWidth={'110px'} 
+                margin={'10'} 
+                bgColor={!savePrevented ? '#21ffff' : '#004444'}
+            >
+                Save
+            </Button>
         </form>
-        {deletePrompt ? <div>
-            This will delete the Task and all of it's data! <br/>
-            Are you sure? <br/>
-            <Button_S2 onClick={() => onDeleteTask()}>Delete</Button_S2>
-            <Button_S2 onClick={() => setDeletePrompt(false)}>Cancel</Button_S2>
+        {/* {deletePrompt ? 
+            <div>
+                This will delete the Task and all of it's data! <br/>
+                Are you sure? <br/>
+                <Button_S2 onClick={() => onDeleteTask()}>Delete</Button_S2>
+                <Button_S2 onClick={() => setDeletePrompt(false)}>Cancel</Button_S2>
             </div> 
-            : <div>
+            : 
+            <div>
                 <Button_S2 onClick={() => setDeletePrompt(true)}>DELETE</Button_S2>
-            </div>}
+            </div>} */}
+        {deletePrompt ? 
+        <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2'>
+            This will delete the project and all of it's sub-stations! <br/>
+            Are you sure? <br/>
+            <Button colorScheme='red' onClick={() => onDeleteTask()} minWidth={'110px'} margin={'3'}>Delete</Button>
+            <Button onClick={() => setDeletePrompt(false)} minWidth={'110px'} margin={'3'}>Cancel</Button>
+        </div> 
+        : <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid'>
+            <Button colorScheme='red' onClick={() => setDeletePrompt(true)} minWidth={'110px'} margin={'12'}>DELETE</Button>
+        </div>}    
     </div>
   )
 }

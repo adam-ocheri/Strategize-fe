@@ -18,6 +18,16 @@
     justify-content: center;
     align-items: center;
 }
+.centered-left {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+}
+.centered-right {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
 
 .form-generic{
     padding: 1%;
