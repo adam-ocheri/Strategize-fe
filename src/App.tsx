@@ -19,6 +19,8 @@ import UserProfile from "./pages/Signup/Profile/UserProfile";
 import Notifications from "./features/notifications/Notifications";
 import { ChakraProvider } from '@chakra-ui/react'
 import HomeUI from "./pages/home-styled/HomeUI";
+import DocGen from "./components/documentation/generic/DocGen";
+import Strategizer from "./pages/Strategizer/Strategizer";
 
 
 function App() {
@@ -33,7 +35,8 @@ function App() {
             <Route path='/' element={<HomeUI/>} />
             <Route path='/profile' element={<UserProfile/>} />
             <Route path='/assistant' element={<AI_Assistant/>} />
-            {/* <Route path='/test' element={<DND/>} /> */}
+            <Route path='/documentation' element={<DocGen/>} />
+            <Route path='/Strategizer' element={<Strategizer/>} />
             <Route path='/register' element={<Signup />} />
             <Route path='/login' element={<Login/>} />
             <Route path="/project" element={<Project/>} />

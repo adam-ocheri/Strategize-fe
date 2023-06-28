@@ -11,6 +11,7 @@ import Dragger from './Dragger';
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 import { getTask, reset__Task, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import { updateTask_ProfileView } from 'src/app/state_management/project/projectSlice';
+import { getObjective } from 'src/app/state_management/objective/objectiveSlice';
 
 
 interface DataElement {
@@ -84,10 +85,10 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             const newItems : any[] = [];
             for(let i = 0; i < mutableData.length; ++i){
                 // check if task has date
-                const hasDate = () => {if (mutableData[i].date !== '') return true;}
-
+                const hasDate = () => {if (mutableData[i].date !== '') {return true} else{return false}}
+                const isDateValid = hasDate();
                 // push task to designated lists
-                if(hasDate()){
+                if(isDateValid){
                     newTasks.push(mutableData[i]);
                 }
                 else{
@@ -96,32 +97,32 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             }
 
             //Subtasks
-            {
-                const subTasks = [];
-                const subItems = [];
+        
+            const subTasks = [];
+            const subItems = [];
 
-                for (let task of newTasks){
-                    if(task?.HISTORY_TaskIterations?.length > 0){
+            for (let task of newTasks){
+                if(task?.HISTORY_TaskIterations?.length > 0){
 
-                        for (let subtask of task.HISTORY_TaskIterations){
-                            console.log('WTF is going on here?', subtask)
-                            if(subtask.date !== ''){
-                                subTasks.push(subtask);
-                            }else{
-                                subItems.push(subtask);
-                            }
-                            
+                    for (let subtask of task.HISTORY_TaskIterations){
+                        console.log('WTF is going on here?', subtask)
+                        if(subtask.date !== ''){
+                            subTasks.push(subtask);
+                        }else{
+                            subItems.push(subtask);
                         }
+                        
                     }
                 }
-                    
-                newItems.push(...subItems);
-                newTasks.push(...subTasks);
-                console.log('newTasks is:')
-                console.log(newTasks);
-                console.log("newItems is:");
-                console.log(newItems)
             }
+                
+            newItems.push(...subItems);
+            newTasks.push(...subTasks);
+            console.log('newTasks is:')
+            console.log(newTasks);
+            console.log("newItems is:");
+            console.log(newItems)
+            
 
             setTasks(newTasks);
             setItems(newItems);
@@ -226,7 +227,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         if (ctrlPressed){
             return;
         }
-        console.log('REsukt LOG is:')
+        console.log('Result LOG is:')
         console.log(result);
         console.log(`result.draggableId is: `);
         console.log(result.draggableId);
@@ -267,10 +268,10 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 for (let subtask of task.HISTORY_TaskIterations){
                     if (updateComplete) return;
     
-                    if (result.draggableId === subtask._id){
+                    if (result.draggableId === subtask?._id){
                         console.log('MOVING SUBTASK!');
                         const [selectedItem] : any = modifiedList.filter((item : any, index : number) => {
-                            if (item._id === subtask._id){
+                            if (item?._id === subtask?._id){
                                 return modifiedList.splice(index, 1);
                             }
                             else return item._id === subtask._id;
@@ -323,6 +324,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 await dispatch(setActiveTask({item: subTask}))
                 //--- Refresh currently active station's task view
                 await refreshStationData(response.payload);//.HISTORY_TaskIterations[insertIndex]);
+                await dispatch(getObjective({id: response.payload.owningObjective, parentId: response.payload.heritage.ltg.id, owner: user._id, token: user.token}));
                 //await getAllSubstations();
             }
             updateSubtask();
@@ -330,20 +332,20 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         }
 
         if (!subTask && movingInCalendar){
-            newTasks = tasks;
+            //newTasks = tasks;
             const [selectedItem] : any = newTasks.filter((item : any, index : any) => {
-                if(item.date.slice(0, 15) === result.source.droppableId.slice(0, 15))
+                if(item.date.slice(0, 15) === result.source.droppableId.slice(0, 15) && item._id === result.draggableId)
                 {
                     return newTasks.splice(index, 1);
                 }
                 else{
-                    return item.date.slice(0, 15) === result.source.droppableId.slice(0, 15);
+                    return item.date.slice(0, 15) === result.source.droppableId.slice(0, 15) && item._id === result.draggableId;
                 }
             });
 
             const body = {
                 date: result.destination.droppableId.slice(0, 15) + selectedItem.date.slice(15),
-                endTime: result.destination.droppableId.slice(0, 15) + selectedItem.endTime.slice(15)
+                endTime: result.destination.droppableId.slice(0, 15) + selectedItem?.endTime?.slice(15)
             }
             const response = await dispatch(updateSubStation({body, id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
             setTasks((prev : any) : any => newTasks);
@@ -351,8 +353,8 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             //--- Refresh currently active station's task view
             await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
+            await dispatch(getObjective({id: response.payload.owningObjective, parentId: response.payload.heritage.ltg.id, owner: user._id, token: user.token}));
             //await getAllSubstations();
-
             return;
         }
 
@@ -370,6 +372,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
             //--- Refresh currently active station's task view
             await refreshStationData(response.payload);
             //await dispatch(getTask({id: selectedItem._id, parentId: selectedItem.owningObjective, token: user.token}))
+            await dispatch(getObjective({id: response.payload.owningObjective, parentId: response.payload.heritage.ltg.id, owner: user._id, token: user.token}));
             //await getAllSubstations();
             
         }

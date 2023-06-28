@@ -1,0 +1,1 @@
+export type SettingsView = 'Settings' | 'Statistics' | 'X-Station';

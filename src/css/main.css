@@ -20,7 +20,7 @@ body {
 }
 
 .gradient-background {
-    background: linear-gradient(to bottom, #232328, #15151d, #03050b);
+    background: linear-gradient(to bottom, #010111, #262627, #a7a8a9);
     /*Added at `App.tsx` : document.body.classList.add('gradient-background');*/
 }
 
@@ -75,6 +75,10 @@ body {
 }
 .b-color-light-2{
     background-color: rgb(82, 125, 171);
+}
+
+.tp1{
+    transform: translateY(900,500);
 }
 
 

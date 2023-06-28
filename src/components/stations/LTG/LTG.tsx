@@ -11,6 +11,7 @@ import { createObjective, getObjective, deleteObjective, getAllObjectives, } fro
 import { updateTask, getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
+import { ArrowRightIcon } from '@chakra-ui/icons';
 
 
 
@@ -108,9 +109,18 @@ function LTG({}) {
     }, [allUserTasks])
     
     return (
-    <div className='pt7 mt7 p3 m3 b-color-dark-2 white' style={{borderLeft: '2px solid white', borderRight: '2px solid white', borderBottom: '2px solid white'}}>
-        <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link></h3>
-        <section>
+    <div className='pt3 mt3 m3 b-color-dark-2 white border-left-w1 border-left-white border-left-solid border-right-w1 border-right-white border-right-solid border-bottom-w1 border-bottom-white border-bottom-solid'>
+        <h3 className='font-1 white station-nav-link-container b-color-dark-1'>
+            <div className='p4 m4'>
+                <Link to='/project' className='station-nav-link'>{activeProject.projectName}</Link> <ArrowRightIcon/>
+                <Link to='/project/ltg' className='station-nav-link-active'>{activeLTG.LTGName}</Link>
+                {/* <Link to='/project/ltg/objective' className='station-nav-link-active'>{activeObjective.objectiveName}</Link> <ArrowRightIcon/> */}
+                {/* <Link to='/project/ltg/objective/task' className='station-nav-link-active'>{activeTask.taskName}</Link> */}
+            </div>
+        </h3>
+        <div className='pb1 mb5 border-top-w1 border-top-white border-top-solid'></div>
+        {/* <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link></h3> */}
+        <section className='p1 m1'>
             <h2 className='font-1 s4'> 
                 {activeLTG.LTGName} : 
                 <span className='font-5 s2 m3 orange'> {`${activeLTG.stationTypeName ? activeLTG.stationTypeName : activeLTG.stationType ? activeLTG.stationType : 'Long Term Goal'}`} </span>

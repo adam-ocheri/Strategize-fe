@@ -78,11 +78,13 @@ export default function Notifications() {
     //! Side Effects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //* Initialize data
     useEffect(() => {
+      if (user){
         const initData = async () => {
             await dispatch(getAllProjectsAndSubstations({owner: user._id, token: user.token}));
         }
         initData();
-      }, [])
+      }
+      }, [user])
 
     useEffect(()=> {
         console.log('allUserTasks UPDATED!')

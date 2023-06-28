@@ -81,14 +81,32 @@
     background:  rgba(255, 255, 255, 0.216);
     border-radius: 50% 0%;
     margin: 1px;
-    padding: 6px;
+    padding: 10px;
     color: #aaffff;
     transition: all 0.15s ease-in-out;
+    font-size: 9pt;
 }
 .station-nav-link:hover{
     background:  rgba(50, 1, 164, 0.9);
     border-radius: 15px;
     margin: 1px;
-    padding: 6px;
+    padding: 10px;
     color: #00ffff;
+}
+
+.station-nav-link-active{
+    background:  rgba(0, 255, 255, 0.62);
+    border-radius: 50% 0%;
+    margin: 1px;
+    padding: 10px;
+    color: rgba(255, 196, 0, 0.986);
+    transition: all 0.15s ease-in-out;
+    font-size: 9pt;
+}
+.station-nav-link-active:hover{
+    background:  rgba(255, 196, 0, 0.986);
+    border-radius: 15px;
+    margin: 1px;
+    padding: 10px;
+    color: #000000;
 }

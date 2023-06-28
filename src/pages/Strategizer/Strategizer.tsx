@@ -9,10 +9,10 @@ import ChartBar from 'src/components/charts/ChartBar/ChartBar';
 import ChartLine from 'src/components/charts/ChartLine/ChartLine';
 import ChartPie from 'src/components/charts/ChartPie/ChartPie';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
-import { Card, CardHeader, CardBody, CardFooter, Text, Center, Divider, Menu, MenuButton, MenuList, MenuItem, Icon, IconButton, Button, MenuGroup, MenuDivider, Box, Input } from '@chakra-ui/react'
-import StatsHomeStyled from './StatsHomeStyled';
+import { Card, CardHeader, CardBody, CardFooter, Text, Center, Divider, Menu, MenuButton, MenuList, MenuItem, Icon, IconButton, Button, MenuGroup, MenuDivider, Accordion, AccordionItem, AccordionButton, Box, AccordionIcon, AccordionPanel, Input } from '@chakra-ui/react'
+import StrateGStats from './StrateGStats';
 
-function HomeUI() {
+function Strategizer() {
 
   //! To be migrated!! ------------------------------------------------------------------------------------------------------------------------
     const [formData, setFormData] = useState({
@@ -80,62 +80,39 @@ function HomeUI() {
   }, [user, navigator])
 
   return (
-    <main className='p7' style={{minHeight: '100vh', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#010111', width: '100%'}}>
-        <Card className='card-main quad-box-shadow-4 jt-center' background={'blackAlpha.400'} style={{width: '100%', borderLeft: '2px dashed aqua', borderRight:'2px dashed aqua', borderBottom:'2px dashed aqua'}}>  {/*className='card-main quad-box-shadow-4 p1 m1'*/}
+    <main className='p1' style={{minHeight: '100vh', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#010111', width: '100%'}}>
+        <Card className='card-main quad-box-shadow-4 jt-center' background={'blackAlpha.400'} style={{width: '100%'}}>  {/*className='card-main quad-box-shadow-4 p1 m1'*/}
           <CardBody className='b-color-dark-1 p4 quad-box-shadow-1'>
             <CardHeader className='b-color-dark-2 border-r2 p5'>
-              <h1 className=' m3 font-3 white s3'>Welcome back, <span className='orange font-5'>strategizer</span></h1>
+              <h1 className=' m3 font-3 white s3 jt-left'>Strategizer</h1>
             </CardHeader>
           </CardBody>
         </Card>
-      <Card className='card-main quad-box-shadow-4' background={'blackAlpha.400'} style={{borderLeft: '2px dashed aqua', borderRight:'2px dashed aqua', borderBottom:'2px dashed aqua'}}>  {/*className='card-main quad-box-shadow-4 p1 m1'*/}
+      <Card className='card-main quad-box-shadow-4' background={'blackAlpha.400'} >  {/*className='card-main quad-box-shadow-4 p1 m1'*/}
         <CardBody className='b-color-dark-1 p4 quad-box-shadow-1'>
-            <CardHeader className='b-color-dark-2 border-r2 p5'>
-                <section className='flex f-dir-row j-between p5'>
-                    <div className=' font-5 white m2'>
-                        <p className='p1 m1'>
-                            <strong className='font-6 white p2 m2'>Name : </strong> <span className='p2 m2'>{user?.name}</span>
-                        </p>
-                        <p className='p1 m1'>
-                        <strong className='font-6 white p2 m2'>Email : </strong> <span className='p2 m2'>{user?.email}</span>
-                        </p>
-                        <p>
-                            {/* <Button_S2 onClick={onLogoutClicked}> Logout </Button_S2> */}
-                        </p>
-                    </div>
-                    <div className='m2'>
-                        <Center height='130px'>
-                            <Divider orientation='vertical' />
-                        </Center>
-                    </div>
-                    <div className='centered flex f-dir-col m2'>
-                        <h2 className='font-3 s2 orange'>Create New Project</h2>
-                        <form className='form-generic flex f-dir-row f-wrap j-center' onSubmit={(e) => onFormSubmitted(e)}>
-                            <Input className="form-generic-input font-1" type="text" placeholder="Project Name" id="projectName" 
-                                name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
-                            <Button_S2 type='submit'>Create</Button_S2>
-                        </form>  
-                    </div>
-                </section>
-            </CardHeader>
-          <div className='centered m4'>
-            <div>
+          <div className='centered'>
+            <Accordion>
                 {data && user  && 
-                <Card className=' p5 m3 quad-box-shadow-1' backgroundColor={'#13122f'} style={{borderLeft: '2px solid aqua', borderRight:'2px solid aqua', borderBottom:'2px solid aqua', borderTop:'22px solid aqua'}}>
+                <Card className=' p3 m3 quad-box-shadow-1' backgroundColor={'#13122f'} style={{borderLeft: '2px solid aqua', borderRight:'2px solid aqua', borderBottom:'2px solid aqua', borderTop:'22px solid aqua'}}>
                   <h4 className='s3 p2 m2 font-6 centered' style={{color: '#ffefef'}}>Existing Projects</h4>
                   {data.map((project : any) => (
-                  <Card key={project._id} _hover={{background: '#ffc8a3'}} margin={'0.5'} borderTopRadius={'20px'}>
-                      {/* <h2>
-                        <divButton className='card-sub-child orange' border={'2px solid #fab50066'} _hover={{border: '2px solid #fab500'}}>
-                          <Box as="span" flex='1' textAlign='left' className='card-sub-child-2' borderRadius={'6px'} padding={'4px'}>
+                  <AccordionItem key={project._id} _hover={{background: '#ffc8a3'}}>
+                      <h2>
+                        <AccordionButton className='orange' background={'#110628'} border={'2px solid #fab50066'} _hover={{border: '2px solid #fab500', background: '#ffc8a3', color: '#001102'}}>
+                          <Box as="span" flex='1' textAlign='left' className='' borderRadius={'6px'} padding={'4px'}>
                             {project.projectName}
                           </Box>
-                          <divIcon />
-                        </divButton>
-                      </h2> */}
-                      <article style={{width: '50vw'}} className='card-sub-child-3'>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel style={{width: '50vw'}} className='card-sub-child-2'>
                           <section className='flex f-dir-col j-even'>
                               <h2 className='font-1 s1 p1 m1 orange '>Project Name :</h2> <h3 className='font-6 s3 p3 m3 white'>{project.projectName}</h3> 
+                              {allUserTasks &&
+                              <div>
+                                <StrateGStats allUserTasks={allUserTasks} station={project} user={user}/>
+                              </div>
+                              }
                           </section>
                           <section className='flex f-dir-col j-even'>
                             <div>
@@ -145,11 +122,11 @@ function HomeUI() {
                                 <Button_S2 className='p2 m3' onClick={(e : any) => {manageSelectedStation(e, project._id)}}> Manage </Button_S2>
                             </div>
                           </section>
-                      </article >
-                  </Card>
+                      </AccordionPanel >
+                  </AccordionItem>
                   ))}
                 </Card>}
-            </div>
+            </Accordion>
           </div>
         </CardBody>
       </Card>
@@ -157,7 +134,7 @@ function HomeUI() {
   )
 }
 
-export default HomeUI;
+export default Strategizer;
 
 {/* {           
       type UserStatistics {

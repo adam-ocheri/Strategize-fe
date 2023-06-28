@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { RootState } from 'src/app/store';
 import { useEffect, useState } from 'react';
-import { Button, Card, Input, Select, SelectField } from '@chakra-ui/react';
+import { Button, Card, Input, Select, SelectField, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { getAllLTGs } from 'src/app/state_management/LTG/LTGSlice';
+import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
+import { SettingsView } from 'src/types/stationGenerics';
 
  function Settings_Project() {
 
@@ -26,6 +28,7 @@ import { getAllLTGs } from 'src/app/state_management/LTG/LTGSlice';
     }, [activeProject])
 
     const [deletePrompt, setDeletePrompt] = useState(false);
+    const [currentTabView, setCurrentTabView] = useState<SettingsView>('Settings');
 
     const [savePrevented, setSavePrevented] = useState(true);
     const [formData, setFormData] = useState({
@@ -84,61 +87,73 @@ import { getAllLTGs } from 'src/app/state_management/LTG/LTGSlice';
     }
     //'whiteAlpha.50'
   return (
-    <div style={{marginTop: '100px', height: '84.95vh'}}>
-        <section className='b-color-dark-2 p5 flex f-dir-col border-top-w1 border-top-white border-top-solid border-bottom-w1 border-bottom-white border-bottom-solid' 
-            style={{height:'100%', width: '100%', marginTop: '100px'}}
-        >
-            <Card padding={'8'} background={'#1a0638'}>
-                {/* <h1>
-                    <span className='font-2 orange s3'>{' | '}</span>  
-                    <span className='font-3 s3 white'>{activeProject.projectName}</span> 
-                    <span className='font-2 orange s3'>{' | '} <h2 className='font-1 s2 orange m1 ml2'>Project Settings</h2></span>  
-                </h1> */}
-                <h2 className='font-1 s4 white'> 
-                    {activeProject.projectName} :     
-                    <span className='font-5 s2 m3 orange'>{'Project Settings'}</span>
-                </h2>
-                <form onSubmit={(e) => {onFormSubmitted(e)}}>  
-                    <Card margin={'10'} padding={'2'} background={'#110628'}>
-                        <div className='flex f-dir-row j-between'>
-                            <h3 className='m1 s2 font-3 white'>Project Name</h3>
-                        </div>
-                        <Input className="font-3" type="text" placeholder={activeProject.projectName} id="projectName"  background={'AppWorkspace'} color={'black'}
-                            name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
-                    </Card>
-                    <Card margin={'10'} padding={'2'} background={'#110628'}>
-                        <h3 className='m1 s2 font-3 white'>Station Type Name</h3>
-                        <Input className="font-3" type="text" placeholder="Project" id="stationTypeName" background={'AppWorkspace'} color={'black'}
-                            name="stationTypeName" value={stationTypeName} onChange={(e) => {onFormUpdated(e)}}/>
-                    </Card>
-                    <Button type='submit' _hover={!savePrevented ? {background: '#acffff'} : {background: '#004444', cursor: 'auto'}} 
-                        disabled={savePrevented} 
-                        minWidth={'110px'} 
-                        margin={'10'} 
-                        bgColor={!savePrevented ? '#21ffff' : '#004444'}
-                    >
-                        Save
-                    </Button>
-                </form>
-                <div className='p3 m3 border-top-w0 border-top-white border-top-solid'></div>
-                <div>
-                    <Card margin={'10'} padding={'2'} background={'#110628'}>
-                        <div className='flex f-dir-row j-between'>
-                            <h3 className='m1 s2 font-3 white'>Child Stations</h3>
-                        </div>
-                        {data && <Select placeholder='Long Term Goals' background={'#ffffff'}>
-                        {/* <span></span> */}
-                        <hr/>
-                        {data.map((LTG : any) : any => (
-                            <option key={LTG._id} value={LTG.LTGName}>
-                                {LTG.LTGName}
-                            </option>)
-                        )}
-                        </Select>}
-                    </Card>
+    <div style={{marginTop: '65px'}}>
+        <Tabs colorScheme={'yellow'} textColor={'#23ffff'} background={'#010111'}  display={'flex'} flexDirection={'column'}>
+            <TabList background={'#12012f'}>
+                <Tab  _hover={{color: '#ffcf22'}} onClick={() => setCurrentTabView('Settings')}>Settings</Tab>
+                <Tab _hover={{color: '#ffcf22'}} onClick={() => setCurrentTabView('Statistics')}>Statistics</Tab>
+                <Tab _hover={{color: '#ffcf22'}} onClick={() => setCurrentTabView('X-Station')}>Station X</Tab>
+            </TabList>
+
+            <div className='b-color-dark-2' style={{minWidth: '50%', alignSelf: 'center'}}>
+                <Card padding={'8'} margin={'6'} background={'#1a0638'}>
+                    <h2 className='font-1 s4 white'> 
+                        {activeProject.projectName} :     
+                        <span className='font-5 s2 m3 orange'>{`Project ${currentTabView}`}</span>
+                    </h2>
+                    <Button_S2 className='s1 m4' onClick={(e : any) => {navigator('/project')}}>{'<- '}Back To Project</Button_S2>
+                </Card>
+            </div>
+
+            <TabPanels maxWidth={'50%'} alignSelf={'center'}>
+                
+                <TabPanel role='group' className='b-color-dark-2 p5 flex f-dir-col' 
+                    style={{height:'100%', width: '100%', marginTop: '0px'}}
+                >
                     
-                </div>
-            </Card>
+                    <Card padding={'8'} margin={'2'} background={'#1a0638'}>
+                        
+                        <form onSubmit={(e) => {onFormSubmitted(e)}}>  
+                            <Card margin={'10'} padding={'2'} background={'#110628'}>
+                                <div className='flex f-dir-row j-between'>
+                                    <h3 className='m1 s2 font-3 white'>Project Name</h3>
+                                </div>
+                                <Input className="font-3" type="text" placeholder={activeProject.projectName} id="projectName"  background={'AppWorkspace'} color={'black'}
+                                    name="projectName" value={projectName} onChange={(e) => {onFormUpdated(e)}}/>
+                            </Card>
+                            <Card margin={'10'} padding={'2'} background={'#110628'}>
+                                <h3 className='m1 s2 font-3 white'>Station Type Name</h3>
+                                <Input className="font-3" type="text" placeholder="Project" id="stationTypeName" background={'AppWorkspace'} color={'black'}
+                                    name="stationTypeName" value={stationTypeName} onChange={(e) => {onFormUpdated(e)}}/>
+                            </Card>
+                            <Button type='submit' _hover={!savePrevented ? {background: '#acffff'} : {background: '#004444', cursor: 'auto'}} 
+                                disabled={savePrevented} 
+                                minWidth={'110px'} 
+                                margin={'10'} 
+                                bgColor={!savePrevented ? '#21ffff' : '#004444'}
+                            >
+                                Save
+                            </Button>
+                        </form>
+                        <div className='p3 m3 border-top-w0 border-top-white border-top-solid'></div>
+                        <div>
+                            <Card margin={'10'} padding={'2'} background={'#110628'}>
+                                <div className='flex f-dir-row j-between'>
+                                    <h3 className='m1 s2 font-3 white'>Child Stations</h3>
+                                </div>
+                                {data && <Select placeholder='Long Term Goals' background={'#ffffff'}>
+                                {/* <span></span> */}
+                                <hr/>
+                                {data.map((LTG : any) : any => (
+                                    <option key={LTG._id} value={LTG.LTGName}>
+                                        {LTG.LTGName}
+                                    </option>)
+                                )}
+                                </Select>}
+                            </Card>
+                            
+                        </div>
+                    </Card>
             {deletePrompt ? 
             <div className='p3 m3 border-top-w1 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2'>
                 This will delete the project and all of it's sub-stations! <br/>
@@ -149,7 +164,26 @@ import { getAllLTGs } from 'src/app/state_management/LTG/LTGSlice';
             : <div className='p3 m3 border-top-w1 border-top-white border-top-solid'>
                 <Button colorScheme='red' onClick={() => setDeletePrompt(true)} minWidth={'110px'} margin={'3'}>DELETE</Button>
             </div>}
-        </section>
+                </TabPanel>
+                
+                <TabPanel className='b-color-dark-2 p5 flex f-dir-col' 
+                    style={{height:'100%', width: '100%'}}
+                >
+                    <Card padding={'8'} background={'#1a0638'}>
+                        
+                    </Card>
+                </TabPanel>
+
+                <TabPanel className='b-color-dark-2 p5 flex f-dir-col' 
+                    style={{height:'100%', width: '100%'}}
+                >
+                    <Card padding={'8'} background={'#1a0638'}>
+                        
+                    </Card>
+                </TabPanel>
+            </TabPanels>
+        </Tabs>
+        
         
     </div>
   )

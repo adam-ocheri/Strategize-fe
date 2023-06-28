@@ -10,6 +10,7 @@ import { createTask, getTask, deleteTask, getAllTasks, setActiveTask } from 'src
 import Settings_Task from './Settings_Task';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
+import { PhoneIcon, AddIcon, WarningIcon, ArrowRightIcon } from '@chakra-ui/icons'
 
 
 
@@ -73,7 +74,7 @@ function Task({}) {
             }
             initData();
 
-            if (!activeObjective.objectiveName){
+            if (!activeProject || !activeLTG || !activeObjective.objectiveName || activeObjective._id !== activeTask.heritage.objective.id || activeObjective.owningLTG !== activeTask.heritage.ltg.id){
                 const getSuperStations = async () => {
                     await dispatch(getAllLTGs({parentId: activeProject._id, token: user.token}));
                     let stationsFound = false;
@@ -173,11 +174,11 @@ function Task({}) {
     <div className='pt3 mt3 m3 b-color-dark-2 white border-left-w1 border-left-white border-left-solid border-right-w1 border-right-white border-right-solid border-bottom-w1 border-bottom-white border-bottom-solid'>
         {activeLTG && activeObjective && 
         <h3 className='font-1 white station-nav-link-container b-color-dark-1'> 
-            <div className='p4 m4 '>
-                <Link to='/project' className='station-nav-link'>{activeProject.projectName}</Link> {'>'} 
-                <Link to='/project/ltg' className='station-nav-link'>{activeLTG.LTGName}</Link> {'>'} 
-                <Link to='/project/ltg/objective' className='station-nav-link'>{activeObjective.objectiveName}</Link> {'>'} 
-                <Link to='/project/ltg/objective/task' className='station-nav-link'>{activeTask.taskName}</Link>
+            <div className='p4 m4'>
+                <Link to='/project' className='station-nav-link'>{activeProject.projectName}</Link> <ArrowRightIcon/>
+                <Link to='/project/ltg' className='station-nav-link'>{activeLTG.LTGName}</Link> <ArrowRightIcon/>
+                <Link to='/project/ltg/objective' className='station-nav-link'>{activeObjective.objectiveName}</Link> <ArrowRightIcon/>
+                <Link to='/project/ltg/objective/task' className='station-nav-link-active'>{activeTask.taskName}</Link>
             </div>
         </h3>}
         <div className='pb1 mb5 border-top-w1 border-top-white border-top-solid'></div>

@@ -71,11 +71,13 @@ export default function Notifications() {
     //! Side Effects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //* Initialize data
     useEffect(() => {
-        const initData = async () => {
-            await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token }));
-        };
-        initData();
-    }, []);
+        if (user) {
+            const initData = async () => {
+                await dispatch(getAllProjectsAndSubstations({ owner: user._id, token: user.token }));
+            };
+            initData();
+        }
+    }, [user]);
     useEffect(() => {
         console.log('allUserTasks UPDATED!');
         console.log(allUserTasks);

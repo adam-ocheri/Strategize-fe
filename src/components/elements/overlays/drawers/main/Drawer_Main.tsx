@@ -15,12 +15,24 @@ import { useRef } from 'react'
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2'
 import Drawer_Generic from '../generic/Drawer_Generic'
 import Accordion_Generic from 'src/components/elements/accordions/generic/Accordion_Generic'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from 'src/app/hooks'
+import { logout, reset } from 'src/app/state_management/user/authSlice'
 
 
 
 export default function Drawer_Main({visible, changeVisibility, user} : {visible : boolean, changeVisibility : () => void, user : any}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = useRef(null)
+
+    const navigator = useNavigate();
+    const dispatch = useAppDispatch();
+
+    const onLogoutClicked = async () => {
+      await dispatch(logout());
+      dispatch(reset());
+      navigator('/register');
+    }
   
     const closeDrawer = () => {
         changeVisibility();
@@ -56,38 +68,44 @@ export default function Drawer_Main({visible, changeVisibility, user} : {visible
                 <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
                     Account Settings
                 </Button>
-                <Button colorScheme='blue'>Log Out</Button>
+                <Button colorScheme='blue' onClick={onLogoutClicked}>Log Out</Button>
                 </Accordion_Generic>
             </DrawerHeader>
             <DrawerBody>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Projects
                 </Button>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Calendar
                 </Button>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Planner
                 </Button>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Notebook
                 </Button>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Workspace
                 </Button>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Tools
                 </Button>
-                <Button variant='outline' mr={3} onClick={onClose} style={{width: '91%', margin: '2%'}}>
+                <Button variant='outline' mr={3} onClick={closeDrawer} style={{width: '91%', margin: '2%'}}>
                     Statistics
                 </Button>
             </DrawerBody>
   
             <DrawerHeader className='border-top-bright b-color-dark-1' borderTopWidth='2px'><span className='flex f-dir-row j-center white'>STRATEGIZE</span></DrawerHeader>
             <DrawerFooter className='b-color-dark-1'>
-                <Button colorScheme='purple' mr={3}>Docs</Button>
-                <Button colorScheme='purple' mr={3}>Stuff</Button>
-                <Button colorScheme='purple' mr={3}>More</Button>
+                <Button colorScheme='purple' mr={3} onClick={() => navigator('/documentation')}>
+                  Docs
+                </Button>
+                <Button colorScheme='purple' mr={3}>
+                  Stuff
+                </Button>
+                <Button colorScheme='purple' mr={3}>
+                  More
+                </Button>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>

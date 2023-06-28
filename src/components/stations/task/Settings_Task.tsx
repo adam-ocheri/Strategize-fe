@@ -59,7 +59,7 @@ import { Button, Card, Input } from '@chakra-ui/react';
                 Object.defineProperty(body, field, {value: val, writable: true, enumerable: true, configurable: true});
             }
         }
-
+        
         if (activeTask.isSubtask){
 
             let sIndex = 0;

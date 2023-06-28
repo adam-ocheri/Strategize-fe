@@ -23,17 +23,28 @@
     background: linear-gradient(to bottom, #14111b, #130c38, #01061b)
 }
 .card-sub-child{
-    border: solid black 2px;
+    border: solid rgba(0, 0, 0, 0.447) 2px;
     /* border-radius: 25px; */
-    background: linear-gradient(to right, #05081fee, #0a1352ee, #0f1d75ee);
+    /* background: linear-gradient(to right, #05081fee, #0a1352ee, #0f1d75ee); */
+    background-color: #110628;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 .card-sub-child-2{
-    border: solid black 2px;
+    border: solid rgba(0, 0, 0, 0.357) 2px;
+    /* border-radius: 25px; */
+    /* background: linear-gradient(to right, #04040bee, #1c1f35ee, #434657ee); */
+    background-color: #0b041c;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.card-sub-child-3{
+    border: solid rgb(0, 0, 0) 2px;
     /* border-radius: 25px; */
     background: linear-gradient(to right, #04040bee, #1c1f35ee, #434657ee);
+    /* background-color: #0b041c; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
