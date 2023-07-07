@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from
 import {create, update, getAll, getOne, deleteProjectById, getAllSubstations, getAllUserProjectsAndTasks} from './projectService.js'
 
 import mongoose from 'mongoose';
+import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 
 export interface Project {
     data: [];
@@ -32,7 +33,7 @@ export const createProject = createAsyncThunk('project/create',  async({projectN
     try {
         console.log("Slicing...");
         console.log({projectName});
-        return await create({projectName, owner, token});
+        return await create({projectName: formatName(projectName), owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -60,7 +61,7 @@ export const updateProject = createAsyncThunk('project/update',  async({body, id
     try {
         console.log("Slicing...");
         console.log(body);
-        return await update({body, id, token});
+        return await update({body: body, id, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
 import {create, update, getAll, getOne, deleteById} from './taskService.js'
+import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 
 export interface Task {
     data: [];
@@ -26,7 +27,7 @@ export const createTask = createAsyncThunk('task/create',  async({taskName, heri
     try {
         console.log("Slicing...");
         console.log({taskName});
-        return await create({taskName, heritage, parentId, owner, token});
+        return await create({taskName: formatName(taskName), heritage, parentId, owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -53,7 +54,7 @@ export const updateTask = createAsyncThunk('task/update',  async({body, id, pare
     try {
         console.log("Slicing... Updating Task");
         console.log({body});
-        return await update({body, id, parentId, token});
+        return await update({body: body, id, parentId, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();

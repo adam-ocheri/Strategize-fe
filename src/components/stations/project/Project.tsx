@@ -8,7 +8,9 @@ import { updateTask, getTask, setActiveTask } from 'src/app/state_management/tas
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import { RootState } from 'src/app/store';
 import CalendarDND from 'src/components/calendars/CalendarDND/CalendarDND';
+import StationAccordion from 'src/components/elements/accordions/main/StationAccordion';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
+import { formatName } from '../stationGlobals/stationUtils';
 
 
 
@@ -112,27 +114,33 @@ function Project({}) {
         <section>
             <h2 className='font-1 s4'> 
                 {activeProject.projectName} :     
-                <span className='font-5 s2 m3 orange'>{`${activeProject.stationTypeName ? activeProject.stationTypeName : activeProject.stationType ? activeProject.stationType : 'Project'}`} </span>
+                <span className='font-5 s2 m3 orange'>{activeProject.stationTypeName} </span>
             </h2>
             <div>
-                <Button_S2 onClick={(e : any) => {navigator('/project/settings')}}>Settings</Button_S2>
+                <Button_S2 onClick={(e : any) => {navigator('/project/settings')}}> Settings </Button_S2>
             </div>
         </section>
         <section className='p3 m3 border-top-w1 border-top-white border-top-solid'>
-            <h3 className='s3 font-4'> Long Term Goals </h3>
-            {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
-                {data.map((LTG : any) => (<div key={LTG._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
-                    Long Term Goal: <span className='font-2 s2'>{LTG.LTGName}</span>
-                    <p>
-                        <Button_S2 onClick={(e : any) => {manageSelectedStation(e, LTG._id)}}> Manage </Button_S2>
-                        <Button_S2 onClick={() => {dispatch(deleteLTG({id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
-                    </p>
-                </div>))}
-            </div>}
+            <h3 className='s3 font-4'> {activeProject.defaults.ltgStation_TypeName}{'s'} </h3>
+            <StationAccordion title={`${activeProject.projectName}`}>
+                {data && <div className='p3 m3 font-5'>
+                    {data.map((LTG : any) => (<div key={LTG._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
+                    {activeProject.defaults.ltgStation_TypeName}
+                    <span className='font-2 s2'>
+                       {': '} {LTG.LTGName}
+                    </span>
+                        <p>
+                            <Button_S2 onClick={(e : any) => {manageSelectedStation(e, LTG._id)}}> Manage </Button_S2>
+                            <Button_S2 onClick={() => {dispatch(deleteLTG({id: LTG._id, parentId: activeProject._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
+                        </p>
+                    </div>))}
+                </div>}
+            </StationAccordion>
+            
         </section>
         <section className='p3 m3'>
             <form onSubmit={(e) => onFormSubmitted(e)}>
-                <input className="form-input" type="text" placeholder="LTG Name" id="newLTGName" 
+                <input className="form-input" type="text" placeholder={`${activeProject.defaults.ltgStation_TypeName} Name`} id="newLTGName" 
                     name="newLTGName" value={newLTGName} onChange={(e) => {onFormUpdated(e)}}/>
                 <Button_S2 type='submit'>Add New</Button_S2>
             </form> 

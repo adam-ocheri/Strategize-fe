@@ -5,6 +5,7 @@ import { RootState } from 'src/app/store';
 import { useEffect, useState } from 'react';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { Button, Card, Input } from '@chakra-ui/react';
+import { type } from 'os';
 
  function Settings_Task({originTask, currentTaskIteration} : any) {
 
@@ -26,7 +27,7 @@ import { Button, Card, Input } from '@chakra-ui/react';
     const [formData, setFormData] = useState({
         taskName: '',
         stationTypeName: '',
-        description: ''
+        description: '',
     })
     const {taskName, stationTypeName, description} = formData;
 
@@ -57,6 +58,9 @@ import { Button, Card, Input } from '@chakra-ui/react';
             if (val.length !== 0)
             {
                 Object.defineProperty(body, field, {value: val, writable: true, enumerable: true, configurable: true});
+            }
+            else if (val == true || val == false){
+
             }
         }
         
@@ -138,13 +142,6 @@ import { Button, Card, Input } from '@chakra-ui/react';
                 token: user.token
             }))
 
-            // const nextTaskToView = (
-            //     newSubtasksArray.length > 0 ? 
-            //     (newSubtasksArray.length - 1 !== activeTask.iteration ? 
-            //         activeTask.iteration : activeTask.iteration - 1 
-            //     ) 
-            //     : -1
-            // );
             let nextTaskToView = 0;
             if (newSubtasksArray.length > 0){
                 if (activeTask.iteration > newSubtasksArray.length || newSubtasksArray.length === 1){
@@ -183,8 +180,7 @@ import { Button, Card, Input } from '@chakra-ui/react';
   return (
     <div >
         <form onSubmit={(e) => {onFormSubmitted(e)}} className='b-color-dark-3 p5'>
-            <h2 className='orange font-3 s3'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType}`} Settings</h2>
-            
+            <h2 className='orange font-3 s3'>{activeTask.stationTypeName}{' Settings'}</h2>
             {!activeTask.isSubtask && <Card marginTop={'2'} marginBottom={'2'} marginLeft={'6'} padding={'2'} background={'#110628'}>
                 
                 <div className='flex f-dir-row j-between p1'>
@@ -208,7 +204,6 @@ import { Button, Card, Input } from '@chakra-ui/react';
                 <Input className="sform-input font-3" type="text" placeholder={activeTask.description} id="Description"  background={'AppWorkspace'} color={'black'}
                     name="description" value={description} onChange={(e) => {onFormUpdated(e)}}/>
             </Card>
-            {/* <Button_S2 type='submit' disabled={savePrevented}>Save</Button_S2> */}
             <Button type='submit' _hover={!savePrevented ? {background: '#acffff'} : {background: '#004444', cursor: 'auto'}} 
                 disabled={savePrevented} 
                 minWidth={'110px'} 
@@ -218,20 +213,9 @@ import { Button, Card, Input } from '@chakra-ui/react';
                 Save
             </Button>
         </form>
-        {/* {deletePrompt ? 
-            <div>
-                This will delete the Task and all of it's data! <br/>
-                Are you sure? <br/>
-                <Button_S2 onClick={() => onDeleteTask()}>Delete</Button_S2>
-                <Button_S2 onClick={() => setDeletePrompt(false)}>Cancel</Button_S2>
-            </div> 
-            : 
-            <div>
-                <Button_S2 onClick={() => setDeletePrompt(true)}>DELETE</Button_S2>
-            </div>} */}
         {deletePrompt ? 
         <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2'>
-            This will delete the project and all of it's sub-stations! <br/>
+            This will delete the {activeTask.stationTypeName} and all of it's data! <br/>
             Are you sure? <br/>
             <Button colorScheme='red' onClick={() => onDeleteTask()} minWidth={'110px'} margin={'3'}>Delete</Button>
             <Button onClick={() => setDeletePrompt(false)} minWidth={'110px'} margin={'3'}>Cancel</Button>

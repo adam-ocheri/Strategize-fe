@@ -65,7 +65,7 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
             }
         }
         if (item.goalAchieved) {
-            setActiveBadges((prev) => ({ ...prev, success: true }));
+            setActiveBadges((prev) => ({ success: true, inProgress: false, overdue: false, fresh: false }));
         }
     };
     useEffect(() => {
@@ -169,7 +169,7 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
                 _jsxs("div", { className: 'jt-left mb5', children: [stationContext === 'profile' &&
                             _jsx("span", { className: 'font-4 teal', style: { fontSize: '10pt' }, children: item.heritage.project.name }), " ", _jsx("br", {}), stationContext !== 'ltg' && stationContext !== 'objective' &&
                             _jsxs("span", { className: 'font-4 teal ml2', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.ltg.name] }), " ", _jsx("br", {}), stationContext !== 'objective' &&
-                            _jsxs("span", { className: 'font-4 teal ml3', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.objective.name] }), " ", _jsx("br", {})] }), isItemHovered &&
+                            _jsxs("span", { className: 'font-4 teal ml3', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.objective.name] }), " ", _jsx("br", {})] }), isItemHovered && item.date &&
                 _jsxs("div", { className: '', children: [_jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t, "start") }), _jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: endTime, onChange: (t) => updateTime(t, "end") }), _jsx("a", { className: 'p1 mb5 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }), _jsxs(Stack, { direction: 'row', children: [inProgress && _jsx(Badge, { colorScheme: 'orange', children: "In Progress" }), success && _jsx(Badge, { colorScheme: 'green', children: "Success" }), overdue && _jsx(Badge, { colorScheme: 'red', children: "Overdue" }), fresh && _jsx(Badge, { colorScheme: 'purple', children: "New" })] })] }));
 };
 export default DragItem;

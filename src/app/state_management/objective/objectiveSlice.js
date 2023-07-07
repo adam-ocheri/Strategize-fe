@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, update, getAll, getOne, deleteById } from './objectiveService.js';
+import { formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 const initialState = {
     data: [],
     isError: false,
@@ -14,7 +15,7 @@ export const createObjective = createAsyncThunk('objective/create', async ({ obj
     try {
         console.log("Slicing...");
         console.log({ objectiveName });
-        return await create({ objectiveName, parentId, owner, token });
+        return await create({ objectiveName: formatName(objectiveName), parentId, owner, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -39,7 +40,7 @@ export const updateObjective = createAsyncThunk('objective/update', async ({ bod
     try {
         console.log("Slicing...");
         console.log({ body });
-        return await update({ body, id, parentId, token });
+        return await update({ body: body, id, parentId, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)

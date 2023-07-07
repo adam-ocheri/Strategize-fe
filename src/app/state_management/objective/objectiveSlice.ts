@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
 import {create, update, getAll, getOne, deleteById} from './objectiveService.js'
+import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 
 
 export interface Objective {
@@ -27,7 +28,7 @@ export const createObjective = createAsyncThunk('objective/create',  async({obje
     try {
         console.log("Slicing...");
         console.log({objectiveName});
-        return await create({objectiveName, parentId, owner, token});
+        return await create({objectiveName: formatName(objectiveName), parentId, owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -54,7 +55,7 @@ export const updateObjective = createAsyncThunk('objective/update',  async({body
     try {
         console.log("Slicing...");
         console.log({body});
-        return await update({body, id, parentId, token});
+        return await update({body: body, id, parentId, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();

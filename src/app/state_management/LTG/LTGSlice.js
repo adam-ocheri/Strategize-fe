@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, update, getAll, getOne, deleteById, getAllSubstations } from './LTGService.js';
+import { formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 const initialState = {
     data: [],
     subData: [],
@@ -15,7 +16,7 @@ export const createLTG = createAsyncThunk('LTG/create', async ({ LTGName, parent
     try {
         console.log("Slicing...");
         console.log({ LTGName });
-        return await create({ LTGName, parentId, owner, token });
+        return await create({ LTGName: formatName(LTGName), parentId, owner, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -40,7 +41,7 @@ export const updateLTG = createAsyncThunk('LTG/update', async ({ body, id, paren
     try {
         console.log("Slicing...");
         console.log({ body });
-        return await update({ body, id, parentId, token });
+        return await update({ body: body, id, parentId, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)

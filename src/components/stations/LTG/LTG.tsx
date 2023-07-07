@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { RootState } from 'src/app/store';
@@ -12,11 +12,8 @@ import { updateTask, getTask, setActiveTask } from 'src/app/state_management/tas
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
 import { ArrowRightIcon } from '@chakra-ui/icons';
-
-
-
-
-
+import StationAccordion from 'src/components/elements/accordions/main/StationAccordion';
+import { determineSubstationTypeNameOrigin } from '../stationGlobals/stationUtils';
 
 function LTG({}) {
     const [formData, setFormData] = useState({
@@ -130,20 +127,31 @@ function LTG({}) {
             </div>
         </section>
         <section className='p3 m3 border-top-w1 border-top-white border-top-solid'>
-            <h3 className='s3 font-4'> Objectives </h3>
-            {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
-                {data.map((Objective : any) => (<div key={Objective._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
-                    Objective: <span className='font-2 s2'>{Objective.objectiveName}</span>
-                    <p>
-                        <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Objective._id)}}> Manage </Button_S2>
-                        <Button_S2 onClick={() => {dispatch(deleteObjective({id: Objective._id, parentId: activeLTG._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
-                    </p>
-                </div>))}
-            </div>}
+            <h3 className='s3 font-4'> 
+                {
+                    determineSubstationTypeNameOrigin({scope: 'Objective', activeProject, activeLTG})
+                }{'s'} 
+            </h3>
+            <StationAccordion title={`${activeLTG.LTGName}`}>
+                {data && <div className='p3 m3 font-5' >
+                    {data.map((Objective : any) => (<div key={Objective._id} className='p3 m3 font-5 b-color-dark-1 border-w1 border-r2 border-solid border-color-white'>
+                    {
+                        determineSubstationTypeNameOrigin({scope: 'Objective', activeProject, activeLTG})
+                    }
+                    <span>{': '}</span> 
+                    <span className='font-2 s2'>{Objective.objectiveName}</span>
+                        <p>
+                            <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Objective._id)}}> Manage </Button_S2>
+                            <Button_S2 onClick={() => {dispatch(deleteObjective({id: Objective._id, parentId: activeLTG._id, owner: user._id, token: user.token}))}}>Delete</Button_S2>
+                        </p>
+                    </div>))}
+                </div>}
+            </StationAccordion>     
         </section>
         <section className='p3 m3'>
             <form onSubmit={(e) => onFormSubmitted(e)}>
-                <input className="form-input" type="text" placeholder="Objective Name" id="newObjectiveName" 
+                <input className="form-input" type="text" id="newObjectiveName" 
+                    placeholder={`${determineSubstationTypeNameOrigin({scope: 'Objective', activeProject, activeLTG})} Name`}
                     name="newObjectiveName" value={newObjectiveName} onChange={(e) => {onFormUpdated(e)}}/>
                 <Button_S2 type='submit'>Add New</Button_S2>
             </form> 
@@ -164,4 +172,4 @@ function LTG({}) {
     )
 };
 
-export default  LTG
+export default LTG;

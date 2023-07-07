@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, update, getAll, getOne, deleteProjectById, getAllSubstations, getAllUserProjectsAndTasks } from './projectService.js';
+import { formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 const initialState = {
     data: [],
     subData: [],
@@ -16,7 +17,7 @@ export const createProject = createAsyncThunk('project/create', async ({ project
     try {
         console.log("Slicing...");
         console.log({ projectName });
-        return await create({ projectName, owner, token });
+        return await create({ projectName: formatName(projectName), owner, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)
@@ -41,7 +42,7 @@ export const updateProject = createAsyncThunk('project/update', async ({ body, i
     try {
         console.log("Slicing...");
         console.log(body);
-        return await update({ body, id, token });
+        return await update({ body: body, id, token });
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message)

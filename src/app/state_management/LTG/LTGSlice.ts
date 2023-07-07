@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
 import {create, update, getAll, getOne, deleteById, getAllSubstations} from './LTGService.js'
+import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
 
 
 export interface LTG {
@@ -29,7 +30,7 @@ export const createLTG = createAsyncThunk('LTG/create',  async({LTGName, parentI
     try {
         console.log("Slicing...");
         console.log({LTGName});
-        return await create({LTGName, parentId, owner, token});
+        return await create({LTGName: formatName(LTGName), parentId, owner, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();
@@ -56,7 +57,7 @@ export const updateLTG = createAsyncThunk('LTG/update',  async({body, id, parent
     try {
         console.log("Slicing...");
         console.log({body});
-        return await update({body, id, parentId, token});
+        return await update({body: body, id, parentId, token});
     } catch (error : any) {
         const message = (error.response && error.response.data && error.response.data.message)
             || error.message || error.toString();

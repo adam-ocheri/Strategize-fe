@@ -98,7 +98,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     }
 
     if (item.goalAchieved){
-      setActiveBadges((prev : any) => ({...prev, success: true}))
+      setActiveBadges((prev : any) => ({success: true, inProgress: false, overdue: false, fresh: false}))
     }
     
   };
@@ -240,7 +240,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
       </div>
       }
       
-      {isItemHovered && 
+      {isItemHovered && item.date &&
       <div className=''>
         <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
         <input className='mb5 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>

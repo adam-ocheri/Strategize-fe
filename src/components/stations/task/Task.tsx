@@ -6,62 +6,31 @@ import { RootState } from 'src/app/store';
 import { getObjective } from 'src/app/state_management/objective/objectiveSlice';
 import { getAllLTGs, getLTG } from 'src/app/state_management/LTG/LTGSlice';
 //Child sub-station
-import { createTask, getTask, deleteTask, getAllTasks, setActiveTask } from 'src/app/state_management/task/taskSlice';
+import { createTask, getTask, deleteTask, getAllTasks, setActiveTask, updateTask } from 'src/app/state_management/task/taskSlice';
 import Settings_Task from './Settings_Task';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { setCurrentStationContext } from 'src/app/state_management/user/authSlice';
 import { PhoneIcon, AddIcon, WarningIcon, ArrowRightIcon } from '@chakra-ui/icons'
+import { Badge, Box, Card, CardBody, CardFooter, CardHeader, Flex, Switch } from '@chakra-ui/react';
+import TaskStatus from './taskStatus';
 
 
 
 function Task({}) {
 
     
-    const [originTask, setOriginTask] : any = useState(null);
-
-    const [formData, setFormData] = useState({
-        newTaskName: '',
-    })
-    const {newTaskName} = formData;
-
-    const onFormUpdated = (e : Event | any) => {
-        e.preventDefault();
-        setFormData((prevState) => ({
-          ...prevState,
-          [e.target.name] : e.target.value
-        }))
-    }
-    
-    const onFormSubmitted = (e: Event | any) => {
-        e.preventDefault();
-        if(!newTaskName)
-        {
-          throw new Error ("Please enter all fields!");
-        }
-        else{
-          console.log("trying to login...");
-          console.log(formData);
-          dispatch(createTask({taskName: newTaskName, parentId: activeTask._id, owner: user._id, token: user.token}))
-        }
-    };
-
-    // const manageSelectedStation = async (e : any, id : any) => {
-    //     console.log("trying to EDIT Task...........")
-    //     console.log(id);
-    //     await dispatch(getTask({id: id, parentId: activeTask._id, token: user.token}));
-    //     navigator('/project/ltg/objective/task');
-    // }
-    //
     const navigator = useNavigate();
     const dispatch = useAppDispatch();
+
     const {activeProject} : any = useAppSelector((state) => state.project)
     const {activeLTG, data} : any = useAppSelector((state) => state.ltg)
     const {activeObjective} : any = useAppSelector((state : RootState) => state.objective);
     const {activeTask} : any = useAppSelector((state : RootState) => state.task);
     const {user} : any = useAppSelector((state : RootState) => state.auth);
-
+    
+    const [originTask, setOriginTask] : any = useState(null);
     const [currentTaskIteration, setCurrentTaskIteration] = useState(activeTask?.iteration);
-
+    const [taskCompleted, setTaskCompleted] : any = useState(activeTask.goalAchieved);
     //INIT component & data
     useEffect(() => {
         if (!activeTask?.taskName)
@@ -96,16 +65,12 @@ function Task({}) {
                 getSuperStations();
             }
 
-            // setCurrentTaskIteration(activeTask.iteration);
-
-            
         }
     }, [])
 
     useEffect(()=> {
         if(activeTask){
             if(activeTask.isSubtask){
-                // let taskOrigin : any = {};
                 const getData = async () => {
                     await dispatch(getAllTasks({parentId: activeTask.owningObjective, token: user.token}))
                     .then((response: any) => {
@@ -169,6 +134,12 @@ function Task({}) {
         const isIterationInRange = newIteration >= 0 && newIteration <= originTask?.HISTORY_TaskIterations?.length;
         isIterationInRange ? setCurrentTaskIteration(newIteration) : null;
     };
+
+    async function updateTaskCompletionStatus(){
+        const response = await dispatch(updateTask({body: {goalAchieved : !taskCompleted}, id: activeTask._id, parentId: activeTask.owningObjective, token: user.token}));
+        dispatch(setActiveTask({item: response.payload}))
+        setTaskCompleted(!taskCompleted);
+    }
     
     return (
     <div className='pt3 mt3 m3 b-color-dark-2 white border-left-w1 border-left-white border-left-solid border-right-w1 border-right-white border-right-solid border-bottom-w1 border-bottom-white border-bottom-solid'>
@@ -204,9 +175,31 @@ function Task({}) {
                     </div>}
                 </div>} 
                 <h2 className='font-1 s4'> 
-                    {activeTask.taskName} : 
+                    {': '}{activeTask.taskName} : 
                     <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
                 </h2>
+                <Card>
+                    <Flex direction={'column'} padding={'1vw'}>
+                        <CardHeader>Status</CardHeader>
+                        <Flex direction={'row'} padding={'1vw'} justifyContent={'space-between'}>
+                            {/* <Badge colorScheme='green' width={'fit-content'} height={'fit-content'}>Success</Badge> */}
+                            <TaskStatus item={activeTask}/>
+                            <CardBody border={'2px solid black'} borderRadius={'10px'} maxWidth={'50%'} minWidth={'50vw'} alignSelf={'center'}>
+                                <Box as={'span'} margin={'5px'}>
+                                    {`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`} completion status
+                                </Box>
+                            <Switch defaultChecked={taskCompleted} onClick={updateTaskCompletionStatus} margin={'5px'}/>
+                            </CardBody>
+                        </Flex>
+                    </Flex>
+                    
+                    
+                    
+                    <CardFooter>
+
+                    </CardFooter>
+                    {/* <input type={'checkbox'} defaultChecked={taskCompleted} onClick={async () => updateTaskCompletionStatus()}/> */}
+                </Card>
                 <div className='p2 m2'>
                         <span className='s1 orange'> Date:</span>  <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
                         <span className='s1 orange'>Time:</span> <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>

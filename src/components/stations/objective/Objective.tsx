@@ -12,6 +12,8 @@ import { setCurrentStationContext } from 'src/app/state_management/user/authSlic
 import { refreshStation } from 'src/app/System/Main/Heritage/Utils/heritageUtils';
 import { deleteTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 import { ArrowRightIcon } from '@chakra-ui/icons';
+import StationAccordion from 'src/components/elements/accordions/main/StationAccordion';
+import { determineSubstationTypeNameOrigin, formatName } from '../stationGlobals/stationUtils';
 
 
 function Objective({}) {
@@ -19,8 +21,6 @@ function Objective({}) {
         newTaskName: '',
     })
     const {newTaskName} = formData;
-
-    const [showData, setShowData] = useState(true);
 
     const [creatingNewTask, setCreatingNewTask] = useState(false);
 
@@ -114,6 +114,12 @@ function Objective({}) {
 
     }, [allUserTasks])
 
+    const [stationTypeName, setStationTypeName] = useState('');
+
+    useEffect(() => {
+
+    }, [activeObjective])
+
     async function deleteSingleTask(Task : any){
         const response = await dispatch(deleteTask({id: Task._id, parentId: activeObjective._id, owner: user._id, token: user.token}));
         dispatch(deleteTask_ProfileView({task: response.payload}));
@@ -135,14 +141,17 @@ function Objective({}) {
             {/* <h3 className='font-1 white'> <Link to='/project'>{activeProject.projectName}</Link> {'>'} <Link to='/project/ltg'>{activeLTG.LTGName}</Link> {'>'} <Link to='/project/ltg/objective'>{activeObjective.objectiveName}</Link> </h3> */}
             <h2 className='font-1 s4'> 
                 {activeObjective.objectiveName} : 
-                <span className='font-5 s2 m3 orange'>{`${activeObjective.stationTypeName ? activeObjective.stationTypeName : activeObjective.stationType ? activeObjective.stationType : 'Objective'}`} </span>
+                <span className='font-5 s2 m3 orange'>{activeObjective.stationTypeName} </span>
             </h2>
             <div>
                 <Button_S2 onClick={(e : any) => {navigator('/project/ltg/objective/settings')}}>Settings</Button_S2>
             </div>
         </section>
         <section className='p3 m3 border-top-w1 border-top-white border-top-solid'>
-            <h3 className='s3 font-4'> Tasks </h3>
+            <h3 className='s3 font-4'> {
+                    determineSubstationTypeNameOrigin({scope: 'Task', activeProject, activeLTG, activeObjective})
+                }{'s'}
+            </h3>
             {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
                 <CalendarDND 
                     data={taskData} 
@@ -160,11 +169,18 @@ function Objective({}) {
                         <a  onClick={()=>setCreatingNewTask(true)}>
                             <p className='s4'>+</p>
                             <Button_S2 className='s2 p2' onClick={()=>setCreatingNewTask(true)}> 
-                                Add New Task 
+                                Add New {/*Task*/} {
+                                    determineSubstationTypeNameOrigin({scope: 'Task', activeProject, activeLTG, activeObjective})
+
+                                }  
                             </Button_S2>  
                         </a>}
                        {creatingNewTask && <form className='flex f-dir-col m7 p7' onSubmit={(e) => onFormSubmitted(e)}>
-                            <h3 className='font-1 s3'>Create New Task</h3>
+                            <h3 className='font-1 s3'>
+                                Create New {/*Task*/} {
+                                    determineSubstationTypeNameOrigin({scope: 'Task', activeProject, activeLTG, activeObjective})
+                                } 
+                            </h3>
                             <input className="form-input" type="text" placeholder="Task Name" id="newTaskName" 
                                 name="newTaskName" value={newTaskName} onChange={(e) => {onFormUpdated(e)}}/>
                             <Button_S2 className={'s2'} type='submit'>Create New</Button_S2>
@@ -172,16 +188,22 @@ function Objective({}) {
                         </form> }
                     </div>
 
-                    <input type='checkbox' id='collapse' checked={showData} onChange={() => setShowData(!showData)}></input> 
-                    <label htmlFor='collapse'> View All Tasks </label>
-
-                    {showData && data && data.map((Task : any) => (<div key={Task._id} className='flex j-between p3 m3 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2 b-color-dark-1'>
-                        <h4 className='font-5'>Task: <span className='font-2 s2'> {Task.taskName} </span></h4>
-                        <span>
-                            <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Task._id)}}> Manage </Button_S2>
-                            <Button_S2 onClick={() => {deleteSingleTask(Task)}}>Delete</Button_S2>
-                        </span>
-                    </div>))}
+                    <StationAccordion title={`${activeObjective.objectiveName}`}>
+                        {data && data.map((Task : any) => (<div key={Task._id} className='flex j-between p3 m3 pl7 pr7 ml7 mr7 border-white border-w1 border-solid border-r2 b-color-dark-1'>
+                            <h4 className='font-5'>{/*Task*/} {
+                                    activeObjective.defaults ? 
+                                    formatName(activeObjective.defaults.taskStation_TypeName, false) : 
+                                    formatName(activeProject.defaults.taskStation_TypeName, false) 
+                                } 
+                                <span className='font-2 s2'> {': '}{Task.taskName} </span>
+                            </h4>
+                            <span>
+                                <Button_S2 onClick={(e : any) => {manageSelectedStation(e, Task._id)}}> Manage </Button_S2>
+                                <Button_S2 onClick={() => {deleteSingleTask(Task)}}>Delete</Button_S2>
+                            </span>
+                        </div>))}
+                    </StationAccordion>
+                    
                 </article>
                 
             </div>}

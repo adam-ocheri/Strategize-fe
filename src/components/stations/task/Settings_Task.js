@@ -19,7 +19,7 @@ function Settings_Task({ originTask, currentTaskIteration }) {
     const [formData, setFormData] = useState({
         taskName: '',
         stationTypeName: '',
-        description: ''
+        description: '',
     });
     const { taskName, stationTypeName, description } = formData;
     useEffect(() => {
@@ -43,6 +43,8 @@ function Settings_Task({ originTask, currentTaskIteration }) {
             const val = Object.getOwnPropertyDescriptor(formData, field)?.value;
             if (val.length !== 0) {
                 Object.defineProperty(body, field, { value: val, writable: true, enumerable: true, configurable: true });
+            }
+            else if (val == true || val == false) {
             }
         }
         if (activeTask.isSubtask) {
@@ -109,13 +111,6 @@ function Settings_Task({ originTask, currentTaskIteration }) {
                 parentId: activeTask.owningObjective,
                 token: user.token
             }));
-            // const nextTaskToView = (
-            //     newSubtasksArray.length > 0 ? 
-            //     (newSubtasksArray.length - 1 !== activeTask.iteration ? 
-            //         activeTask.iteration : activeTask.iteration - 1 
-            //     ) 
-            //     : -1
-            // );
             let nextTaskToView = 0;
             if (newSubtasksArray.length > 0) {
                 if (activeTask.iteration > newSubtasksArray.length || newSubtasksArray.length === 1) {
@@ -146,8 +141,8 @@ function Settings_Task({ originTask, currentTaskIteration }) {
         }
         setDeletePrompt(false);
     };
-    return (_jsxs("div", { children: [_jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, className: 'b-color-dark-3 p5', children: [_jsxs("h2", { className: 'orange font-3 s3', children: [`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType}`, " Settings"] }), !activeTask.isSubtask && _jsxs(Card, { marginTop: '2', marginBottom: '2', marginLeft: '6', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between p1', children: _jsx("h3", { className: 'mt1 mb1 font-3 white', children: "Name" }) }), _jsx(Input, { className: "sform-input font-3", type: "text", placeholder: activeTask.taskName, id: "taskName", background: 'AppWorkspace', color: 'black', name: "taskName", value: taskName, onChange: (e) => { onFormUpdated(e); } })] }), !activeTask.isSubtask && _jsxs(Card, { marginTop: '2', marginBottom: '2', marginLeft: '6', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between p1', children: _jsx("h3", { className: 'mt1 mb1 font-3 white', children: "Station Type Name" }) }), _jsx(Input, { className: "sform-input font-3", type: "text", placeholder: activeTask.stationTypeName, id: "stationTypeName", background: 'AppWorkspace', color: 'black', name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs(Card, { marginTop: '2', marginBottom: '2', marginLeft: '6', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between p1', children: _jsx("h3", { className: 'mt1 mb1 font-3 white', children: "Description" }) }), _jsx(Input, { className: "sform-input font-3", type: "text", placeholder: activeTask.description, id: "Description", background: 'AppWorkspace', color: 'black', name: "description", value: description, onChange: (e) => { onFormUpdated(e); } })] }), _jsx(Button, { type: 'submit', _hover: !savePrevented ? { background: '#acffff' } : { background: '#004444', cursor: 'auto' }, disabled: savePrevented, minWidth: '110px', margin: '10', bgColor: !savePrevented ? '#21ffff' : '#004444', children: "Save" })] }), deletePrompt ?
-                _jsxs("div", { className: 'pb3 mb3 border-top-w0 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2', children: ["This will delete the project and all of it's sub-stations! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx(Button, { colorScheme: 'red', onClick: () => onDeleteTask(), minWidth: '110px', margin: '3', children: "Delete" }), _jsx(Button, { onClick: () => setDeletePrompt(false), minWidth: '110px', margin: '3', children: "Cancel" })] })
+    return (_jsxs("div", { children: [_jsxs("form", { onSubmit: (e) => { onFormSubmitted(e); }, className: 'b-color-dark-3 p5', children: [_jsxs("h2", { className: 'orange font-3 s3', children: [activeTask.stationTypeName, ' Settings'] }), !activeTask.isSubtask && _jsxs(Card, { marginTop: '2', marginBottom: '2', marginLeft: '6', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between p1', children: _jsx("h3", { className: 'mt1 mb1 font-3 white', children: "Name" }) }), _jsx(Input, { className: "sform-input font-3", type: "text", placeholder: activeTask.taskName, id: "taskName", background: 'AppWorkspace', color: 'black', name: "taskName", value: taskName, onChange: (e) => { onFormUpdated(e); } })] }), !activeTask.isSubtask && _jsxs(Card, { marginTop: '2', marginBottom: '2', marginLeft: '6', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between p1', children: _jsx("h3", { className: 'mt1 mb1 font-3 white', children: "Station Type Name" }) }), _jsx(Input, { className: "sform-input font-3", type: "text", placeholder: activeTask.stationTypeName, id: "stationTypeName", background: 'AppWorkspace', color: 'black', name: "stationTypeName", value: stationTypeName, onChange: (e) => { onFormUpdated(e); } })] }), _jsxs(Card, { marginTop: '2', marginBottom: '2', marginLeft: '6', padding: '2', background: '#110628', children: [_jsx("div", { className: 'flex f-dir-row j-between p1', children: _jsx("h3", { className: 'mt1 mb1 font-3 white', children: "Description" }) }), _jsx(Input, { className: "sform-input font-3", type: "text", placeholder: activeTask.description, id: "Description", background: 'AppWorkspace', color: 'black', name: "description", value: description, onChange: (e) => { onFormUpdated(e); } })] }), _jsx(Button, { type: 'submit', _hover: !savePrevented ? { background: '#acffff' } : { background: '#004444', cursor: 'auto' }, disabled: savePrevented, minWidth: '110px', margin: '10', bgColor: !savePrevented ? '#21ffff' : '#004444', children: "Save" })] }), deletePrompt ?
+                _jsxs("div", { className: 'pb3 mb3 border-top-w0 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2', children: ["This will delete the ", activeTask.stationTypeName, " and all of it's data! ", _jsx("br", {}), "Are you sure? ", _jsx("br", {}), _jsx(Button, { colorScheme: 'red', onClick: () => onDeleteTask(), minWidth: '110px', margin: '3', children: "Delete" }), _jsx(Button, { onClick: () => setDeletePrompt(false), minWidth: '110px', margin: '3', children: "Cancel" })] })
                 : _jsx("div", { className: 'pb3 mb3 border-top-w0 border-top-white border-top-solid', children: _jsx(Button, { colorScheme: 'red', onClick: () => setDeletePrompt(true), minWidth: '110px', margin: '12', children: "DELETE" }) })] }));
 }
 export default Settings_Task;
