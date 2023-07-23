@@ -114,8 +114,6 @@ function Objective({}) {
 
     }, [allUserTasks])
 
-    const [stationTypeName, setStationTypeName] = useState('');
-
     useEffect(() => {
 
     }, [activeObjective])
@@ -149,8 +147,8 @@ function Objective({}) {
         </section>
         <section className='p3 m3 border-top-w1 border-top-white border-top-solid'>
             <h3 className='s3 font-4'> {
-                    determineSubstationTypeNameOrigin({scope: 'Task', activeProject, activeLTG, activeObjective})
-                }{'s'}
+                    formatName(determineSubstationTypeNameOrigin({scope: 'Task', activeProject, activeLTG, activeObjective}), true)
+                }
             </h3>
             {data && <div className='p3 m3 font-5 border-bottom-w0 border-bottom-white border-bottom-solid'>
                 <CalendarDND 
@@ -171,7 +169,6 @@ function Objective({}) {
                             <Button_S2 className='s2 p2' onClick={()=>setCreatingNewTask(true)}> 
                                 Add New {/*Task*/} {
                                     determineSubstationTypeNameOrigin({scope: 'Task', activeProject, activeLTG, activeObjective})
-
                                 }  
                             </Button_S2>  
                         </a>}

@@ -2,17 +2,29 @@ export function formatName(name, pluralSuffix = false) {
     const words = name.split(' ');
     const upperCaseWords = words.map((word) => (word[0].toUpperCase() + word.slice(1).toLowerCase()));
     let formattedString = '';
+    const stringFormatter = (i) => {
+        if (pluralSuffix) {
+            const yFmt = upperCaseWords[i].at(-1) == 'y';
+            if (yFmt) {
+                return upperCaseWords[i].slice(0, -1) + 'ies';
+            }
+            else {
+                return upperCaseWords[i] + 's';
+            }
+        }
+        else {
+            return upperCaseWords[i];
+        }
+    };
     for (let i = 0; i < upperCaseWords.length; ++i) {
         if (i > 0) {
             const applyPluralFormatting = i == upperCaseWords.length - 1 && pluralSuffix;
-            const spacedWord = ' ' + upperCaseWords[i] + (applyPluralFormatting ?
-                upperCaseWords[i].endsWith('y') ? 'ies' : 's'
-                : '');
+            const spacedWord = ' ' + stringFormatter(i);
             formattedString += spacedWord;
         }
         else {
             if (upperCaseWords.length == 1) {
-                formattedString = upperCaseWords[i] + (pluralSuffix ? upperCaseWords[i].endsWith('y') ? 'ies' : 's' : '');
+                formattedString = stringFormatter(i);
             }
             else {
                 formattedString = upperCaseWords[i];

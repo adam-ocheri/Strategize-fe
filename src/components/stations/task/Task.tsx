@@ -13,6 +13,7 @@ import { setCurrentStationContext } from 'src/app/state_management/user/authSlic
 import { PhoneIcon, AddIcon, WarningIcon, ArrowRightIcon } from '@chakra-ui/icons'
 import { Badge, Box, Card, CardBody, CardFooter, CardHeader, Flex, Switch } from '@chakra-ui/react';
 import TaskStatus from './taskStatus';
+import TaskTimeManagement from 'src/app/state_management/task/taskTimeManagement';
 
 
 
@@ -136,8 +137,10 @@ function Task({}) {
     };
 
     async function updateTaskCompletionStatus(){
+        console.log('Trying to updateTaskCompletionStatus!!!!!');
         const response = await dispatch(updateTask({body: {goalAchieved : !taskCompleted}, id: activeTask._id, parentId: activeTask.owningObjective, token: user.token}));
         dispatch(setActiveTask({item: response.payload}))
+        console.log('TASK UPDATE RESPONSE:',response)
         setTaskCompleted(!taskCompleted);
     }
     
@@ -174,45 +177,75 @@ function Task({}) {
                         ))} 
                     </div>}
                 </div>} 
-                <h2 className='font-1 s4'> 
-                    {': '}{activeTask.taskName} : 
-                    <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
-                </h2>
-                <Card>
-                    <Flex direction={'column'} padding={'1vw'}>
-                        <CardHeader>Status</CardHeader>
-                        <Flex direction={'row'} padding={'1vw'} justifyContent={'space-between'}>
-                            {/* <Badge colorScheme='green' width={'fit-content'} height={'fit-content'}>Success</Badge> */}
-                            <TaskStatus item={activeTask}/>
-                            <CardBody border={'2px solid black'} borderRadius={'10px'} maxWidth={'50%'} minWidth={'50vw'} alignSelf={'center'}>
-                                <Box as={'span'} margin={'5px'}>
-                                    {`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`} completion status
-                                </Box>
-                            <Switch defaultChecked={taskCompleted} onClick={updateTaskCompletionStatus} margin={'5px'}/>
-                            </CardBody>
-                        </Flex>
-                    </Flex>
-                    
-                    
-                    
-                    <CardFooter>
+                
+                <div  style={{borderRadius: '10px', marginBottom: '3%'}}>
+                    <Card background={'transparent'} padding={'1%'} border={'2px dashed white'} borderRadius={'10px'}>
+                    {/* <h2 className='font-1 s4 white'> 
+                        {activeTask.taskName} : 
+                        <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
+                    </h2> */}
+                        
+                            
+                        
+                        <Flex direction={'row'} padding={'1vw'} justifyContent={'space-between'} alignSelf={''}>
+                                {/* <Badge colorScheme='green' width={'fit-content'} height={'fit-content'}>Success</Badge> */}
+                                
+                                
+                                <CardBody border={'1px solid white'} borderRadius={'10px'} alignSelf={'center'} minW={'55vw'} background={'#5f22ed'}>
+                                    <h2 className='font-1 s4 white'> 
+                                        {activeTask.taskName} : 
+                                        <span className='font-5 s2 m3 orange'>{`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`}</span>
+                                    </h2>
+                                    {activeTask.description && 
+                                    <div className='font-5 s2 p3 m3'>
+                                        <span className='s1 orange'> Description: </span> <span className={`s2 ml4`}>
+                                            {activeTask.description}
+                                        </span>
+                                    </div>}
+                                    <Flex direction={'row'} justifyContent={'space-between'} padding={'1vw'} margin={'1%'} >
+                                        
+                                        <Box as={'article'} margin={'5px'}>
+                                            <Box as={'span'} margin={'5px'} className='orange font-5'>
+                                                {`${activeTask.stationTypeName ? activeTask.stationTypeName : activeTask.stationType ? activeTask.stationType : 'Task'}`} completed
+                                            </Box>
+                                            <Switch defaultChecked={taskCompleted} onChange={updateTaskCompletionStatus} margin={'5px'} colorScheme={'green'}/>
+                                        </Box>
+                                        <Flex direction={'column'} alignItems={'center'}>
+                                            <CardHeader className='font-1 s2 white'>Status</CardHeader>
+                                            <TaskStatus item={activeTask}/>
+                                        </Flex>
+                                    </Flex>
+                                </CardBody>
+                            </Flex>
 
-                    </CardFooter>
-                    {/* <input type={'checkbox'} defaultChecked={taskCompleted} onClick={async () => updateTaskCompletionStatus()}/> */}
-                </Card>
-                <div className='p2 m2'>
-                        <span className='s1 orange'> Date:</span>  <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} </span> <br/>
-                        <span className='s1 orange'>Time:</span> <span className='s2 ml4'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} </span>
-                    </div>
+                            <div className='p2 m2'>
+                            <span className='s1 orange'> Date:</span>  <span className='s2 ml4 white'>
+                                {`${activeTask.date !== '' ? activeTask.date.slice(0, 15) : 'No date is set yet'}`} 
+                                
+                            </span> 
+                            <br/>
+                            <br/>
+                            <br/>
+                            <span className='s1 orange'>
+                                Start Time:</span> <span className='s2 ml4 white'>{`${activeTask.date !== '' ? activeTask.date.slice(15, 21) : 'No Time is set yet'}`} 
+                                <TaskTimeManagement user={user} item={activeTask} type={'start'}/>
+                            </span>
+                            <br/>
+                            <span className='s1 orange'>
+                                End Time:</span> <span className='s2 ml4 white'>{`${activeTask.endTime !== '' ? activeTask.endTime.slice(15, 21) : 'No Time is set yet'}`} 
+                                <TaskTimeManagement user={user} item={activeTask} type={'end'}/>
+                            </span>
+                        </div>
+                    </Card>
+                    
+                </div>
+
+                
                 <div className='p2 m2 border-top-w0 border-top-white border-top-solid'></div>
                 <article className='p2 m2'>
                     
-                    {activeTask.description && <div className='font-5 s2 p3 m3'>
-                    <span className='s1 orange'> Description: </span> <span className={`s2 ml4`}>
-                            {activeTask.description}
-                            </span>
-                        </div>}
-                    <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid'>
+                    
+                    <div className='pb3 mb3 border-top-w0 border-top-white border-top-dashed'>
                         {/* <button onClick={(e) => {navigator('/project/ltg/objective/task/settings')}}>Settings</button> */}
                         <Settings_Task originTask={originTask} currentTaskIteration={currentTaskIteration} />
                     </div>

@@ -1,9 +1,9 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import mongoose from 'mongoose';
 import { getTask } from 'src/app/state_management/task/taskSlice';
-import { Badge, Stack } from '@chakra-ui/react';
+import TaskStatus from 'src/components/stations/task/taskStatus';
 const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation, droppableProvided, manage, snapshot, className, isDragging }) => {
     // const style = {
     //   ...provided.draggableProps.style,
@@ -57,10 +57,10 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
                     console.log('CHECKING IF TASK TIME IS OVERDUE OR IN PROGRESS...');
                     console.log(taskDueTime, currentDate);
                     console.log('taskDueTime > currentDate', taskDueTime > currentDate);
-                    setActiveBadges((prev) => ({ ...prev, inProgress: true, overdue: false }));
+                    setActiveBadges((prev) => ({ ...prev, inProgress: true, overdue: false, success: false }));
                 }
                 else {
-                    setActiveBadges((prev) => ({ ...prev, overdue: true, inProgress: false }));
+                    setActiveBadges((prev) => ({ ...prev, overdue: true, inProgress: false, success: false }));
                 }
             }
         }
@@ -142,34 +142,24 @@ const DragItem = ({ item, getAllSubstations, updateTimeForDate, updateSubStation
         await getAllSubstations(); //! MUST FIX to dynamic
         reportBadgesStatus();
     };
-    // const setSelectedItemAsActiveTask = async () => {
-    //   setIsItemSelected(true)
-    //   if(item._id !== activeTask._id){
-    //     dispatch(setActiveTask({item}));
-    //   }
-    // }
     const manageItem = async (e) => {
-        // if (item.isSubtask){
-        //   manage(e, item.origin, item.owningObjective)
-        // }
-        // else{
-        //   manage(e, item._id, item.owningObjective)
-        // }
         e.preventDefault();
         const subTask = item.isSubtask ? item : null;
-        // if(item._id !== activeTask._id){
-        //   dispatch(setActiveTask({item}));
-        // }
         await manage(e, item._id, item.owningObjective, item, { subTask });
     };
-    return (_jsxs("div", { className: `dragger p3 b-color-dark-4`, 
-        //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
-        onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [isItemHovered &&
-                _jsx("div", { children: item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }) }), _jsx("h3", { children: item.taskName }), stationContext !== 'task' &&
-                _jsxs("div", { className: 'jt-left mb5', children: [stationContext === 'profile' &&
-                            _jsx("span", { className: 'font-4 teal', style: { fontSize: '10pt' }, children: item.heritage.project.name }), " ", _jsx("br", {}), stationContext !== 'ltg' && stationContext !== 'objective' &&
-                            _jsxs("span", { className: 'font-4 teal ml2', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.ltg.name] }), " ", _jsx("br", {}), stationContext !== 'objective' &&
-                            _jsxs("span", { className: 'font-4 teal ml3', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.objective.name] }), " ", _jsx("br", {})] }), isItemHovered && item.date &&
-                _jsxs("div", { className: '', children: [_jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t, "start") }), _jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: endTime, onChange: (t) => updateTime(t, "end") }), _jsx("a", { className: 'p1 mb5 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }), _jsxs(Stack, { direction: 'row', children: [inProgress && _jsx(Badge, { colorScheme: 'orange', children: "In Progress" }), success && _jsx(Badge, { colorScheme: 'green', children: "Success" }), overdue && _jsx(Badge, { colorScheme: 'red', children: "Overdue" }), fresh && _jsx(Badge, { colorScheme: 'purple', children: "New" })] })] }));
+    return (_jsxs(_Fragment, { children: [isItemHovered &&
+                _jsxs("div", { className: `dragger p3 b-color-dark-4`, onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [_jsx("div", { children: item.date !== '' ? _jsx("span", { className: 'circle-clicker-active', onClick: addNewIteration, children: " + " }) : _jsx("span", { className: 'circle-clicker-inactive', children: " + " }) }), _jsx("h3", { children: item.taskName }), stationContext !== 'task' &&
+                            _jsxs("div", { className: 'jt-left mb5', children: [stationContext === 'profile' &&
+                                        _jsx("span", { className: 'font-4 teal', style: { fontSize: '10pt' }, children: item.heritage.project.name }), " ", _jsx("br", {}), stationContext !== 'ltg' && stationContext !== 'objective' &&
+                                        _jsxs("span", { className: 'font-4 teal ml2', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.ltg.name] }), " ", _jsx("br", {}), stationContext !== 'objective' &&
+                                        _jsxs("span", { className: 'font-4 teal ml3', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.objective.name] }), " ", _jsx("br", {})] }), item.date &&
+                            _jsxs("div", { className: '', children: [_jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: time, onChange: (t) => updateTime(t, "start") }), _jsx("input", { className: 'mb5 time-input jt-center font-11', type: 'time', value: endTime, onChange: (t) => updateTime(t, "end") }), _jsx("a", { className: 'p1 mb5 b-color-white border-r2', href: '#', onClick: (e) => manageItem(e), children: "Manage" })] }), _jsx(TaskStatus, { item: item })] }), isItemHovered &&
+                _jsx("div", { className: 'anti-dragger' }), !isItemHovered && _jsxs("div", { className: `dragger p3 b-color-dark-4`, 
+                //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
+                onMouseOver: async () => { setIsItemHovered(true); }, onMouseLeave: () => { setIsItemHovered(false); }, onMouseDown: () => { setIsLMBPressed(true); }, onMouseUp: () => setIsLMBPressed(false), children: [_jsx("h3", { children: item.taskName }), stationContext !== 'task' &&
+                        _jsxs("div", { className: 'jt-left mb5', children: [stationContext === 'profile' &&
+                                    _jsx("span", { className: 'font-4 teal', style: { fontSize: '10pt' }, children: item.heritage.project.name }), " ", _jsx("br", {}), stationContext !== 'ltg' && stationContext !== 'objective' &&
+                                    _jsxs("span", { className: 'font-4 teal ml2', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.ltg.name] }), " ", _jsx("br", {}), stationContext !== 'objective' &&
+                                    _jsxs("span", { className: 'font-4 teal ml3', style: { fontSize: '6pt' }, children: ['•', " ", item.heritage.objective.name] }), " ", _jsx("br", {})] }), _jsx(TaskStatus, { item: item })] })] }));
 };
 export default DragItem;

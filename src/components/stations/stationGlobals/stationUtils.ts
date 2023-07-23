@@ -5,16 +5,28 @@ export function formatName (name : string, pluralSuffix : boolean = false) {
 
     let formattedString : string = '';
 
+    const stringFormatter = (i : any) => {
+        if (pluralSuffix) {
+            const yFmt = upperCaseWords[i].at(-1) == 'y';
+            if (yFmt) {
+                return upperCaseWords[i].slice(0, -1) + 'ies';
+            } else {
+                return upperCaseWords[i] + 's';
+            }
+        } else {
+            return upperCaseWords[i];
+        }
+
+    }
+
     for (let i = 0 ; i < upperCaseWords.length; ++i){
         if (i > 0){
             const applyPluralFormatting : boolean = i == upperCaseWords.length - 1 && pluralSuffix;
-            const spacedWord : string = ' ' + upperCaseWords[i] + (applyPluralFormatting ? 
-                upperCaseWords[i].endsWith('y') ? 'ies' : 's'
-                : '');
+            const spacedWord : string = ' ' + stringFormatter(i);
             formattedString += spacedWord;
         } else {
             if (upperCaseWords.length == 1) {
-                formattedString = upperCaseWords[i] + (pluralSuffix ? upperCaseWords[i].endsWith('y') ? 'ies' : 's' : '');
+                formattedString = stringFormatter(i);
             } else {
                 formattedString = upperCaseWords[i];
             }

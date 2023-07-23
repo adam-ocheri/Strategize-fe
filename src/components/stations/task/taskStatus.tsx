@@ -30,8 +30,11 @@ const reportBadgesStatus = () => {
   const presentDate = currentDate.toLocaleDateString().toString();
   const isNew : boolean = initDate == presentDate;
 
-  if (isNew){
-    setActiveBadges((prev : any) => ({...prev, fresh: true}))
+  if (item.goalAchieved === true){
+    setActiveBadges((prev : any) => ({success: true, inProgress: false, overdue: false, fresh: false}))
+  }
+  else if (isNew){
+    setActiveBadges((prev : any) => ({...prev, success: false, fresh: true}))
   }
   else if (item.date !== '' && item.date.length > 10 && !isNew){
     
@@ -52,9 +55,7 @@ const reportBadgesStatus = () => {
     }
   }
 
-  if (item.goalAchieved){
-    setActiveBadges((prev : any) => ({success: true, inProgress: false, overdue: false, fresh: false}))
-  }
+  
   
 };
   return (

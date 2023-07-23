@@ -214,13 +214,13 @@ import { type } from 'os';
             </Button>
         </form>
         {deletePrompt ? 
-        <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid b-color-dark-0 white border-bottom-r2'>
+        <div className='pb3 mb3 border-top-w0 border-top-white border-top-dashed b-color-dark-0 white border-bottom-r2'>
             This will delete the {activeTask.stationTypeName} and all of it's data! <br/>
             Are you sure? <br/>
             <Button colorScheme='red' onClick={() => onDeleteTask()} minWidth={'110px'} margin={'3'}>Delete</Button>
             <Button onClick={() => setDeletePrompt(false)} minWidth={'110px'} margin={'3'}>Cancel</Button>
         </div> 
-        : <div className='pb3 mb3 border-top-w0 border-top-white border-top-solid'>
+        : <div className='pb3 mb3 border-top-w0 border-top-white border-top-dashed'>
             <Button colorScheme='red' onClick={() => setDeletePrompt(true)} minWidth={'110px'} margin={'12'}>DELETE</Button>
         </div>}    
     </div>

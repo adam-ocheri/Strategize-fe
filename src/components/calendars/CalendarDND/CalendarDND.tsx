@@ -12,6 +12,7 @@ import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 import { getTask, reset__Task, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import { updateTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 import { getObjective } from 'src/app/state_management/objective/objectiveSlice';
+import { Flex } from '@chakra-ui/react';
 
 
 interface DataElement {
@@ -75,6 +76,7 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
     const [tasks, setTasks] : any = useState([]);                       //backend modified tasks
     const [isDragging, setIsDragging] = useState(false);
     const [ctrlPressed, setCtrlPressed] = useState(false);
+    const [spacer, setSpacer] = useState('');
 
     //Handle INIT and UPDATEd data
     useEffect(() => {
@@ -379,6 +381,14 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
         
 
     }
+
+    function notifyItemHovered(hovered : boolean, id : any) {
+        if (hovered) {
+            setSpacer(id);
+        } else {
+            setSpacer('');
+        }
+    }
     
 
     //Day TileContent JSX function
@@ -409,7 +419,11 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                             .map(
                                 (task : any, index : any) => (
                                     <div key={task._id} className={`drop-scaler ${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : (isDragging && activeTask._id === task._id) ? 'drag-selected-dragging' : '': ''}`}>
-                                        <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging}/>
+                                        <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging} notifyItemHovered={notifyItemHovered}/>
+                                        {spacer && spacer === task._id &&
+                                        <Flex minH={'10vh'} margin={'10vh'}>
+
+                                        </Flex> }
                                     </div>
                             
                         ))}
@@ -456,7 +470,15 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                 />
                 {items && <ListGrid>
                     <h3 className='white font-2 p2 m2'> Pending Tasks: </h3>
-                    <Dropper droppableId={'Data'} type='COL1' items={items} getAllSubstations={getAllSubstations} updateTime={updateTime} manage={manage} isDragging={isDragging} isDropDisabled={true}/>
+                    <Dropper droppableId={'Data'} type='COL1' items={items} 
+                        getAllSubstations={getAllSubstations} 
+                        updateTime={updateTime} 
+                        manage={manage} 
+                        isDragging={isDragging} 
+                        isDropDisabled={true}
+                        notifyItemHovered={notifyItemHovered}
+                        spacer={spacer}
+                    />
                 </ListGrid>}
             </DragDropContext>    
         </div>

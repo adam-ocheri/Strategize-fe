@@ -8,6 +8,7 @@ import Dragger from './Dragger';
 import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
 import { updateTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 import { getObjective } from 'src/app/state_management/objective/objectiveSlice';
+import { Flex } from '@chakra-ui/react';
 export const clone = (data) => {
     return JSON.parse(JSON.stringify(data));
 };
@@ -25,6 +26,7 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
     const [tasks, setTasks] = useState([]); //backend modified tasks
     const [isDragging, setIsDragging] = useState(false);
     const [ctrlPressed, setCtrlPressed] = useState(false);
+    const [spacer, setSpacer] = useState('');
     //Handle INIT and UPDATEd data
     useEffect(() => {
         if (data.length >= 1) {
@@ -285,6 +287,14 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
             //await getAllSubstations();
         }
     };
+    function notifyItemHovered(hovered, id) {
+        if (hovered) {
+            setSpacer(id);
+        }
+        else {
+            setSpacer('');
+        }
+    }
     //Day TileContent JSX function
     const tileContent = ({ view, date }) => {
         const bBelongsToMonth = date.toString().slice(4, 7) === currentlyViewedMonth;
@@ -296,7 +306,8 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
                             provided.droppableProps['data-rbd-droppable-id'].slice(0, 15))
                         .sort((a, b) => a.date.slice(15, 18) - b.date.slice(15, 18))
                         .sort((a, b) => a.date.slice(19, 21) - b.date.slice(19, 21))
-                        .map((task, index) => (_jsx("div", { className: `drop-scaler ${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : (isDragging && activeTask._id === task._id) ? 'drag-selected-dragging' : '' : ''}`, children: _jsx(Dragger, { item: task, index: index, getAllSubstations: getAllSubstations, updateSubStation: updateSubStation, updateTimeForDate: updateTime, manage: manage, droppableProvided: provided, isDragging: isDragging }) }, task._id))), provided.placeholder] })) }));
+                        .map((task, index) => (_jsxs("div", { className: `drop-scaler ${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : (isDragging && activeTask._id === task._id) ? 'drag-selected-dragging' : '' : ''}`, children: [_jsx(Dragger, { item: task, index: index, getAllSubstations: getAllSubstations, updateSubStation: updateSubStation, updateTimeForDate: updateTime, manage: manage, droppableProvided: provided, isDragging: isDragging, notifyItemHovered: notifyItemHovered }), spacer && spacer === task._id &&
+                                _jsx(Flex, { minH: '10vh', margin: '10vh' })] }, task._id))), provided.placeholder] })) }));
     };
     //Day Tile className callback function
     const tileClassName = ({ activeStartDate, date, view }) => {
@@ -317,6 +328,6 @@ const CalendarDND = ({ data, updateSubStation, getAllSubstations, dispatch, user
         return _jsx("div", { className: '', children: date.toString().slice(4, 8) + date.toString().slice(11, 15) });
     };
     //DEFAULT: Station Calendar & List of Pending Stations
-    return (_jsx("div", { className: 'mt6 pt6', children: _jsxs(DragDropContext, { onDragStart: onDragStart, onDragEnd: onDragEnd, children: [_jsx(Calendar, { navigationLabel: updateNavigation, value: date, tileContent: tileContent, tileClassName: tileClassName, className: 'calendar-container' }), items && _jsxs(ListGrid, { children: [_jsx("h3", { className: 'white font-2 p2 m2', children: " Pending Tasks: " }), _jsx(Dropper, { droppableId: 'Data', type: 'COL1', items: items, getAllSubstations: getAllSubstations, updateTime: updateTime, manage: manage, isDragging: isDragging, isDropDisabled: true })] })] }) }));
+    return (_jsx("div", { className: 'mt6 pt6', children: _jsxs(DragDropContext, { onDragStart: onDragStart, onDragEnd: onDragEnd, children: [_jsx(Calendar, { navigationLabel: updateNavigation, value: date, tileContent: tileContent, tileClassName: tileClassName, className: 'calendar-container' }), items && _jsxs(ListGrid, { children: [_jsx("h3", { className: 'white font-2 p2 m2', children: " Pending Tasks: " }), _jsx(Dropper, { droppableId: 'Data', type: 'COL1', items: items, getAllSubstations: getAllSubstations, updateTime: updateTime, manage: manage, isDragging: isDragging, isDropDisabled: true, notifyItemHovered: notifyItemHovered, spacer: spacer })] })] }) }));
 };
 export default CalendarDND;

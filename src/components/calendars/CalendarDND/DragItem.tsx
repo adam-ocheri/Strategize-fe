@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import { DraggableProvided, DraggableStateSnapshot, DroppableProvided, Position } from 'react-beautiful-dnd'
 import Button_S1 from 'src/components/elements/buttons/Button_S1/Button_S1';
 import { getTask, setActiveTask } from 'src/app/state_management/task/taskSlice';
-import { Badge, Stack } from '@chakra-ui/react';
+import { Badge, Skeleton, Stack, VisuallyHidden } from '@chakra-ui/react';
+import TaskStatus from 'src/components/stations/task/taskStatus';
 
 
 
@@ -88,11 +89,11 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
         
         if (taskDueDate < currentDate && taskDueTime > currentDate && item.endTime !== ''){
           console.log('CHECKING IF TASK TIME IS OVERDUE OR IN PROGRESS...');
-      console.log(taskDueTime, currentDate)
-      console.log('taskDueTime > currentDate',taskDueTime > currentDate)
-          setActiveBadges((prev : any) => ({...prev, inProgress: true, overdue: false}))
+          console.log(taskDueTime, currentDate)
+          console.log('taskDueTime > currentDate',taskDueTime > currentDate)
+          setActiveBadges((prev : any) => ({...prev, inProgress: true, overdue: false, success: false}))
         } else{
-          setActiveBadges((prev : any) => ({...prev, overdue: true, inProgress: false}))
+          setActiveBadges((prev : any) => ({...prev, overdue: true, inProgress: false, success: false}))
         }
       }
     }
@@ -189,71 +190,103 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
     reportBadgesStatus();
   }
 
-  // const setSelectedItemAsActiveTask = async () => {
-  //   setIsItemSelected(true)
-  //   if(item._id !== activeTask._id){
-  //     dispatch(setActiveTask({item}));
-  //   }
-  // }
 
   const manageItem = async (e : any) => {
-    // if (item.isSubtask){
-    //   manage(e, item.origin, item.owningObjective)
-    // }
-    // else{
-    //   manage(e, item._id, item.owningObjective)
-    // }
     e.preventDefault();
     const subTask = item.isSubtask ? item : null;
-    // if(item._id !== activeTask._id){
-    //   dispatch(setActiveTask({item}));
-    // }
     await manage(e, item._id, item.owningObjective, item, {subTask});
   }
+
   return (
-    <div className={`dragger p3 b-color-dark-4`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
-      //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
-      onMouseOver={async ()=>{setIsItemHovered(true);}} 
-      onMouseLeave={()=> {setIsItemHovered(false);}} 
-      onMouseDown={() => {setIsLMBPressed(true); }}
-      onMouseUp={() => setIsLMBPressed(false)}
-      //onClick={()=> setSelectedItemAsActiveTask()}
-    >
+    <>
       {isItemHovered && 
-      <div>
-        {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
+      <div className={`dragger p3 b-color-dark-4`} 
+        onMouseOver={async ()=>{setIsItemHovered(true);}} 
+        onMouseLeave={()=> {setIsItemHovered(false);}} 
+        onMouseDown={() => {setIsLMBPressed(true); }}
+        onMouseUp={() => setIsLMBPressed(false)}
+      >
+        <div>
+          {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
+        </div>
+
+        <h3>{item.taskName}</h3>
+        {stationContext !== 'task' &&
+        <div className='jt-left mb5' >
+          {stationContext === 'profile' && 
+            <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
+          } <br/> 
+          {stationContext !== 'ltg' && stationContext !== 'objective' && 
+            <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
+          } <br/>
+          {stationContext !== 'objective' && 
+            <span className='font-4 teal ml3' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
+          } <br/> 
+        </div>
+        }
+
+        {item.date &&
+        <div className=''>
+          <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
+          <input className='mb5 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>
+          <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
+        </div>
+        }
+        <TaskStatus item={item}/>
+
       </div>}
-      
-      
-      <h3>{item.taskName}</h3>
-      {stationContext !== 'task' &&
-      <div className='jt-left mb5' >
-        {stationContext === 'profile' && 
-          <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
-        } <br/> 
-        {stationContext !== 'ltg' && stationContext !== 'objective' && 
-          <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
-        } <br/>
-        {stationContext !== 'objective' && 
-          <span className='font-4 teal ml3' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
-        } <br/> 
+      {isItemHovered &&
+      <div className='anti-dragger'>
+
       </div>
       }
-      
-      {isItemHovered && item.date &&
-      <div className=''>
-        <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
-        <input className='mb5 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>
-        <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
-      </div>
-      }
-      <Stack direction='row' >
-        {inProgress && <Badge colorScheme='orange'>In Progress</Badge>}
-        {success && <Badge colorScheme='green'>Success</Badge>}
-        {overdue && <Badge colorScheme='red'>Overdue</Badge>}
-        {fresh && <Badge colorScheme='purple'>New</Badge>}
-      </Stack>
-    </div>
+
+      {!isItemHovered && <div className={`dragger p3 b-color-dark-4`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
+        //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
+        onMouseOver={async ()=>{setIsItemHovered(true);}} 
+        onMouseLeave={()=> {setIsItemHovered(false);}} 
+        onMouseDown={() => {setIsLMBPressed(true); }}
+        onMouseUp={() => setIsLMBPressed(false)}
+        //onClick={()=> setSelectedItemAsActiveTask()}
+      >
+        {/* {isItemHovered && 
+        <div>
+          {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
+        </div>} */}
+        
+        
+        <h3>{item.taskName}</h3>
+        {stationContext !== 'task' &&
+        <div className='jt-left mb5' >
+          {stationContext === 'profile' && 
+            <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
+          } <br/> 
+          {stationContext !== 'ltg' && stationContext !== 'objective' && 
+            <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
+          } <br/>
+          {stationContext !== 'objective' && 
+            <span className='font-4 teal ml3' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
+          } <br/> 
+        </div>
+        }
+        
+        {/* {isItemHovered && item.date &&
+        <div className=''>
+          <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
+          <input className='mb5 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>
+          <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
+        </div>
+        } */}
+        <TaskStatus item={item}/>
+
+        {/* <Stack direction='row' >
+          {inProgress && <Badge colorScheme='orange'>In Progress</Badge>}
+          {success && <Badge colorScheme='green'>Success</Badge>}
+          {overdue && <Badge colorScheme='red'>Overdue</Badge>}
+          {fresh && <Badge colorScheme='purple'>New</Badge>}
+        </Stack> */}
+      </div>}
+    </>
   )
 }
 

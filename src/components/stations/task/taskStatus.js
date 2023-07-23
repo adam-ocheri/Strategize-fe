@@ -24,8 +24,11 @@ export default function TaskStatus({ item }) {
         const initDate = formatted.toString();
         const presentDate = currentDate.toLocaleDateString().toString();
         const isNew = initDate == presentDate;
-        if (isNew) {
-            setActiveBadges((prev) => ({ ...prev, fresh: true }));
+        if (item.goalAchieved === true) {
+            setActiveBadges((prev) => ({ success: true, inProgress: false, overdue: false, fresh: false }));
+        }
+        else if (isNew) {
+            setActiveBadges((prev) => ({ ...prev, success: false, fresh: true }));
         }
         else if (item.date !== '' && item.date.length > 10 && !isNew) {
             const taskDueDate = new Date(item.date);
@@ -41,9 +44,6 @@ export default function TaskStatus({ item }) {
                     setActiveBadges((prev) => ({ ...prev, overdue: true, inProgress: false }));
                 }
             }
-        }
-        if (item.goalAchieved) {
-            setActiveBadges((prev) => ({ success: true, inProgress: false, overdue: false, fresh: false }));
         }
     };
     return (_jsx("div", { children: _jsxs(Stack, { direction: 'row', children: [inProgress && _jsx(Badge, { colorScheme: 'orange', children: "In Progress" }), success && _jsx(Badge, { colorScheme: 'green', children: "Success" }), overdue && _jsx(Badge, { colorScheme: 'red', children: "Overdue" }), fresh && _jsx(Badge, { colorScheme: 'purple', children: "New" })] }) }));
