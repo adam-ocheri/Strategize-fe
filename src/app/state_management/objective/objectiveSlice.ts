@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
-import {create, update, getAll, getOne, deleteById} from './objectiveService.js'
-import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
+import {create, update, getAll, getOne, deleteById} from './objectiveService'
+import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils';
 
 
 export interface Objective {

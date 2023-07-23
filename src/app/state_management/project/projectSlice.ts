@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
-import {create, update, getAll, getOne, deleteProjectById, getAllSubstations, getAllUserProjectsAndTasks} from './projectService.js'
+import {create, update, getAll, getOne, deleteProjectById, getAllSubstations, getAllUserProjectsAndTasks} from './projectService'
 
 import mongoose from 'mongoose';
-import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils.js';
+import { formatFormSubmission, formatName } from 'src/components/stations/stationGlobals/stationUtils';
 
 export interface Project {
     data: [];

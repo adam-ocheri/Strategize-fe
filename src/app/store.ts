@@ -1,9 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import authReducer from './state_management/user/authSlice.js';
-import projectReducer from './state_management/project/projectSlice.js';
-import LTGReducer from './state_management/LTG/LTGSlice.js';
-import objectiveReducer from './state_management/objective/objectiveSlice.js';
-import taskReducer from './state_management/task/taskSlice.js';
+import authReducer from './state_management/user/authSlice';
+import projectReducer from './state_management/project/projectSlice';
+import LTGReducer from './state_management/LTG/LTGSlice';
+import objectiveReducer from './state_management/objective/objectiveSlice';
+import taskReducer from './state_management/task/taskSlice';
 
 export const store = configureStore({
   reducer: {

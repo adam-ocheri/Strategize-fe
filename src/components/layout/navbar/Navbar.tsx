@@ -7,7 +7,6 @@ import Drawer_Main from 'src/components/elements/overlays/drawers/main/Drawer_Ma
 import { Flex } from '@chakra-ui/react';
 //import '../../css/main.css';
 
-
 export default function Navbar() {
     const navigator = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
