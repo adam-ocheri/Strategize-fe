@@ -420,10 +420,6 @@ const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch,
                                 (task : any, index : any) => (
                                     <div key={task._id} className={`drop-scaler ${activeTask && activeTask.date ? !isDragging && activeTask._id === task._id ? 'drag-selected' : (isDragging && activeTask._id === task._id) ? 'drag-selected-dragging' : '': ''}`}>
                                         <Dragger item={task} index={index} getAllSubstations={getAllSubstations} updateSubStation={updateSubStation} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging} notifyItemHovered={notifyItemHovered}/>
-                                        {spacer && spacer === task._id &&
-                                        <Flex minH={'10vh'} margin={'10vh'}>
-
-                                        </Flex> }
                                     </div>
                             
                         ))}

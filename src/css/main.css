@@ -268,7 +268,8 @@ body {
     flex-direction: column;
     align-items: center;
     align-self: center;
-    min-width: 80px;
+    /* min-width: 80px;
+    max-width: 200px; */
     /* padding: 10px;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -284,11 +285,13 @@ body {
 }
 
 .drag-hover{
-    position: absolute;
-    transform: translate(0px, 0vh);
+    /* position: absolute; */
+    /* min-width: 80px;
+    max-width: 200px; */
+    /* transform: translate(0px, -21vh); THIS WILL NEED A SOLUTION WITH SCSS (transform YHeight based on the element's height*/
     /* min-height: 20vh; */
     /* width:3vw; */
-    max-width: 10vw;
+    /* max-width: 10vw; */
     /* margin-top: 27px; */
     /* z-index: 10000; */
     background-color: #ffa600;
@@ -296,13 +299,17 @@ body {
     margin: 0;
 }
 .drag-allow{
-    background-color: rgb(31, 54, 79)
+    background-color: rgb(31, 54, 79);
+    /* min-width: 80px;
+    max-width: 200px; */
     /* position: relative; */
     /* top: 0;
     left: 0; */
     /* z-index: 5001; */
+    
 }
 .drop-area{
+    
     /* min-height: 3vh; */
     /* height: 100%; */
     /* margin-top: 17px; */
@@ -311,6 +318,8 @@ body {
    
 }
 .drag-selected{
+    /* min-width: 80px;
+    max-width: 200px; */
     /* min-height: 20vh; */
     /* height: 20vh; */
     /* margin-top: 27px; */

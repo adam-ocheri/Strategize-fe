@@ -24,7 +24,7 @@ export default function Dragger({item, index, getAllSubstations, updateTimeForDa
             onMouseOver={()=>{onItemHovered(true); dispatch(setActiveTask({item}))}}
             onMouseLeave={()=>onItemHovered(false)}    
           >       
-              <DragItem 
+              <DragItem
                 item={item} 
                 droppableProvided={droppableProvided} 
                 getAllSubstations={getAllSubstations} 

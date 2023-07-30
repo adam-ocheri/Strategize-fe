@@ -198,95 +198,41 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   }
 
   return (
-    <>
-      {isItemHovered && 
       <div className={`dragger p3 b-color-dark-4`} 
         onMouseOver={async ()=>{setIsItemHovered(true);}} 
         onMouseLeave={()=> {setIsItemHovered(false);}} 
         onMouseDown={() => {setIsLMBPressed(true); }}
         onMouseUp={() => setIsLMBPressed(false)}
       >
-        <div>
+        {/* <div>
           {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
-        </div>
-
-        <h3>{item.taskName}</h3>
-        {stationContext !== 'task' &&
-        <div className='jt-left mb5' >
+        </div> */}
+        <article style={{overflowX:'scroll', maxHeight:'15%'}}>
+          <h3>{item.taskName}</h3>
+        </article>
+        {/* {stationContext !== 'task' &&
+        <div className='jt-left mb1' >
           {stationContext === 'profile' && 
             <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
           } <br/> 
           {stationContext !== 'ltg' && stationContext !== 'objective' && 
-            <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
+            <span className='font-4 teal ml1' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
           } <br/>
           {stationContext !== 'objective' && 
-            <span className='font-4 teal ml3' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
+            <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
           } <br/> 
         </div>
-        }
+        } */}
 
         {item.date &&
         <div className=''>
-          <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
-          <input className='mb5 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>
-          <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
+          <input className='mb1 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
+          <input className='mb1 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>
+          {/* <a className='p1 mb1 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a> */}
         </div>
         }
         <TaskStatus item={item}/>
-
-      </div>}
-      {isItemHovered &&
-      <div className='anti-dragger'>
-
       </div>
-      }
-
-      {!isItemHovered && <div className={`dragger p3 b-color-dark-4`} // ${item.date && isItemHovered && !isDragging ? 'drag-hover' : isDragging && activeTask._id === item._id ? 'drag-allow' : ''}
-        //style={{position: `${item.date && isItemHovered && !isDragging ? 'absolute' : isDragging && activeTask._id === item._id ? 'fixed' : 'relative'}`}}
-        onMouseOver={async ()=>{setIsItemHovered(true);}} 
-        onMouseLeave={()=> {setIsItemHovered(false);}} 
-        onMouseDown={() => {setIsLMBPressed(true); }}
-        onMouseUp={() => setIsLMBPressed(false)}
-        //onClick={()=> setSelectedItemAsActiveTask()}
-      >
-        {/* {isItemHovered && 
-        <div>
-          {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
-        </div>} */}
-        
-        
-        <h3>{item.taskName}</h3>
-        {stationContext !== 'task' &&
-        <div className='jt-left mb5' >
-          {stationContext === 'profile' && 
-            <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
-          } <br/> 
-          {stationContext !== 'ltg' && stationContext !== 'objective' && 
-            <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.ltg.name}</span> 
-          } <br/>
-          {stationContext !== 'objective' && 
-            <span className='font-4 teal ml3' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
-          } <br/> 
-        </div>
-        }
-        
-        {/* {isItemHovered && item.date &&
-        <div className=''>
-          <input className='mb5 time-input jt-center font-11' type='time' value={time} onChange={(t)=> updateTime(t, "start")}/>
-          <input className='mb5 time-input jt-center font-11' type='time' value={endTime} onChange={(t)=> updateTime(t, "end")}/>
-          <a className='p1 mb5 b-color-white border-r2' href='#' onClick={(e : any) => manageItem(e)}>Manage</a>
-        </div>
-        } */}
-        <TaskStatus item={item}/>
-
-        {/* <Stack direction='row' >
-          {inProgress && <Badge colorScheme='orange'>In Progress</Badge>}
-          {success && <Badge colorScheme='green'>Success</Badge>}
-          {overdue && <Badge colorScheme='red'>Overdue</Badge>}
-          {fresh && <Badge colorScheme='purple'>New</Badge>}
-        </Stack> */}
-      </div>}
-    </>
   )
 }
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice, ThunkAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from 'src/app/store';
-import { registerUser, logoutUser, loginUser } from './authService';
+import { registerUser, logoutUser, loginUser, updateStat } from './authService';
 
 
 export interface User {
@@ -86,6 +86,16 @@ export const setCurrentStationContext = createAsyncThunk('auth/setStationContext
     }
 } )
 
+export const updateUserStatistics = createAsyncThunk('auth/userStats', async({userStatistics, id, token} : any, thunkAPI) => {
+    try{
+        return await updateStat({userStatistics, id, token});
+    } 
+    catch (error : any) {
+        const message : any = (error.response && error.response.data && error.response.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 //Slice setup
 export const authSlice  = createSlice({
     name: 'auth',
@@ -148,7 +158,7 @@ export const authSlice  = createSlice({
                 state.isSuccess = false;
                 state.message = action.payload;
             })
-            //Logout CASES
+            //Station Context CASES
             .addCase(setCurrentStationContext.pending, (state) => {
                 state.isLoading = true;
             })
@@ -159,6 +169,22 @@ export const authSlice  = createSlice({
                 state.stationContext = action.payload;
             })
             .addCase(setCurrentStationContext.rejected, (state, action : any ) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+            })
+            //Update Stats CASES
+            .addCase(login.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(login.fulfilled, (state, action : any) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.user = Object.entries(state.user) ; // TODO !!!!!! <-
+            })
+            .addCase(login.rejected, (state, action : any ) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

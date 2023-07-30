@@ -10,9 +10,9 @@
     "paths": {
       "@reduxjs/toolkit": ["./node_modules/@reduxjs/toolkit"]
     },
-    //"watch" : true,
+    "watch" : true,
     "allowJs": true,
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

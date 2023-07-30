@@ -21,12 +21,21 @@ import { ChakraProvider } from '@chakra-ui/react'
 import HomeUI from "./pages/home-styled/HomeUI";
 import DocGen from "./components/documentation/generic/DocGen";
 import Strategizer from "./pages/Strategizer/Strategizer";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { updateUserStatistics } from "./app/state_management/user/authSlice";
 
 
 function App() {
+  const dispatch = useAppDispatch();
+  const {user} : any = useAppSelector(state => state.auth)
+
+  function updateClickStat() {
+    if (user) {
+      dispatch(updateUserStatistics({stat: {}, id: user._id, token: user.token}));
+    }
+  }
   return (
-    <div>
-      
+    <div onClick={() => {updateClickStat()}}>
       <BrowserRouter>
         <ChakraProvider>
           <Notifications/>
