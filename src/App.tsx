@@ -31,7 +31,9 @@ function App() {
 
   function updateClickStat() {
     if (user) {
-      dispatch(updateUserStatistics({stat: {}, id: user._id, token: user.token}));
+      const userStatistics = {...user.userStatistics};
+      userStatistics.usageTracking.totalClicks += 1;
+      dispatch(updateUserStatistics({userStatistics, id: user._id, token: user.token}));
     }
   }
   return (

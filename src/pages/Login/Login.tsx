@@ -53,24 +53,28 @@ function Login() {
   }
 
   return (
-    <div className="p7 b-img-0">
-      <div className="mt7">
-        <section className="m7 p5 j-center jt-center">
-          <h2 className="white font-1 s3">LOGIN</h2>
-          <form onSubmit={(e) => onFormSubmitted(e)} className="p5 flex f-dir-col j-center jt-center">
-              <input className="form-input" type="email" placeholder="Email" id="email" 
-                  name="email" value={email} onChange={(e) => {onFormUpdated(e)}}/>
-              <input className="form-input" type="password" placeholder="Password" id="password" 
-                  name="password" value={password} onChange={(e) => {onFormUpdated(e)}}/>
-              <ButtonForm additionalStyles='white s2' type='submit' text='Login' disabled={isLoading}/>
+    <section className="p7 b-img-0" style={{height: '87vh'}}>
+      
+        <div className="mt7 flex j-center">
+          <section className="m7 p5 jt-center" style={{width: '33%'}}>
+            <h2 className="white font-1 s3">LOGIN</h2>
+            <form onSubmit={(e) => onFormSubmitted(e)} className="p5 flex f-dir-col j-center jt-center" >
+              <div className="flex f-dir-col j-center" >
+                <input className="form-input" type="email" placeholder="Email" id="email" 
+                    name="email" value={email} onChange={(e) => {onFormUpdated(e)}}/>
+                <input className="form-input" type="password" placeholder="Password" id="password" 
+                    name="password" value={password} onChange={(e) => {onFormUpdated(e)}}/>
+                <ButtonForm additionalStyles='white s2' type='submit' text='Login' disabled={isLoading}/>
+              </div>  
+            </form>
+            <Spinner size={"xl"} color="aqua" hidden={!isLoading}/>
+          </section>
+          
               
-          </form>
-          <Spinner size={"xl"} color="aqua" hidden={!isLoading}/>
-        </section>
-        
-            
-      </div>
-    </div>
+        </div>
+      
+      
+    </section>
     
   )
 }

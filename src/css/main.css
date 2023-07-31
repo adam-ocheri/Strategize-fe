@@ -227,7 +227,7 @@ body {
 .footer-homepage{
     background-color: rgb(45, 43, 51);
     color: azure;
-    margin-top: 25vh;
+    /* margin-top: 25vh; */
     padding-top: 2vh;
     justify-content: flex-start;
     /* min-height: 5vh;
@@ -365,10 +365,10 @@ body {
 /*TODO Media Queries ---------------------------------------------------------------------------------------------------------------------- */
 
 @media (min-width: 1801px){
-    .side-images{
+    /* .side-images{
         width: 800px;
         height: 600px;
-    }
+    } */
     .spread-images{
         width: 600px;
         height: 480px;
@@ -379,10 +379,10 @@ body {
 }
 
 @media (max-width: 1800px){
-    .side-images{
+    /* .side-images{
         width: 700px;
         height: 550px;
-    }
+    } */
     .spread-images{
         width: 500px;
         height: 420px;
@@ -393,10 +393,10 @@ body {
 }
 
 @media (max-width: 1400px){
-    .side-images{
+    /* .side-images{
         width: 600px;
         height: 480px;
-    }
+    } */
     .spread-images{
         width: 500px;
         height: 420px;
@@ -407,10 +407,10 @@ body {
 }
 
 @media (max-width: 1000px){
-    .side-images{
+    /* .side-images{
         width: 500px;
         height: 420px;
-    }
+    } */
     .spread-images{
         width: 400px;
         height: 340px;
@@ -433,10 +433,10 @@ body {
         margin: 5px;
         align-items:flex-start;
     }
-    .side-images{
+    /* .side-images{
         width: 400px;
         height: 340px;
-    }
+    } */
     .spread-images{
         width: 300px;
         height: 250px;
@@ -459,10 +459,10 @@ body {
         margin: 1px;
         align-items:baseline;
     }
-    .side-images{
+    /* .side-images{
         width: 300px;
         height: 250px;
-    }
+    } */
     .spread-images{
         width: 200px;
         height: 175px;
@@ -489,10 +489,10 @@ body {
         /*TODO ?Why wont the canvas grow back in size? width: 200%; */
         width: 99.983%;
     }
-    .side-images{
+    /* .side-images{
         width: 200px;
         height: 175px;
-    }
+    } */
     .spread-images{
         width: 175px;
         height: 130px;
@@ -508,10 +508,10 @@ body {
     .main-title {
         font-size: 36pt;
     }
-    .side-images{
+    /* .side-images{
         width: 100px;
         height: 100px;
-    }
+    } */
     .spread-images{
         width: 100px;
         height: 80px;

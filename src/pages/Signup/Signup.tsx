@@ -63,13 +63,7 @@ function Signup() {
       dispatch(register({name: name, email: email, password: password}))
     }
   }
-
-  // if (isLoading){
-  //   return <div>
-  //     LOADING........
-  //   </div>
-  // }
-    
+ 
   return (
     <main>
       <div className="landing-box b-img-0 white p7">
@@ -123,39 +117,24 @@ function Signup() {
       </StretchBoxParentContainer>
       <StretchBoxParentContainer title={'Maximize Your Efficiency'} className='b-color-dark-1 white'>
         <StretchBox>
-          <img src="sb5.jpg" alt="img" className="spread-images"/>
+          <div style={{display:'flex', justifyContent:'center', margin: '4%'}}>
+            <img src="sb5.jpg" alt="img" className="spread-images"/>
+          </div>
             <p className="font-3">
-              Stay Organized: Our tools help you stay organized and focused, so you can get more done in less time
+              <strong>Stay Organized:</strong> Our tools help you stay organized and focused, so you can get more done in less time
             </p>
             <Button_S1 className='b-color-dark-2'> Learn More </Button_S1>
         </StretchBox>
         <StretchBox>
-          <img src="sb6.jpg" alt="img" className="spread-images"/>
+          <div style={{display:'flex', justifyContent:'center', margin: '4%'}}>
+            <img src="sb6.jpg" alt="img" className="spread-images"/>
+          </div>
             <p className="font-3">
-              Optimize Performance: With performance tracking and analytics, you can identify ways to improve your workflow and maximize your productivity.
+              <strong>Optimize Performance:</strong> With performance tracking and analytics, you can identify ways to improve your workflow and maximize your productivity.
             </p>
             <Button_S1 className='b-color-dark-2'> Learn More </Button_S1>
         </StretchBox>
-      </StretchBoxParentContainer>
-      {/*MIGRATE----------------------------------------------------------------------------------------------------*/}
-      {/* <section className="p7 m7 flex j-flex-start j-center jt-left">
-        <img src="b8.jpg" alt="img" height={'300px'} width={'300px'}/>
-        <div className="p3 m3 ">
-          <h2 className="white s4 font-3"> Be Part Of An Active Community </h2>
-          <p className="font-3 ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur aspernatur odit ratione veritatis tempore quasi! 
-            Fugiat exercitationem animi reiciendis harum iusto saepe, magni voluptas perspiciatis consequuntur necessitatibus 
-            maiores quis pariatur.
-          </p>
-        </div>
-        
-      </section> */}
-      {/* <CalendarBase/> */}
-      <div>
-        {/* <DND/> */}
-        {/* <DND_Container/> */}
-      </div>
-      
+      </StretchBoxParentContainer>  
       {/*MIGRATE 2----------------------------------------------------------------------------------------------------*/}
       <StretchBoxParentContainer className='white b-img-2'>
         <h2 className="white s4 font-3"> Focus On The Important Things </h2>
@@ -168,7 +147,13 @@ function Signup() {
           </p>
         </StretchBox>
       </StretchBoxParentContainer>
-      <MultiLinkBox_LoginPage className='p5 m5'/>
+      
+      <div style={{background: 'black'}}>
+        <MultiLinkBox_LoginPage className='p5 m5'/>
+      </div>
+
+      {/* <StretchBox className='white b-img-2'>
+      </StretchBox> */}
       <Footer_Homepage className='stretch-box-generic-1 footer-homepage'/>
     </main>
   )

@@ -175,16 +175,16 @@ export const authSlice  = createSlice({
                 state.message = action.payload;
             })
             //Update Stats CASES
-            .addCase(login.pending, (state) => {
+            .addCase(updateUserStatistics.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(login.fulfilled, (state, action : any) => {
+            .addCase(updateUserStatistics.fulfilled, (state, action : any) => {
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
                 state.user = Object.entries(state.user) ; // TODO !!!!!! <-
             })
-            .addCase(login.rejected, (state, action : any ) => {
+            .addCase(updateUserStatistics.rejected, (state, action : any ) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

@@ -21,8 +21,8 @@ export default function ScrollBox_LoginPage({title, imgDir, text} : any) {
           <ScrollFadeGeneric>
             <h2 className='mb7 white font-1 s2'>{title}</h2>
             <div className=''>
-              <img src={imgDir} alt='logo' className='side-images'/>  
-              <p className="font-3 s1">
+              <img src={imgDir} alt='logo'/>  
+              <p className="m4 font-3 s1 white">
                 {text}
               </p>
             </div>

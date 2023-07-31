@@ -33,6 +33,7 @@
     padding: 1em;
 }
 
+/*! Scroll Fade Even-Odd elements ------------------------------------------------------------------------------------------------------ */
 /** Left Right elements Fade In -------------------------------------------------------------------------------*/
 
 /* Define Parent container, and child sections left-right positioning ------------------------*/
@@ -54,7 +55,7 @@
 }
 .parent-scroll-container .visible:nth-of-type(even){
     text-align: right;
-    justify-content: flex-end;
+    justify-content:flex-end;
     padding: 1em;
     margin-top: 20vh;
     margin-bottom: 20vh;  
