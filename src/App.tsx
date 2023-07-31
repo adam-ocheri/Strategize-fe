@@ -30,14 +30,14 @@ function App() {
   const {user} : any = useAppSelector(state => state.auth)
 
   function updateClickStat() {
-    if (user) {
-      const userStatistics = {...user.userStatistics};
-      userStatistics.usageTracking.totalClicks += 1;
-      dispatch(updateUserStatistics({userStatistics, id: user._id, token: user.token}));
-    }
+    // if (user) {
+    //   const userStatistics = {...user.userStatistics};
+    //   userStatistics.usageTracking.totalClicks += 1;
+    //   dispatch(updateUserStatistics({userStatistics, id: user._id, token: user.token}));
+    // }
   }
   return (
-    <div onClick={() => {updateClickStat()}}>
+    <div onMouseDown={() => {updateClickStat()}}>
       <BrowserRouter>
         <ChakraProvider>
           <Notifications/>

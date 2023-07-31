@@ -198,7 +198,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   }
 
   return (
-      <div className={`dragger p3 b-color-dark-4`} 
+      <div className={`dragger b-color-dark-4 mt3`} 
         onMouseOver={async ()=>{setIsItemHovered(true);}} 
         onMouseLeave={()=> {setIsItemHovered(false);}} 
         onMouseDown={() => {setIsLMBPressed(true); }}
@@ -207,9 +207,9 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
         {/* <div>
           {item.date !== '' ? <span className='circle-clicker-active' onClick={addNewIteration}> + </span> : <span className='circle-clicker-inactive'> + </span>}
         </div> */}
-        <article style={{overflowX:'scroll', maxHeight:'15%'}}>
-          <h3>{item.taskName}</h3>
-        </article>
+        <div className='flying-text-container p1 m2'>
+          <h3 className='inline-text'>{item.taskName}</h3>
+        </div>
         {/* {stationContext !== 'task' &&
         <div className='jt-left mb1' >
           {stationContext === 'profile' && 

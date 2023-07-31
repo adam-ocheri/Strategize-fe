@@ -59,7 +59,7 @@ const reportBadgesStatus = () => {
   
 };
   return (
-    <div>
+    <div className='m1'>
       <Stack direction='row' >
         {inProgress && <Badge colorScheme='orange'>In Progress</Badge>}
         {success && <Badge colorScheme='green'>Success</Badge>}

@@ -13,10 +13,10 @@ export default function Dropper({items , droppableId , type, children, getAllSub
                     {items.map((item : any, index : any | number) => (
                       <div key={item._id}>
                       <Dragger  item={item} index={index} getAllSubstations={getAllSubstations} updateTimeForDate={updateTime} manage={manage} droppableProvided={provided} isDragging={isDragging} notifyItemHovered={notifyItemHovered}/>
-                      {spacer && spacer === item._id &&
+                      {/* {spacer && spacer === item._id &&
                         <Flex minH={'10vh'} margin={'10vh'}>
 
-                        </Flex> }
+                        </Flex> } */}
                       </div>
                     ))}
                     {provided.placeholder}
