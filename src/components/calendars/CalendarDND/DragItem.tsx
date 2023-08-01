@@ -198,7 +198,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
   }
 
   return (
-      <div className={`dragger b-color-dark-4 mt3`} 
+      <div className={`dragger b-color-dark-4 mt3`} style={{maxWidth: '15vw', maxHeight: '25vh'}} 
         onMouseOver={async ()=>{setIsItemHovered(true);}} 
         onMouseLeave={()=> {setIsItemHovered(false);}} 
         onMouseDown={() => {setIsLMBPressed(true); }}
@@ -210,7 +210,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
         <div className='flying-text-container p1 m2'>
           <h3 className='inline-text'>{item.taskName}</h3>
         </div>
-        {/* {stationContext !== 'task' &&
+        {stationContext !== 'task' &&
         <div className='jt-left mb1' >
           {stationContext === 'profile' && 
             <span className='font-4 teal' style={{fontSize: '10pt'}}>{item.heritage.project.name}</span>
@@ -222,7 +222,7 @@ const DragItem : any = ({item, getAllSubstations, updateTimeForDate, updateSubSt
             <span className='font-4 teal ml2' style={{fontSize: '6pt'}}>{'•'} {item.heritage.objective.name}</span>
           } <br/> 
         </div>
-        } */}
+        }
 
         {item.date &&
         <div className=''>

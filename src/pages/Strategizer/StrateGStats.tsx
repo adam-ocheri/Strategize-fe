@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { getAllLTGs } from 'src/app/state_management/LTG/LTGSlice';
 import { getAllObjectives } from 'src/app/state_management/objective/objectiveSlice';
+import TaskStatus from 'src/components/stations/task/taskStatus';
 
-export default function StrateGStats({allUserTasks, station, user} : {allUserTasks : any, station : any, user : any}) {
+export default function StrateGStats({allUserTasks, station, user} : {allUserTasks : any, station : any, user : any, manageSelectedTask : any}) {
 
     //! State variables data - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     const [tasks, setTasks] = useState([]);
@@ -103,8 +104,9 @@ export default function StrateGStats({allUserTasks, station, user} : {allUserTas
                                         {tasks.filter((task: any) => task.owningObjective == objective.station.id )
                                         .map((task : any) => {
                                             return (
-                                                <div key={task._id} className='m1 font-1 s1 b-color-dark-2 white border-r1'>
+                                                <div key={task._id} className='m1 font-1 s1 b-color-dark-2 white border-r1 flex f-dir-row j-between'>
                                                     <span className=''><span className='s2'>{`● `}</span>{task.taskName}</span>
+                                                    <TaskStatus item={task}/>
                                                 </div>
                                             )
                                         })}

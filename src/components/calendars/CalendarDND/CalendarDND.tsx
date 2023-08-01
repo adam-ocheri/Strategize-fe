@@ -62,10 +62,11 @@ export const clone = (data: any) => {
 
 const ListGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 0fr 1fr 0fr;
   grid-gap: 8px;
   background-color: rgb(20, 8, 23);
   border: 3px solid white;
+  color: white
 `;
 
 const CalendarDND : any = ({data, updateSubStation, getAllSubstations, dispatch, user, currentContext, manage, activeTask} : any)  =>{

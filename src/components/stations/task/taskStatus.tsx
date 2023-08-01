@@ -7,9 +7,10 @@ const [activeBadges, setActiveBadges] = useState({
   fresh: false,
   inProgress: false,
   success: false, 
-  overdue: false
+  overdue: false,
+  unset: false
 })
-const {fresh, inProgress, success, overdue} = activeBadges;
+const {fresh, inProgress, success, overdue, unset} = activeBadges;
 
 useEffect(()=>{
   reportBadgesStatus();
@@ -31,7 +32,7 @@ const reportBadgesStatus = () => {
   const isNew : boolean = initDate == presentDate;
 
   if (item.goalAchieved === true){
-    setActiveBadges((prev : any) => ({success: true, inProgress: false, overdue: false, fresh: false}))
+    setActiveBadges((prev : any) => ({success: true, inProgress: false, overdue: false, fresh: false, unset: false}))
   }
   else if (isNew){
     setActiveBadges((prev : any) => ({...prev, success: false, fresh: true}))
@@ -53,6 +54,10 @@ const reportBadgesStatus = () => {
         setActiveBadges((prev : any) => ({...prev, overdue: true, inProgress: false}))
       }
     }
+    
+  }
+  else if(item.date == '') {
+    setActiveBadges((prev : any) => ({...prev, unset: true}))
   }
 
   
@@ -65,6 +70,7 @@ const reportBadgesStatus = () => {
         {success && <Badge colorScheme='green'>Success</Badge>}
         {overdue && <Badge colorScheme='red'>Overdue</Badge>}
         {fresh && <Badge colorScheme='purple'>New</Badge>}
+        {unset && <Badge colorScheme='orange'>Unset</Badge>}
       </Stack>
     </div>
   )

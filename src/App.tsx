@@ -23,6 +23,7 @@ import DocGen from "./components/documentation/generic/DocGen";
 import Strategizer from "./pages/Strategizer/Strategizer";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { updateUserStatistics } from "./app/state_management/user/authSlice";
+import { StationsGlobalProvider } from "./components/stations/stationGlobals/StationsGlobalProvider";
 
 
 function App() {
@@ -40,25 +41,27 @@ function App() {
     <div onMouseDown={() => {updateClickStat()}}>
       <BrowserRouter>
         <ChakraProvider>
-          <Notifications/>
-          <Navbar/>
-          <Routes>
-            <Route path='/' element={<HomeUI/>} />
-            <Route path='/profile' element={<UserProfile/>} />
-            <Route path='/assistant' element={<AI_Assistant/>} />
-            <Route path='/documentation' element={<DocGen/>} />
-            <Route path='/Strategizer' element={<Strategizer/>} />
-            <Route path='/register' element={<Signup />} />
-            <Route path='/login' element={<Login/>} />
-            <Route path="/project" element={<Project/>} />
-            <Route path="/project/settings" element={<Settings_Project/>} />
-            <Route path="/project/ltg" element={<LTG/>} />
-            <Route path="/project/ltg/settings" element={<Settings_LTG/>} />
-            <Route path="/project/ltg/objective" element={<Objective/>} />
-            <Route path="/project/ltg/objective/settings" element={<Settings_Objective/>} />
-            <Route path="/project/ltg/objective/task" element={<Task/>} />
-            <Route path="/project/ltg/objective/task/settings" element={<Settings_Task/>} />
-          </Routes>
+          <StationsGlobalProvider>
+            <Notifications/>
+            <Navbar/>
+            <Routes>
+              <Route path='/' element={<HomeUI/>} />
+              <Route path='/profile' element={<UserProfile/>} />
+              <Route path='/assistant' element={<AI_Assistant/>} />
+              <Route path='/documentation' element={<DocGen/>} />
+              <Route path='/Strategizer' element={<Strategizer/>} />
+              <Route path='/register' element={<Signup />} />
+              <Route path='/login' element={<Login/>} />
+              <Route path="/project" element={<Project/>} />
+              <Route path="/project/settings" element={<Settings_Project/>} />
+              <Route path="/project/ltg" element={<LTG/>} />
+              <Route path="/project/ltg/settings" element={<Settings_LTG/>} />
+              <Route path="/project/ltg/objective" element={<Objective/>} />
+              <Route path="/project/ltg/objective/settings" element={<Settings_Objective/>} />
+              <Route path="/project/ltg/objective/task" element={<Task/>} />
+              <Route path="/project/ltg/objective/task/settings" element={<Settings_Task/>} />
+            </Routes>
+          </StationsGlobalProvider>
         </ChakraProvider>
       </BrowserRouter>
     </div>

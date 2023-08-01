@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch,useAppSelector } from 'src/app/hooks'
 import { logout, User, reset } from 'src/app/state_management/user/authSlice';
@@ -11,48 +11,16 @@ import ChartPie from 'src/components/charts/ChartPie/ChartPie';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { Card, CardHeader, CardBody, CardFooter, Text, Center, Divider, Menu, MenuButton, MenuList, MenuItem, Icon, IconButton, Button, MenuGroup, MenuDivider, Accordion, AccordionItem, AccordionButton, Box, AccordionIcon, AccordionPanel, Input } from '@chakra-ui/react'
 import StrateGStats from './StrateGStats';
+import { StationsContext } from 'src/components/stations/stationGlobals/StationsGlobalProvider';
 
 function Strategizer() {
 
-  //! To be migrated!! ------------------------------------------------------------------------------------------------------------------------
-    const [formData, setFormData] = useState({
-      projectName: '',
-  })
-  const {projectName} = formData;
+  const {testThisLogicWorks, manageSelectedTask_Remote} = useContext(StationsContext)
+ 
   
   const {data, allUserTasks} = useAppSelector((state) => state.project)
 
-  const onFormUpdated = (e : Event | any) => {
-    e.preventDefault();
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name] : e.target.value
-    }))
-  }
-
-  const onFormSubmitted = (e: Event | any) => {
-    e.preventDefault();
-    if(!projectName)
-    {
-      throw new Error ("Please enter all fields!");
-    }
-    else{
-      console.log("trying to login...");
-      console.log(formData);
-      dispatch(createProject({projectName: projectName, owner: user._id, token: user.token}))
-    }
-  }
-
-  const onLogoutClicked = async () => {
-    await dispatch(logout());
-    dispatch(reset());
-    navigator('/register');
-  }
-
-  const onUpdateProjectName = async (e : any, id : any) => {
-    console.log(id);
-    await dispatch(updateProject({projectName: projectName, id: id, token: user.token}));
-  }
+  
 
   const manageSelectedStation = async (e : any, id : any) => {
     console.log("trying to EDIT PROJECT...........")
@@ -61,8 +29,6 @@ function Strategizer() {
     navigator('/project');
   }
 
-  //! Immigrants Border -----------------------------------------------------------------------------------------------------------------------
-  
   const navigator = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -105,12 +71,12 @@ function Strategizer() {
                           <AccordionIcon />
                         </AccordionButton>
                       </h2>
-                      <AccordionPanel style={{width: '50vw'}} className='card-sub-child-2'>
+                      <AccordionPanel style={{width: '50vw'}} className='card-sub-child-2' onClick={testThisLogicWorks}>
                           <section className='flex f-dir-col j-even'>
                               <h2 className='font-1 s1 p1 m1 orange '>Project Name :</h2> <h3 className='font-6 s3 p3 m3 white'>{project.projectName}</h3> 
                               {allUserTasks &&
                               <div>
-                                <StrateGStats allUserTasks={allUserTasks} station={project} user={user}/>
+                                <StrateGStats allUserTasks={allUserTasks} station={project} user={user} manageSelectedTask={manageSelectedTask_Remote}/>
                               </div>
                               }
                           </section>
