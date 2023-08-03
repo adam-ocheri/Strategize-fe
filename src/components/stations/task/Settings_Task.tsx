@@ -5,7 +5,6 @@ import { RootState } from 'src/app/store';
 import { useEffect, useState } from 'react';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 import { Button, Card, Input } from '@chakra-ui/react';
-import { type } from 'os';
 
  function Settings_Task({originTask, currentTaskIteration} : any) {
 

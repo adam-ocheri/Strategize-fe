@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { getAllProjectsAndSubstations, updateTask_ProfileView } from 'src/app/state_management/project/projectSlice';
 import { updateTask } from 'src/app/state_management/task/taskSlice';
+import { updateUserStatistics } from 'src/app/state_management/user/authSlice';
 import ButtonForm from 'src/components/elements/buttons/ButtonForm/ButtonForm';
 import Button_S2 from 'src/components/elements/buttons/Button_S2/Button_S2';
 
@@ -29,9 +30,9 @@ export default function Notifications() {
 
     //! Methods - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //* Check all tasks every minute
-    const intervalUpdate = () => {
+    const intervalUpdate = async () => {
         const currentTime = new Date();
-        console.log("TIME IS: ", currentTime.toString().slice(0, 21));
+        console.log("TIME IS: ", currentTime.toString().slice(0, 15));
         console.log(" COME ON!!! ");
         console.log('allUserTasks, ', allUserTasks)
         
@@ -52,6 +53,10 @@ export default function Notifications() {
         }
         else {
           //setEndedTask(null);
+        }
+
+        if (user) {
+          await dispatch(updateUserStatistics({stat: 'usageTracking', targetValue: 'totalMinutes', id: user._id, token: user.token}));
         }
     }
 

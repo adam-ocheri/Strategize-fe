@@ -86,9 +86,9 @@ export const setCurrentStationContext = createAsyncThunk('auth/setStationContext
     }
 } )
 
-export const updateUserStatistics = createAsyncThunk('auth/userStats', async({userStatistics, id, token} : any, thunkAPI) => {
+export const updateUserStatistics = createAsyncThunk('auth/userStats', async({stat, targetValue, id, token} : any, thunkAPI) => {
     try{
-        return await updateStat({userStatistics, id, token});
+        return await updateStat({stat, targetValue, id, token});
     } 
     catch (error : any) {
         const message : any = (error.response && error.response.data && error.response.message) || error.message || error.toString();
@@ -182,7 +182,7 @@ export const authSlice  = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.user = Object.entries(state.user) ; // TODO !!!!!! <-
+                state.user = {...state.user, userStatistics: action.payload} ; // TODO !!!!!! <-
             })
             .addCase(updateUserStatistics.rejected, (state, action : any ) => {
                 state.isLoading = false;
